@@ -8,8 +8,10 @@ The content of the innovation laboratory can be decided by each student individu
 
 ## Google Earth Engine
 To start we created two scripts in GEE to download the images cut with all the bands.
+
 The codes are as follows:
 
-[Sentinel-1](https://code.earthengine.google.com/d134d1da3f1bc8c6ab6902b5b27ecd04)
-[Sentinel-2](https://code.earthengine.google.com/b35b8b866286203cf2c8c2faa684241d)
+[Sentinel-1](https://code.earthengine.google.com/d134d1da3f1bc8c6ab6902b5b27ecd04).
+
+[Sentinel-2](https://code.earthengine.google.com/b35b8b866286203cf2c8c2faa684241d).
 
