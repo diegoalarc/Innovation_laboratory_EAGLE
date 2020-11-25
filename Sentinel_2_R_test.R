@@ -24,10 +24,11 @@ plotRGB(test3)
 
 # Read Shapefile with the roi
 roi <- readOGR(dsn=file.path("./ROI/EQUIPO_DE_RIEGO_CARMEN_ROSA_Parron.shp"))
-plot(roi, axes = TRUE)
+#plot(roi, axes = TRUE)
 
+# Reproject to UTM zone 19S
 roi_utm <- spTransform(roi, CRS("+proj=utm +zone=19 +south +datum=WGS84 +units=m +no_defs"))
-roi_utm
+#roi_utm
 
 # Plotting RGB and Shapefile together
 plotRGB(test3,  stretch = 'hist', axes = TRUE,
@@ -44,5 +45,30 @@ Sentinel_2_images <- list.files(Sentinel_2_path,
                               full.names = TRUE,
                               pattern = ".tif$")
 
-# Create a stack of Raster Files with all the *.tiff Sentinel_2_images
-Sentinel_2_brick <- brick(Sentinel_2_images)
+# Progress bar creation using the number of images as total length
+pb = txtProgressBar(min = 0, max = length(Sentinel_2_images), initial = 0, char = " ^-^ ") 
+
+# For loop to normalize the name for a time serie
+for (i in 1:length(Sentinel_2_images)){
+  # Progress bar
+  setTxtProgressBar(pb,i)
+  
+  # Call each image using the stack function
+  Sentinel_2_stack <- stack(Sentinel_2_images[i])
+  
+  # Extraction of Chraracters to create the names for each image
+  # Extract day of the data
+  day <- substr(Sentinel_2_images[i], start=20, stop=21)
+  
+  # Extract month of the data
+  mth <- substr(Sentinel_2_images[i], start=18, stop=19)
+  
+  # Extract year of the data
+  yr <- substr(Sentinel_2_images[i], start=14, stop=17)
+  
+  # Save the Raster with a specific name
+  writeRaster(Sentinel_2_stack, filename=file.path("./Sentinel_2_time_serie",paste0(yr,"_",mth,"_", day)), format='GTiff', overwrite=T)
+  
+  # Remove lists
+  rm(Sentinel_2_stack)
+}
