@@ -1,8 +1,16 @@
+# Documentation
+# https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-1/observation-scenario
+# https://en.wikipedia.org/wiki/BBCH-scale
+# https://en.wikipedia.org/wiki/Tasseled_cap_transformation
+#
+################################################################################
+
 library(raster)
 library(cluster)
 library(rgdal)
 library(RStoolbox)
 library(tidyverse)
+library(caret)
 
 ################################################################################
 
