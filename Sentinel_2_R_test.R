@@ -2,6 +2,8 @@
 # https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-1/observation-scenario
 # https://en.wikipedia.org/wiki/BBCH-scale
 # https://en.wikipedia.org/wiki/Tasseled_cap_transformation
+# https://valentinitnelav.github.io/satellite-image-classification-r/
+# https://www.datacareer.de/blog/random-forest-in-r-an-example/
 #
 ################################################################################
 
@@ -19,7 +21,11 @@ setwd('/home/diego/GITHUP_REPO/Innovation_laboratory_EAGLE')
 
 # Read Shapefile with the roi
 roi <- readOGR(dsn=file.path("./ROI/Carmen_Rosa_Field.shp"))
-#plot(roi, axes = TRUE)
+plot(roi)
+
+# Subset the shapefile by Number
+roi_1 <- subset(roi, Number == "1")
+plot(roi_1)
 
 # Reproject to UTM zone 19S
 roi_utm <- spTransform(roi, CRS("+proj=utm +zone=19 +south +datum=WGS84 +units=m +no_defs"))
