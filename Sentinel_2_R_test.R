@@ -17,7 +17,7 @@ library(caret)
 ################################################################################
 
 # Set the folder location
-setwd('/home/diego/GITHUP_REPO/Innovation_laboratory_EAGLE')
+setwd('~/Dropbox/RS_Project/RSSTARTUP_repo/Product_Development/Yield_forcasting_R/Innovation_laboratory_EAGLE')
 
 # Read Shapefile with the roi
 roi <- readOGR(dsn=file.path("./ROI/Carmen_Rosa_Field.shp"))
@@ -197,3 +197,35 @@ for (i in 1:length(Sentinel_2_images)){
   rm(mth)
   rm(yr)
 }
+
+#####
+data <- read.csv("Original_data/meteo_station.csv")
+print(data)
+
+library(ggplot2)
+library(tidyverse)
+
+data_f <- data %>%
+  filter(Year == "2014")
+
+#Check by plotting
+data_f %>% 
+  ggplot(aes(x = Date, y = Temp.Out)) +
+  geom_smooth(method = lm) + 
+  scale_fill_manual(limits= c("0","40"))
+
+
+p <- ggplot(data_f, aes(x=Date, y=as.numeric(Temp.Out))) +
+  geom_smooth(aes(colour = Year), size = .5) +
+  geom_point(aes(colour = Year), size = 2) +
+  theme(legend.justification = "top") + 
+  labs(title = paste0("Clima-station data"),
+       caption = "Inno_Lab") +
+  xlab("Date") + ylab("T°") +
+  ylim(0, 40) +
+  theme(axis.text.x = element_text(face="bold", color="#993333",
+                                   size=5, angle=270),
+        axis.text.y = element_text(face="bold", color="#993333",
+                                   size=7, angle=0))
+
+plot(p)
