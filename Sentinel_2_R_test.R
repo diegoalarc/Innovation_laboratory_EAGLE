@@ -17,7 +17,7 @@ library(caret)
 ################################################################################
 
 # Set the folder location
-setwd('~/Dropbox/RS_Project/RSSTARTUP_repo/Product_Development/Yield_forcasting_R/Innovation_laboratory_EAGLE')
+setwd('~/Dropbox/RS Project/RSSTARTUP_repo/Product_Development/Yield_forcasting_R/Innovation_laboratory_EAGLE')
 
 # Read Shapefile with the roi
 roi <- readOGR(dsn=file.path("./ROI/Carmen_Rosa_Field.shp"))
@@ -198,7 +198,8 @@ for (i in 1:length(Sentinel_2_images)){
   rm(yr)
 }
 
-#####
+##### Data Cleaning
+
 data <- read.csv("Original_data/meteo_station.csv")
 print(data)
 
