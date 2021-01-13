@@ -1,5 +1,5 @@
 # Libraries loading
-library(tidyverse)
+#library(tidyverse)
 library(raster) 
 library(rgdal)
 library(sp)
@@ -82,17 +82,20 @@ for (x in 1:length(roi)){
   names(roi_1_crop5) <- nvdi_names
   
   # Create the data frame with the data by Band
-  band_mean <- extract(roi_1_crop5[[1]], roi_1, method='simple',df=TRUE)
-  my_df <- data.frame(band_mean,stringsAsFactors=FALSE)
+  band_mean <- raster::extract(roi_1_crop5[[1]], roi_1, method='simple',df=TRUE)
+  
+  # Empty dataframe
+  my_df <- data.frame(band_mean)
+  
   my_df[,1] <- as.numeric(band_mean[,2])
   
-  band_mean2 <- extract(roi_1_crop5[[2]], roi_1, method='simple',df=TRUE)
+  band_mean2 <- raster::extract(roi_1_crop5[[2]], roi_1, method='simple',df=TRUE)
   my_df[,2] <- as.numeric(band_mean2[,2])
   
-  band_mean3 <- extract(roi_1_crop5[[3]], roi_1, method='simple',df=TRUE)
+  band_mean3 <- raster::extract(roi_1_crop5[[3]], roi_1, method='simple',df=TRUE)
   my_df[,3] <- as.numeric(band_mean3[,2])
   
-  band_mean4 <- extract(roi_1_crop5[[4]], roi_1, method='simple',df=TRUE)
+  band_mean4 <- raster::extract(roi_1_crop5[[4]], roi_1, method='simple',df=TRUE)
   my_df[,4] <- as.numeric(band_mean4[,2])
 
   # Add ncolumn names into the dataframe
