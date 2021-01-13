@@ -19,3 +19,12 @@ Then a code was applied to obtain a unique value per field for each band generat
 The codes are as follows:
 
 [R code](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/NDVI_GNDVI_EVI_cellStats_by_Field.R)
+
+## R Code boxplot
+In order to get a general idea of each field, an NDVI analysis was performed for each field. For this, an analysis was performed through a boxplot of each NDVI image of each field and a point was placed that represents the mean of the total value of pixels of each image for each year.
+
+The codes are as follows:
+[R Boxplot code](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Boxplot.R)
+
+Example for the ARRA 15 CR field where a bloxplot can be observed from the years 2017 -2020:
+![Pemanent Water - Change detection from 2010 to 2018](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/ARRA%2015%20CR_NDVI_2017_to_2020.png?raw=true "Example for the ARRA 15 CR field where a bloxplot can be observed from the years 2017 -2020")
