@@ -79,7 +79,27 @@ for (x in 1:length(roi)){
   
   # Save the names in a vector
   names(roi_1_crop5) <- nvdi_names
+  
+  # Create the data frame with the data by Band
+#  my_df <- data.frame(nvdi_names,stringsAsFactors=FALSE)
+  
+  band_mean <- extract(roi_1_crop5[[1]], roi_1, method='simple',df=TRUE)
+  my_df <- data.frame(band_mean,stringsAsFactors=FALSE)
+  my_df[,1] <- as.numeric(band_mean[,2])
+  
+  band_mean2 <- extract(roi_1_crop5[[2]], roi_1, method='simple',df=TRUE)
+  my_df[,2] <- as.numeric(band_mean2[,2])
+  
+  band_mean3 <- extract(roi_1_crop5[[3]], roi_1, method='simple',df=TRUE)
+  my_df[,3] <- as.numeric(band_mean3[,2])
+  
+  band_mean4 <- extract(roi_1_crop5[[4]], roi_1, method='simple',df=TRUE)
+  my_df[,4] <- as.numeric(band_mean4[,2])
 
+  names(my_df) <- c('NDVI_2017', 'NDVI_2018', 'NDVI_2019', 'NDVI_2020')
+  
+  write.csv(my_df,paste0('./Plots/',roi_1$Name,'_NDVI_2017_to_2020.csv'),row.names = F)
+  
   png(file = paste0('./Plots/',roi_1$Name,'_NDVI_2017_to_2020.png'), units = "px",
       width = 800, height = 450)
   
@@ -87,6 +107,10 @@ for (x in 1:length(roi)){
           main = paste0('Box plot ',roi_1$Name), 
           names = c('NDVI_2017', 'NDVI_2018', 'NDVI_2019', 'NDVI_2020'),
           ylab = 'NDVI between 0 - 1')
+  
+  means <- colMeans(my_df)
+  
+  points(means,col=c('green', 'orange', 'red', 'blue'), pch=21)
   
   dev.off()
 
