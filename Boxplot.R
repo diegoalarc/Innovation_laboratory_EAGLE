@@ -104,20 +104,25 @@ for (x in 1:length(roi)){
   # Save dataframe as .CSV
   write.csv(my_df,paste0('./Plots/',roi_1$Name,'_NDVI_2017_to_2020.csv'),row.names = F)
   
+  # Calculate the mean for each yeach
+  means <- colMeans(my_df)
+  
   # Save boxplot as .png
   png(file = paste0('./Plots/',roi_1$Name,'_NDVI_2017_to_2020.png'), units = "px",
-      width = 800, height = 450)
+      width = 600, height = 450)
   
   boxplot(roi_1_crop5, notch=TRUE, col=c('red', 'blue', 'orange', 'green'),
           main = paste0('Box plot ',roi_1$Name), 
           names = c('NDVI_2017', 'NDVI_2018', 'NDVI_2019', 'NDVI_2020'),
           ylab = 'NDVI between 0 - 1')
   
-  # Calculate the mean for each yeach
-  means <- colMeans(my_df)
-  
   # Add a point which represent the mean value
   points(means,col=c('green', 'orange', 'red', 'blue'), pch=19, cex = 1.5)
+  
+  legend("top", title="Mean by year", text.col = "black",
+         legend = c('Mean 2017', 'Mean 2018', 'Mean 2019', 'Mean 2020'),
+         col = c('green', 'orange', 'red', 'blue'), xpd=TRUE,
+         inset=c(-1,0), horiz = T, pch = 19, cex = 0.5)
   
   dev.off()
 }
