@@ -1,4 +1,5 @@
 # Libraries loading
+library(tidyverse)
 library(raster) 
 library(rgdal)
 library(sp)
@@ -81,8 +82,6 @@ for (x in 1:length(roi)){
   names(roi_1_crop5) <- nvdi_names
   
   # Create the data frame with the data by Band
-#  my_df <- data.frame(nvdi_names,stringsAsFactors=FALSE)
-  
   band_mean <- extract(roi_1_crop5[[1]], roi_1, method='simple',df=TRUE)
   my_df <- data.frame(band_mean,stringsAsFactors=FALSE)
   my_df[,1] <- as.numeric(band_mean[,2])
@@ -96,10 +95,13 @@ for (x in 1:length(roi)){
   band_mean4 <- extract(roi_1_crop5[[4]], roi_1, method='simple',df=TRUE)
   my_df[,4] <- as.numeric(band_mean4[,2])
 
+  # Add ncolumn names into the dataframe
   names(my_df) <- c('NDVI_2017', 'NDVI_2018', 'NDVI_2019', 'NDVI_2020')
   
+  # Save dataframe as .CSV
   write.csv(my_df,paste0('./Plots/',roi_1$Name,'_NDVI_2017_to_2020.csv'),row.names = F)
   
+  # Save boxplot as .png
   png(file = paste0('./Plots/',roi_1$Name,'_NDVI_2017_to_2020.png'), units = "px",
       width = 800, height = 450)
   
@@ -108,10 +110,11 @@ for (x in 1:length(roi)){
           names = c('NDVI_2017', 'NDVI_2018', 'NDVI_2019', 'NDVI_2020'),
           ylab = 'NDVI between 0 - 1')
   
+  # Calculate the mean for each yeach
   means <- colMeans(my_df)
   
-  points(means,col=c('green', 'orange', 'red', 'blue'), pch=21)
+  # Add a point which represent the mean value
+  points(means,col=c('green', 'orange', 'red', 'blue'), pch=19, cex = 1.5)
   
   dev.off()
-
 }
