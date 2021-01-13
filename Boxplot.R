@@ -113,7 +113,7 @@ for (x in 1:length(roi)){
   
   boxplot(roi_1_crop5, notch=TRUE, col=c('red', 'blue', 'orange', 'green'),
           main = paste0('Box plot ',roi_1$Name), 
-          names = c('NDVI_2017', 'NDVI_2018', 'NDVI_2019', 'NDVI_2020'),
+          names = c('NDVI 2017', 'NDVI 2018', 'NDVI 2019', 'NDVI 2020'),
           ylab = 'NDVI between 0 - 1')
   
   # Add a point which represent the mean value
