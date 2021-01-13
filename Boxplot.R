@@ -109,7 +109,7 @@ for (x in 1:length(roi)){
   
   # Save boxplot as .png
   png(file = paste0('./Plots/',roi_1$Name,'_NDVI_2017_to_2020.png'), units = "px",
-      width = 800, height = 450)
+      width = 1000, height = 450)
   
   boxplot(roi_1_crop5, notch=TRUE, col=c('red', 'blue', 'orange', 'green'),
           main = paste0('Box plot ',roi_1$Name), 
