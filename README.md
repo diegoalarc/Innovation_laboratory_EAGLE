@@ -5,6 +5,7 @@ The Innovation Laboratory allows you to analyze one particular topic in your fie
 ## Content
 The content of the innovation laboratory can be decided by each student individually and either a research topic is offered by a lecturer or the student is proposing an own topic. Research topics need to be discussed with and proposed to one EAGLE lecturer who will also be in charge of supervising and grading the students work. Topics of the innovation laboratory can cover all aspects of the EAGLE study program with a strong focus on applied Earth Observation and geoanalysis or its innovative potential for remote sensing sciences. It may comprise topics such as linking spectrometer field studies to remotely sensed data or the exploration of UAV based imagery, as well as space borne earth observation analysis such as time-series derivation for a variety of environmental studies i.e. resource mapping or spatial predictions and statistics of variables.
 
+## Topic:
 ## Machine Learning process for yield prediction for the "Carmen Rosa" farm located in Chile.
 
 Project carried out with the help of the company Carmen Rosa, who has provided data, both for its weather season and its annual production, in order to carry out an analysis and possible production optimization considering:
