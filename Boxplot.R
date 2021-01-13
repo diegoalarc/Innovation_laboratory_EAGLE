@@ -118,7 +118,7 @@ for (x in 1:length(roi)){
   
   # Add a point which represent the mean value
   points(means,col=c('green', 'orange', 'red', 'blue'), pch=19, cex = 1.5)
-  
+
   legend("top", title="Mean by year", text.col = "black",
          legend = c('Mean 2017', 'Mean 2018', 'Mean 2019', 'Mean 2020'),
          col = c('green', 'orange', 'red', 'blue'), xpd=TRUE,
