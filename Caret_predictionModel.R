@@ -94,7 +94,11 @@ predictions
 gbmImp <- varImp(model, scale = FALSE)
 gbmImp
 
+# Save boxplot as .png
+png(file = './Plots/Variable_Importance.png', units = "px",
+    width = 600, height = 700)
 plot(gbmImp, top = 19)
+dev.off()
 
 data.frame( R2 = R2(predictions, test.data$Kg_He),
             RMSE = RMSE(predictions, test.data$Kg_He),
