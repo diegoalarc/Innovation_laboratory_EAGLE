@@ -9,6 +9,8 @@ library(caret)
 setwd('/home/diego/GITHUP_REPO/Innovation_laboratory_EAGLE')
 
 # Import dataset
+# The dataset used is summary_fn.csv, which was clean but the original one
+# is summary.csv
 Field_Carmen <- read.csv('./Original_data/summary_fn.csv')
 
 # Structure of the dataframe
