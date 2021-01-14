@@ -66,6 +66,7 @@ model <- train(Kg_He ~., data = Field_Carmen,
                tuneGrid = data.frame(mtry = 6))
 
 # Summarize the results
+summary(model)
 print(model)
 
 # Make predictions and compute the R2, RMSE and MAE
