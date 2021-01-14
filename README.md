@@ -51,7 +51,7 @@ The codes are as follows:
 [R Boxplot code](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Boxplot.R)
 
 #### Considerations when reading the graph:
-For the fields 'INIAGRAPE ONE 15' and 'SABLE 16', only the years 2018 - 2019 are valid, since they did not present production in the years 2016 - 2017. This data will be eliminated in the dataframe for the machine learning model.
+For the fields 'INIAGRAPE ONE 15' and 'SABLE 16', only the years 2018 - 2019 are valid, since they did not present production in the years 2016 - 2017. This data was eliminated from the dataframe to create the machine learning model.
 
 #### Boxplot:
 Boxplot example in the Carmen Rosa Farm:
