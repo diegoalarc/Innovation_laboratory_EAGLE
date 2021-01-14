@@ -90,6 +90,12 @@ predictions <- model %>% predict(test.data, na.action=na.exclude)
 
 predictions
 
+# variable importance
+gbmImp <- varImp(model, scale = FALSE)
+gbmImp
+
+plot(gbmImp, top = 19)
+
 data.frame( R2 = R2(predictions, test.data$Kg_He),
             RMSE = RMSE(predictions, test.data$Kg_He),
             MAE = MAE(predictions, test.data$Kg_He))
