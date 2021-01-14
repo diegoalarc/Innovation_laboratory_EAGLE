@@ -19,8 +19,8 @@ Project carried out with the help of the company Carmen Rosa, who has provided d
 Image of Carmen Rosa Farm:
 ![Carmen Rosa farm location](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Carmen_Rosa_Farm.png?raw=true "Carmen Rosa farm location")
 
-#### For better precision, check the location by downloading the following kmz.
-[Kmz of Carmen Rosa Farm](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/raw/main/Original_data/CARMEN_ROSA_farm.kmz)
+#### For better precision, check the location by downloading the following kmz:
+ - [Kmz of Carmen Rosa Farm](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/raw/main/Original_data/CARMEN_ROSA_farm.kmz)
 
 ## Google Earth Engine
 To start we created two scripts in GEE to download the images cut with all the bands.
