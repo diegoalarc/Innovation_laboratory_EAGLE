@@ -22,16 +22,18 @@ head(Field_Carmen[, 1:10])
 # Split the data into training and test set
 set.seed(123)
 training.samples <- Field_Carmen$Kg_He %>%
-  createDataPartition(p = 0.8, list = FALSE)
+  createDataPartition(p = 0.75, list = FALSE)
 
 train.data  <- Field_Carmen[training.samples, ]
 test.data <- Field_Carmen[-training.samples, ]
 
+################################################################################
+
 # Build the model
-model <- lm(Kg_He ~., data = train.data)
+#model <- lm(Kg_He ~., data = train.data)
 
 # Observe the model
-model
+#model
 
 # It is because, one of your dependent variables has NA for Coefficients given as
 # output by the lm(..) function. Such a variable is making no difference to the 
@@ -41,24 +43,27 @@ model
 # that variable from the formula in lm(..) function and do the regression again.
 
 # Make predictions and compute the R2, RMSE and MAE
-predictions <- model %>% predict(test.data, na.action=na.exclude)
+#predictions <- model %>% predict(test.data, na.action=na.exclude)
 
-data.frame( R2 = R2(predictions, test.data$Kg_He),
-            RMSE = RMSE(predictions, test.data$Kg_He),
-            MAE = MAE(predictions, test.data$Kg_He))
+#data.frame( R2 = R2(predictions, test.data$Kg_He),
+#            RMSE = RMSE(predictions, test.data$Kg_He),
+#            MAE = MAE(predictions, test.data$Kg_He))
 
-RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
+#RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
 
 ################################################################################
 
-# Leave one out cross validation - LOOCV
+# ordinal RandomForest
 # Define training control
 set.seed(234)
-train.control <- trainControl(method = "LOOCV")
+train.control <- trainControl(method = "none")
 
 # Train the model
-model <- train(Kg_He ~., data = Field_Carmen, method = "lm",
-               trControl = train.control)
+model <- train(Kg_He ~., data = Field_Carmen, 
+               method = "rf",
+               ntree = 1000,
+               trControl = train.control,
+               tuneGrid = data.frame(mtry = 6))
 
 # Summarize the results
 print(model)
@@ -73,22 +78,6 @@ data.frame( R2 = R2(predictions, test.data$Kg_He),
             MAE = MAE(predictions, test.data$Kg_He))
 
 RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
-
-################################################################################
-
-# Define training control
-set.seed(345)
-train.control <- trainControl(method = "cv", number = 5)
-# Train the model
-model <- train(Kg_He ~., data = Field_Carmen, method = "lm",
-               trControl = train.control)
-# Summarize the results
-print(model)
-
-# Make predictions and compute the R2, RMSE and MAE
-predictions <- model %>% predict(test.data, na.action=na.exclude)
-
-predictions
 
 # variable importance
 gbmImp <- varImp(model, scale = FALSE)
@@ -99,9 +88,3 @@ png(file = './Plots/Variable_Importance.png', units = "px",
     width = 600, height = 700)
 plot(gbmImp, top = 19)
 dev.off()
-
-data.frame( R2 = R2(predictions, test.data$Kg_He),
-            RMSE = RMSE(predictions, test.data$Kg_He),
-            MAE = MAE(predictions, test.data$Kg_He))
-
-RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
