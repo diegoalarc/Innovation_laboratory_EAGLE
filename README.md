@@ -34,5 +34,5 @@ In order to get a general idea of each field, an NDVI analysis was performed for
 The codes are as follows:
 [R Boxplot code](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Boxplot.R)
 
-Example for the ARRA 15 CR field where a bloxplot can be observed from the years 2017 -2020:
-![Pemanent Water - Change detection from 2010 to 2018](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/ARRA%2015%20CR_NDVI_2017_to_2020.png?raw=true "Example for the ARRA 15 CR field where a bloxplot can be observed from the years 2017 -2020")
+Example of NDVI for each field from the years 2017 -2020:
+![Pemanent Water - Change detection from 2010 to 2018](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/NDVI_2017_to_2020.png?raw=true "Example of NDVI for each field from the years 2017 -2020")
