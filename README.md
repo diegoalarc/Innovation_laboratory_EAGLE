@@ -8,7 +8,7 @@ The content of the innovation laboratory can be decided by each student individu
 ## Topic:
 ## Machine Learning process for yield prediction for the "Carmen Rosa" farm located in Chile.
 
-Project carried out with the help of the company Carmen Rosa, who has provided data, both for its weather season and its annual production, in order to carry out an analysis and possible production optimization considering:
+Project carried out with the help of the company Carmen Rosa, who has provided data, both for its Climatic Station and its annual production, in order to carry out an analysis and possible production optimization considering:
 
 - Temperature
 - Evapotranspiration
