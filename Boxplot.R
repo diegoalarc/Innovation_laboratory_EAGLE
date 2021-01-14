@@ -16,12 +16,13 @@ roi <- readOGR(dsn=file.path('./ROI/Carmen_Rosa_Field.shp'))
 # Change path to folder containing rasters
 rasdir <- file.path('./Images')
 
+# Years of the roi
 year <- 2017
 year2 <- 2018
 year3 <- 2019
 year4 <- 2020
 
-# List all GeoTIFF files in folder, change extension in pattern if different format
+# List all NDVI GeoTIFF files by year
 fllst <- list.files(path=rasdir,
                     full.names = TRUE,
                     pattern = paste0(year,'.tif$'))
@@ -46,18 +47,21 @@ fllst4 <- list.files(path=rasdir,
 
 fllst_stack4 <- stack(fllst4[4])
 
-# Band EVi, GNVDI & NVDI
+# Band stack of NVDI by year in order
 fllst_stack5 <- stack(fllst_stack, fllst_stack2, fllst_stack3, fllst_stack4)
 
 # Progress bar creation using the number of images as total length
 pb = txtProgressBar(min = 0, max = 12, initial = 0, char = " ^-^ ") 
 
+# Create a list
 df <- list()
 
 for (x in 1:length(roi)){
+  
   # Progress bar
   setTxtProgressBar(pb,x)
   
+  # Print each Iteration
   print(x)
   
   # Subset the shapefile by Number
@@ -76,6 +80,7 @@ for (x in 1:length(roi)){
   # Create a stack of Raster Files with all the *.tiff cropped
   roi_1_crop5 <- stack(crop_list5)
   
+  # Add column names into the dataframe
   nvdi_names <- c(paste0('NDVI_Carmen_Rosa_Field_',year),
                   paste0('NDVI_Carmen_Rosa_Field_',year2),
                   paste0('NDVI_Carmen_Rosa_Field_',year3),
@@ -109,15 +114,18 @@ for (x in 1:length(roi)){
   my_df4[,2] <- data.frame(Year = as.character(year4 - 1))
   my_df4[,3] <- as.numeric(band_mean4[,2])
   
+  # Apply rbind to merge all the dataframe
   my_df5 <- rbind(my_df,my_df2,my_df3,my_df4)
   
-  # Add ncolumn names into the dataframe
+  # Add column names into the dataframe
   names(my_df5) <- c('Field', 'Year', 'NDVI')
   
+  # Create a List using the iterator
   df[[x]] <- my_df5
 
 }
 
+# Execute a Function rbind
 big_data <- do.call(rbind, df)
 
 # Save dataframe as .CSV
@@ -136,5 +144,6 @@ p <- ggplot(data = big_data, aes(x=Year, y=NDVI, fill=Field)) +
 png(file = paste0('./Plots/NDVI_2017_to_2020.png'), units = "px",
     width = 1200, height = 700)
 
+# Plot the graph
 plot(p)
 dev.off()
