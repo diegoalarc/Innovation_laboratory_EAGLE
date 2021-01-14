@@ -56,3 +56,13 @@ For the fields 'INIAGRAPE ONE 15' and 'SABLE 16', only the years 2018 - 2019 are
 #### Boxplot:
 Boxplot example in the Carmen Rosa Farm:
 ![Example of NDVI for each field from the years 2016 -2019](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/NDVI_2017_to_2020.png?raw=true "Example of NDVI for each field from the years 2016 -2019")
+
+## R Code Caret Pckage
+Applying the [Caret](https://topepo.github.io/caret/index.html) de R package, a [Machine Learning](https://en.wikipedia.org/wiki/Machine_learning) model was made to make a prediction of the Yield of Carmen Rosa farm.
+According to what has been done, the need for more data to make a prediction with better precision is evident. But considering the lack of these, it was decided to make (anyway) an [ML](https://en.wikipedia.org/wiki/Machine_learning) model, considering that it will improve over the years as more information is available.
+
+Something important when looking at the generated model, is variable importance, which is possible thanks to Caret's "varImp" function.
+
+Plot of variable importance:
+![variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance.png?raw=true "variable importance ML model")
+
