@@ -42,6 +42,6 @@ The codes are as follows:
 #### Considerations when reading the graph:
 For the fields 'INIAGRAPE ONE 15' and 'SABLE 16', only the years 2018 - 2019 are valid, since they did not present production in the years 2016 - 2017.
 
-#### Boxplot
+#### Boxplot:
 Boxplot example in the Carmen Rosa Farm:
 ![Example of NDVI for each field from the years 2016 -2019](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/NDVI_2017_to_2020.png?raw=true "Example of NDVI for each field from the years 2016 -2019")
