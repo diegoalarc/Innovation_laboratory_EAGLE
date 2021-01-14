@@ -80,11 +80,11 @@ data.frame( R2 = R2(predictions, test.data$Kg_He),
 RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
 
 # variable importance
-gbmImp <- varImp(model, scale = FALSE)
+gbmImp <- varImp(model, scale = T)
 gbmImp
 
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance.png', units = "px",
     width = 600, height = 700)
-plot(gbmImp, top = 19)
+plot(gbmImp, top = 19, main = "Random Forest - Variable Importance plot")
 dev.off()
