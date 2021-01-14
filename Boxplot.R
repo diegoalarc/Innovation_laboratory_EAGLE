@@ -129,7 +129,7 @@ for (x in 1:length(roi)){
 big_data <- do.call(rbind, df)
 
 # Save dataframe as .CSV
-write.csv(big_data,'./Plots/NDVI_2017_to_2020.csv',row.names = F)
+write.csv(big_data,'./Plots/NDVI_2017_to_2020.csv',row.names = F, quote = F)
 
 # plot
 p <- ggplot(data = big_data, aes(x=Year, y=NDVI, fill=Field)) + 

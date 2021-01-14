@@ -216,7 +216,7 @@ for (x in 1:length(roi)){
 band_big_data <- do.call(rbind, df_band)
 
 # Save dataframe as .CSV
-write.csv(band_big_data,paste0('./Original_data/Band_2017_to_2020.csv'),row.names = F)
+write.csv(band_big_data,paste0('./Original_data/Band_2017_to_2020.csv'),row.names = F, quote = F)
 
 # Disabling the cores on the device when the process ends
 #endCluster()
