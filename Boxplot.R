@@ -16,10 +16,10 @@ roi <- readOGR(dsn=file.path('./ROI/Carmen_Rosa_Field.shp'))
 # Change path to folder containing rasters
 rasdir <- file.path('./Images')
 
-year <- '2017'
-year2 <- '2018'
-year3 <- '2019'
-year4 <- '2020'
+year <- 2017
+year2 <- 2018
+year3 <- 2019
+year4 <- 2020
 
 # List all GeoTIFF files in folder, change extension in pattern if different format
 fllst <- list.files(path=rasdir,
@@ -88,25 +88,25 @@ for (x in 1:length(roi)){
   band_mean <- raster::extract(roi_1_crop5[[1]], roi_1, method='simple',df=TRUE)
   my_df <- matrix(data = roi_1$Name, nrow = 4*nrow(band_mean), ncol = 3)
   my_df <- data.frame(my_df)
-  my_df[,2] <- data.frame(Year = year)
+  my_df[,2] <- data.frame(Year = as.character(year - 1))
   my_df[,3] <- as.numeric(band_mean[,2])
   
   band_mean2 <- raster::extract(roi_1_crop5[[2]], roi_1, method='simple',df=TRUE)
   my_df2 <- matrix(data = roi_1$Name, nrow = 4*nrow(band_mean2), ncol = 3)
   my_df2 <- data.frame(my_df2)
-  my_df2[,2] <- data.frame(Year = year2)
+  my_df2[,2] <- data.frame(Year = as.character(year2 - 1))
   my_df2[,3] <- as.numeric(band_mean2[,2])
   
   band_mean3 <- raster::extract(roi_1_crop5[[3]], roi_1, method='simple',df=TRUE)
   my_df3 <- matrix(data = roi_1$Name, nrow = 4*nrow(band_mean3), ncol = 3)
   my_df3 <- data.frame(my_df3)
-  my_df3[,2] <- data.frame(Year = year3)
+  my_df3[,2] <- data.frame(Year = as.character(year3 - 1))
   my_df3[,3] <- as.numeric(band_mean3[,2])
   
   band_mean4 <- raster::extract(roi_1_crop5[[4]], roi_1, method='simple',df=TRUE)
   my_df4 <- matrix(data = roi_1$Name, nrow = 4*nrow(band_mean4), ncol = 3)
   my_df4 <- data.frame(my_df4)
-  my_df4[,2] <- data.frame(Year = year4)
+  my_df4[,2] <- data.frame(Year = as.character(year4 - 1))
   my_df4[,3] <- as.numeric(band_mean4[,2])
   
   my_df5 <- rbind(my_df,my_df2,my_df3,my_df4)
@@ -115,22 +115,7 @@ for (x in 1:length(roi)){
   names(my_df5) <- c('Field', 'Year', 'NDVI')
   
   df[[x]] <- my_df5
-  
-  # Save dataframe as .CSV
-#  write.csv(my_df5,paste0('./Plots/',roi_1$Name,'_NDVI_2017_to_2020.csv'),row.names = F)
-  
-  # Save boxplot as .png
-#  png(file = paste0('./Plots/',roi_1$Name,'_NDVI_2017_to_2020.png'), units = "px",
-#      width = 1000, height = 450)
-  
-  # plot
-#  p <- ggplot(my_df5, aes(x=Year, y=NDVI)) +
-#    geom_boxplot(aes(fill=Field),alpha=0.7) +
-#    stat_summary(fun=mean, geom="point", shape=20, size=7, color="red", fill="red") +
-#    theme(legend.position="none") +
-#    scale_fill_brewer(palette="Set1")
-  
-#  dev.off()
+
 }
 
 big_data <- do.call(rbind, df)
@@ -140,10 +125,12 @@ write.csv(big_data,'./Plots/NDVI_2017_to_2020.csv',row.names = F)
 
 # plot
 p <- ggplot(data = big_data, aes(x=Year, y=NDVI, fill=Field)) + 
-  geom_boxplot() + 
+  geom_boxplot(aes(fill=Field)) + 
   stat_summary(fun=mean, geom="line", aes(group=Field)) +
   stat_summary(fun=mean, geom="point", shape=20, size=4, color="red", fill="red") +
-  facet_wrap(~Field,ncol = 4)
+  labs(title = "Time-series NDVI between November and December in the Carmen Rosa Farm for each year", 
+       caption = "All data here is produced under the Copernicus Programme, free of charge, without restriction of use.") +
+  facet_wrap(~Field, ncol = 4)
 
 # Save boxplot as .png
 png(file = paste0('./Plots/NDVI_2017_to_2020.png'), units = "px",
