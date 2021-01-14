@@ -39,5 +39,5 @@ In order to get a general idea of each field, an NDVI analysis was performed for
 The codes are as follows:
 [R Boxplot code](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Boxplot.R)
 
-Example of NDVI for each field from the years 2017 -2020:
-![Pemanent Water - Change detection from 2010 to 2018](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/NDVI_2017_to_2020.png?raw=true "Example of NDVI for each field from the years 2017 -2020")
+Example of NDVI for each field from the years 2016 -2019 between November and December in the Carmen Rosa Farm:
+![Example of NDVI for each field from the years 2016 -2019](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/NDVI_2017_to_2020.png?raw=true "Example of NDVI for each field from the years 2016 -2019")
