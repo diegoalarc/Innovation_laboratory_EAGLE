@@ -139,15 +139,15 @@ big_data <- do.call(rbind, df)
 write.csv(big_data,'./Plots/NDVI_2017_to_2020.csv',row.names = F)
 
 # plot
-p <- ggplot(data = big_data, aes(x=Year, y=NDVI)) + 
-  geom_boxplot(aes(fill=Field)) + 
+p <- ggplot(data = big_data, aes(x=Year, y=NDVI, fill=Field)) + 
+  geom_boxplot() + 
   stat_summary(fun=mean, geom="line", aes(group=Field)) +
-  stat_summary(fun=mean, geom="point", shape=20, size=3, color="red", fill="red") +
+  stat_summary(fun=mean, geom="point", shape=20, size=4, color="red", fill="red") +
   facet_wrap(~Field,ncol = 4)
 
 # Save boxplot as .png
 png(file = paste0('./Plots/NDVI_2017_to_2020.png'), units = "px",
-    width = 1000, height = 450)
+    width = 1200, height = 700)
 
 plot(p)
 dev.off()
