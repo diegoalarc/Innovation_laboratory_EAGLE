@@ -1,5 +1,6 @@
 # Libraries loading
-#library(tidyverse)
+library(tidyverse)
+library(ggplot2)
 library(raster) 
 library(rgdal)
 library(sp)
@@ -51,6 +52,8 @@ fllst_stack5 <- stack(fllst_stack, fllst_stack2, fllst_stack3, fllst_stack4)
 # Progress bar creation using the number of images as total length
 pb = txtProgressBar(min = 0, max = 12, initial = 0, char = " ^-^ ") 
 
+df <- list()
+
 for (x in 1:length(roi)){
   # Progress bar
   setTxtProgressBar(pb,x)
@@ -83,47 +86,68 @@ for (x in 1:length(roi)){
   
   # Create the data frame with the data by Band
   band_mean <- raster::extract(roi_1_crop5[[1]], roi_1, method='simple',df=TRUE)
-  
-  # Empty dataframe
-  my_df <- data.frame(band_mean)
-  
-  my_df[,1] <- as.numeric(band_mean[,2])
+  my_df <- matrix(data = roi_1$Name, nrow = 4*nrow(band_mean), ncol = 3)
+  my_df <- data.frame(my_df)
+  my_df[,2] <- data.frame(Year = year)
+  my_df[,3] <- as.numeric(band_mean[,2])
   
   band_mean2 <- raster::extract(roi_1_crop5[[2]], roi_1, method='simple',df=TRUE)
-  my_df[,2] <- as.numeric(band_mean2[,2])
+  my_df2 <- matrix(data = roi_1$Name, nrow = 4*nrow(band_mean2), ncol = 3)
+  my_df2 <- data.frame(my_df2)
+  my_df2[,2] <- data.frame(Year = year2)
+  my_df2[,3] <- as.numeric(band_mean2[,2])
   
   band_mean3 <- raster::extract(roi_1_crop5[[3]], roi_1, method='simple',df=TRUE)
-  my_df[,3] <- as.numeric(band_mean3[,2])
+  my_df3 <- matrix(data = roi_1$Name, nrow = 4*nrow(band_mean3), ncol = 3)
+  my_df3 <- data.frame(my_df3)
+  my_df3[,2] <- data.frame(Year = year3)
+  my_df3[,3] <- as.numeric(band_mean3[,2])
   
   band_mean4 <- raster::extract(roi_1_crop5[[4]], roi_1, method='simple',df=TRUE)
-  my_df[,4] <- as.numeric(band_mean4[,2])
-
+  my_df4 <- matrix(data = roi_1$Name, nrow = 4*nrow(band_mean4), ncol = 3)
+  my_df4 <- data.frame(my_df4)
+  my_df4[,2] <- data.frame(Year = year4)
+  my_df4[,3] <- as.numeric(band_mean4[,2])
+  
+  my_df5 <- rbind(my_df,my_df2,my_df3,my_df4)
+  
   # Add ncolumn names into the dataframe
-  names(my_df) <- c('NDVI_2017', 'NDVI_2018', 'NDVI_2019', 'NDVI_2020')
+  names(my_df5) <- c('Field', 'Year', 'NDVI')
+  
+  df[[x]] <- my_df5
   
   # Save dataframe as .CSV
-  write.csv(my_df,paste0('./Plots/',roi_1$Name,'_NDVI_2017_to_2020.csv'),row.names = F)
-  
-  # Calculate the mean for each yeach
-  means <- colMeans(my_df)
+#  write.csv(my_df5,paste0('./Plots/',roi_1$Name,'_NDVI_2017_to_2020.csv'),row.names = F)
   
   # Save boxplot as .png
-  png(file = paste0('./Plots/',roi_1$Name,'_NDVI_2017_to_2020.png'), units = "px",
-      width = 1000, height = 450)
+#  png(file = paste0('./Plots/',roi_1$Name,'_NDVI_2017_to_2020.png'), units = "px",
+#      width = 1000, height = 450)
   
-  boxplot(roi_1_crop5, notch=TRUE, col=c('red', 'blue', 'orange', 'green'),
-          main = paste0('Box plot ',roi_1$Name), 
-          names = c('NDVI 2017', 'NDVI 2018', 'NDVI 2019', 'NDVI 2020'),
-          ylab = 'NDVI between 0 - 1')
+  # plot
+#  p <- ggplot(my_df5, aes(x=Year, y=NDVI)) +
+#    geom_boxplot(aes(fill=Field),alpha=0.7) +
+#    stat_summary(fun=mean, geom="point", shape=20, size=7, color="red", fill="red") +
+#    theme(legend.position="none") +
+#    scale_fill_brewer(palette="Set1")
   
-  # Add a point which represent the mean value
-  points(means,col=c('green', 'orange', 'red', 'blue'), pch=19, cex = 1.5)
-
-  # Add legent to the plot
-  legend("top", title="Mean by year", text.col = "black",
-         legend = c('Mean 2017', 'Mean 2018', 'Mean 2019', 'Mean 2020'),
-         col = c('green', 'orange', 'red', 'blue'), xpd=TRUE,
-         inset=c(-1,0), horiz = T, pch = 19, cex = 0.5)
-  
-  dev.off()
+#  dev.off()
 }
+
+big_data <- do.call(rbind, df)
+
+# Save dataframe as .CSV
+write.csv(big_data,'./Plots/NDVI_2017_to_2020.csv',row.names = F)
+
+# plot
+p <- ggplot(data = big_data, aes(x=Year, y=NDVI)) + 
+  geom_boxplot(aes(fill=Field)) + 
+  stat_summary(fun=mean, geom="line", aes(group=Field)) +
+  stat_summary(fun=mean, geom="point", shape=20, size=3, color="red", fill="red") +
+  facet_wrap(~Field,ncol = 4)
+
+# Save boxplot as .png
+png(file = paste0('./Plots/NDVI_2017_to_2020.png'), units = "px",
+    width = 1000, height = 450)
+
+plot(p)
+dev.off()
