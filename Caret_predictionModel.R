@@ -53,7 +53,11 @@ test.data <- Field_Carmen[-training.samples, ]
 
 ################################################################################
 
-# ordinal RandomForest
+# RandomForest
+# https://topepo.github.io/caret/train-models-by-tag.html#random-forest
+# https://stats.stackexchange.com/questions/348245/do-we-have-to-tune-the-number-of-trees-in-a-random-forest
+# https://stats.stackexchange.com/questions/50210/caret-and-randomforest-number-of-trees
+
 # Define training control
 set.seed(234)
 train.control <- trainControl(method = "none")
