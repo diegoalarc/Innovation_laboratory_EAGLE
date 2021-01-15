@@ -36,7 +36,7 @@ head(Field_Carmen[, 1:10])
 # Split the data into training and test set
 set.seed(123)
 training.samples <- Field_Carmen$Kg_He %>%
-  createDataPartition(p = 0.8, list = FALSE)
+  createDataPartition(p = 0.7, list = FALSE)
 
 train.data  <- Field_Carmen[training.samples, ]
 test.data <- Field_Carmen[-training.samples, ]
