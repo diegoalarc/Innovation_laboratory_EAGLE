@@ -54,7 +54,6 @@ The codes are as follows:
 For the fields 'INIAGRAPE ONE 15' and 'SABLE 16', only the years 2018 - 2019 are valid, since they did not present production in the years 2016 - 2017. This data was eliminated from the dataframe to create the machine learning model.
 
 #### Boxplot:
-Boxplot example in the Carmen Rosa Farm:
 ![Example of NDVI for each field from the years 2016 -2019](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/NDVI_2017_to_2020.png?raw=true "Example of NDVI for each field from the years 2016 -2019")
 
 ## R Code [Caret Package](https://topepo.github.io/caret/index.html)
@@ -63,7 +62,5 @@ According to what has been done, the need for more data to make a prediction wit
 
 Something important when looking at the generated model, is variable importance, which is possible thanks to Caret's "varImp" function.
 
-Plot of variable importance:
-
+#### Plot of variable importance:
 ![variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance.png?raw=true "variable importance ML model")
-
