@@ -14,7 +14,20 @@ setwd('/home/diego/GITHUP_REPO/Innovation_laboratory_EAGLE')
 # Import dataset
 # The dataset used is summary_fn.csv, which was clean but the original one
 # is summary.csv
-Field_Carmen <- read.csv('./Original_data/summary_fn.csv')
+Field_Carmen <- read.csv('./Original_data/summary.csv')
+
+# Convert categorical data to a Factor
+Field_Carmen$Field <- factor(Field_Carmen$Field)
+Field_Carmen$Variety <- factor(Field_Carmen$Variety)
+Field_Carmen$Year <- factor(Field_Carmen$Year)
+Field_Carmen$Average_Hum <- factor(Field_Carmen$Average_Hum)
+Field_Carmen$Accumulated_Evapotranspiration <- factor(Field_Carmen$Accumulated_Evapotranspiration)
+Field_Carmen$Sum_Evapotranspiration <- factor(Field_Carmen$Sum_Evapotranspiration)
+Field_Carmen$Accumulated_degree_Days <- factor(Field_Carmen$Accumulated_degree_Days)
+
+# Clean data frame of data without importance
+Field_Carmen <- Field_Carmen[,-1]
+Field_Carmen[,4] <- NULL
 
 # Structure of the dataframe
 str(Field_Carmen)
@@ -69,7 +82,7 @@ model <- train(Kg_He ~., data = Field_Carmen,
                method = "rf",
                ntree = 1000,
                trControl = train.control,
-               tuneGrid = data.frame(mtry = 12))
+               tuneGrid = data.frame(mtry = 32))
 
 # Summarize the results
 print(model)
@@ -109,7 +122,7 @@ gbmImp
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_rforest.png', units = "px",
     width = 1200, height = 700)
-#plot(gbmImp, top = 19, main = "Random Forest - Variable Importance plot")
+#plot(gbmImp, top = 28, main = "Random Forest - Variable Importance plot")
 
 nrow(varImp(model)$importance) #34 variables extracted
 
@@ -187,7 +200,7 @@ gbmImp
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_cforest.png', units = "px",
     width = 1200, height = 700)
-#plot(gbmImp, top = 19, main = "Conditional Random Forests - Variable Importance plot")
+#plot(gbmImp, top = 28, main = "Conditional Random Forests - Variable Importance plot")
 
 nrow(varImp(model)$importance) #34 variables extracted
 
