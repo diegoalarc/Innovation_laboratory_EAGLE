@@ -181,7 +181,7 @@ RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
 #confusionMatrix(my_data3[my_data3$type == "prediction",1], my_data3[my_data3$type == "real",1])
 
 # variable importance
-gbmImp <- varImp(model, scale = T)
+gbmImp <- varImp(model, scale = F)
 gbmImp
 
 # Save boxplot as .png
