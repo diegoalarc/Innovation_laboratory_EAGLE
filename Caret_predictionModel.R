@@ -75,11 +75,13 @@ train.control <- trainControl(method = "LOOCV")
 model <- train(Kg_He ~., data = Field_Carmen, 
                method = "rf",
                ntree = ntree,
+               tuneLength = 3,
                trControl = train.control,
                tuneGrid = data.frame(mtry = mtry))
 
 # Summarize the results
 print(model)
+model$results
 
 # Make predictions and compute the R2, RMSE and MAE
 predictions <- model %>% predict(test.data, na.action=na.omit)
@@ -155,6 +157,7 @@ model <- train(Kg_He ~., data = Field_Carmen,
 
 # Summarize the results
 print(model)
+model$results
 
 # Make predictions and compute the R2, RMSE and MAE
 predictions <- model %>% predict(test.data, na.action=na.omit)
