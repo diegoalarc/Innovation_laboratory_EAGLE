@@ -44,12 +44,14 @@ test.data <- Field_Carmen[-training.samples, ]
 # Algorithm Tune (tuneRF)
 # https://machinelearningmastery.com/tune-machine-learning-algorithms-in-r/
 dataset <- Field_Carmen
-x <- dataset[,2:20]
-y <- dataset[,1]
+x <- cbind(dataset[,2:5],dataset[,7:29])
+y <- dataset[,6]
 
 set.seed(123)
 bestmtry <- tuneRF(x, y, stepFactor=0.5, improve=0.05, ntree=1000)
 print(bestmtry)
+
+mtry <- max(bestmtry[,1])
 
 ################################################################################
 
@@ -73,7 +75,7 @@ model <- train(Kg_He ~., data = Field_Carmen,
                method = "rf",
                ntree = 1000,
                trControl = train.control,
-               tuneGrid = data.frame(mtry = 12))
+               tuneGrid = data.frame(mtry = mtry))
 
 # Summarize the results
 print(model)
@@ -145,10 +147,10 @@ train.control <- trainControl(method = "LOOCV")
 #train.control <- trainControl(method = "cv", number = 5)
 
 # Train the model
-model <- train(Kg_He ~., data = Field_Carmen, 
+model <- train(Kg_He ~.,-id, data = Field_Carmen, 
                method = "cforest",
                trControl = train.control,
-               tuneGrid = data.frame(mtry = 12))
+               tuneGrid = data.frame(mtry = mtry))
 
 # Summarize the results
 print(model)
