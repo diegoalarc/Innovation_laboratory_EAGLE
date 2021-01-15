@@ -74,18 +74,18 @@ Something important when looking at the generated model, is variable importance,
 
 | `R2` | `RMSE Kg` | `MAE Kg` |
 | :-------: | :------: | :-----: |
-| 0.9567763 | 2216.26 | 1852.633 |
+| 0.9523786 | 2348.207 | 1991.201 |
 
 |`RMSE without dimension`|
 | :--------------------: |
-| 0.05508671 |
+| 0.05836635 |
 
 - Conditional RandomForest model:
 
 | `R2` | `RMSE Kg` | `MAE Kg` |
 | :-------: | :------: | :-----: |
-| 0.7823796 | 6176.406 | 5311.987 |
+| .6741995 | 6543.093 | 5460.482 |
 
 |`RMSE without dimension`|
 | :--------------------: |
-| 0.153519 |
+| 0.1626332 |

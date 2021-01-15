@@ -16,18 +16,16 @@ setwd('/home/diego/GITHUP_REPO/Innovation_laboratory_EAGLE')
 # is summary.csv
 Field_Carmen <- read.csv('./Original_data/summary.csv')
 
-# Convert categorical data to a Factor
-Field_Carmen$Field <- factor(Field_Carmen$Field)
-Field_Carmen$Variety <- factor(Field_Carmen$Variety)
-Field_Carmen$Year <- factor(Field_Carmen$Year)
-Field_Carmen$Average_Hum <- factor(Field_Carmen$Average_Hum)
-Field_Carmen$Accumulated_Evapotranspiration <- factor(Field_Carmen$Accumulated_Evapotranspiration)
-Field_Carmen$Sum_Evapotranspiration <- factor(Field_Carmen$Sum_Evapotranspiration)
-Field_Carmen$Accumulated_degree_Days <- factor(Field_Carmen$Accumulated_degree_Days)
-
 # Clean data frame of data without importance
 Field_Carmen <- Field_Carmen[,-1]
 Field_Carmen[,4] <- NULL
+
+# the dummyVars will transform all characters and factors columns
+# The general rule for creating dummy variables is to have one less variable 
+# than the number of categories present to avoid perfect collinearity (dummy variable trap).
+dmy <- dummyVars(" ~ .", data = Field_Carmen, fullRank=T)
+Field_Carmen <- data.frame(predict(dmy, newdata = Field_Carmen))
+print(Field_Carmen)
 
 # Structure of the dataframe
 str(Field_Carmen)
@@ -38,7 +36,7 @@ head(Field_Carmen[, 1:10])
 # Split the data into training and test set
 set.seed(123)
 training.samples <- Field_Carmen$Kg_He %>%
-  createDataPartition(p = 0.75, list = FALSE)
+  createDataPartition(p = 0.8, list = FALSE)
 
 train.data  <- Field_Carmen[training.samples, ]
 test.data <- Field_Carmen[-training.samples, ]
@@ -82,7 +80,7 @@ model <- train(Kg_He ~., data = Field_Carmen,
                method = "rf",
                ntree = 1000,
                trControl = train.control,
-               tuneGrid = data.frame(mtry = 32))
+               tuneGrid = data.frame(mtry = 24))
 
 # Summarize the results
 print(model)
@@ -116,13 +114,19 @@ RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
 #confusionMatrix(my_data3[my_data3$type == "prediction",1], my_data3[my_data3$type == "real",1])
 
 # variable importance
-gbmImp <- varImp(model, scale = T)
+gbmImp <- varImp(model, scale = F)
 gbmImp
 
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_rforest.png', units = "px",
     width = 1200, height = 700)
-#plot(gbmImp, top = 28, main = "Random Forest - Variable Importance plot")
+plot(gbmImp, top = 28, main = "Random Forest - Variable Importance plot")
+
+dev.off()
+
+# Save boxplot as .png
+png(file = './Plots/Variable_Importance_rforest_ggplo2.png', units = "px",
+    width = 1200, height = 700)
 
 nrow(varImp(model)$importance) #34 variables extracted
 
@@ -160,7 +164,7 @@ train.control <- trainControl(method = "LOOCV")
 model <- train(Kg_He ~., data = Field_Carmen, 
                method = "cforest",
                trControl = train.control,
-               tuneGrid = data.frame(mtry = 12))
+               tuneGrid = data.frame(mtry = 24))
 
 # Summarize the results
 print(model)
@@ -194,13 +198,19 @@ RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
 #confusionMatrix(my_data3[my_data3$type == "prediction",1], my_data3[my_data3$type == "real",1])
 
 # variable importance
-gbmImp <- varImp(model, scale = T)
+gbmImp <- varImp(model, scale = F)
 gbmImp
 
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_cforest.png', units = "px",
     width = 1200, height = 700)
 #plot(gbmImp, top = 28, main = "Conditional Random Forests - Variable Importance plot")
+
+dev.off()
+
+# Save boxplot as .png
+png(file = './Plots/Variable_Importance_cforest_ggplo2.png', units = "px",
+    width = 1200, height = 700)
 
 nrow(varImp(model)$importance) #34 variables extracted
 
