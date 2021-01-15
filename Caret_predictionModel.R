@@ -92,7 +92,7 @@ gbmImp
 
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance.png', units = "px",
-    width = 600, height = 700)
+    width = 1200, height = 700)
 #plot(gbmImp, top = 19, main = "Random Forest - Variable Importance plot")
 
 nrow(varImp(model)$importance) #34 variables extracted
