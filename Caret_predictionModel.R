@@ -107,7 +107,7 @@ gbmImp <- varImp(model, scale = T)
 gbmImp
 
 # Save boxplot as .png
-png(file = './Plots/Variable_Importance.png', units = "px",
+png(file = './Plots/Variable_Importance_rforest.png', units = "px",
     width = 1200, height = 700)
 #plot(gbmImp, top = 19, main = "Random Forest - Variable Importance plot")
 
@@ -122,6 +122,89 @@ p <- varImp(model)$importance %>%
   geom_col(aes(x = rowname, y = Overall)) +
   coord_flip() +
   labs(title = "Random Forest - Variable Importance plot") +
+  geom_hline(yintercept = 50, color = "blue", size=0.5) +
+  ylab('Overall importance percentage') + xlab('Variables') + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
+  theme(axis.text.y = element_text(hjust = 1, colour = "black"))
+
+plot(p)
+
+dev.off()
+
+################################################################################
+# Conditional Random Forests
+# Define training control
+set.seed(234)
+
+# http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
+# Leave one out cross validation - LOOCV
+train.control <- trainControl(method = "LOOCV", classProbs = TRUE, 
+                              summaryFunction = twoClassSummary,
+                              seeds = seeds)
+
+# cross-validation
+#train.control <- trainControl(method = "cv", number = 5)
+
+# Train the model
+model <- train(Kg_He ~., data = Field_Carmen, 
+               method = "cforest",
+               ntree = 1000,
+               trControl = train.control,
+               metric = "ROC", 
+               preProc = c("center", "scale"),
+               controls = party::cforest_unbiased(ntree = 20))
+
+# Summarize the results
+print(model)
+
+# Make predictions and compute the R2, RMSE and MAE
+predictions <- model %>% predict(test.data, na.action=na.omit)
+
+predictions
+
+data.frame( R2 = R2(predictions, test.data$Kg_He),
+            # RMSE will be expressed in kilograms
+            RMSE = RMSE(predictions, test.data$Kg_He),
+            MAE = MAE(predictions, test.data$Kg_He))
+
+# The RMSE and the MAE are measured in the same scale as the outcome variable. 
+# Dividing the RMSE by the average value of the outcome variable will give you 
+# the prediction error rate, which should be as small as possible:
+RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
+
+# Building data for confusion matrix of the model
+#pred <- factor(unname(predictions))
+#true_value <- factor(test.data$Kg_He)
+
+#my_data1 <- data.frame(data = pred, type = "prediction")
+#my_data2 <- data.frame(data = true_value, type = "real")
+#my_data3 <- rbind(my_data1,my_data2)
+
+#identical(levels(my_data3[my_data3$type == "prediction",1]) , levels(my_data3[my_data3$type == "real",1]))
+
+# See the confusion matrix of the model in the test set
+#confusionMatrix(my_data3[my_data3$type == "prediction",1], my_data3[my_data3$type == "real",1])
+
+# variable importance
+gbmImp <- varImp(model, scale = F)
+gbmImp
+
+# Save boxplot as .png
+png(file = './Plots/Variable_Importance_cforest.png', units = "px",
+    width = 1200, height = 700)
+#plot(gbmImp, top = 19, main = "Random Forest - Variable Importance plot")
+
+nrow(varImp(model)$importance) #34 variables extracted
+
+p <- varImp(model)$importance %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>%
+  arrange(Overall) %>%
+  mutate(rowname = forcats::fct_inorder(rowname )) %>%
+  ggplot() +
+  geom_col(aes(x = rowname, y = Overall)) +
+  coord_flip() +
+  labs(title = "Conditional Random Forests - Variable Importance plot") +
   geom_hline(yintercept = 50, color = "blue", size=0.5) +
   ylab('Overall importance percentage') + xlab('Variables') + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +

@@ -63,4 +63,8 @@ According to what has been done, the need for more data to make a prediction wit
 Something important when looking at the generated model, is variable importance, which is possible thanks to Caret's "varImp" function.
 
 #### Plot of variable importance:
-![variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance.png?raw=true "variable importance ML model")
+- RandomForest model:
+![variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_rforest.png.png?raw=true "variable importance ML model")
+
+- Conditional RandomForest model:
+![variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_cforest.png.png.png?raw=true "variable importance ML model")
