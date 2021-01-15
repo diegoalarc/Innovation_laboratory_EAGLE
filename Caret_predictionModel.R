@@ -107,7 +107,7 @@ p <- varImp(model)$importance %>%
   coord_flip() +
   labs(title = "Random Forest - Variable Importance plot") +
   geom_hline(yintercept = 50, color = "blue", size=0.5) +
-  ylab('Overall') + xlab('Variables') + 
+  ylab('Percentage') + xlab('Variables') + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
   theme(axis.text.y = element_text(hjust = 1, colour = "black"))
 
