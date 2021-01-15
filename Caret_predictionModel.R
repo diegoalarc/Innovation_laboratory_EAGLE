@@ -138,9 +138,7 @@ set.seed(234)
 
 # http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
 # Leave one out cross validation - LOOCV
-train.control <- trainControl(method = "LOOCV", classProbs = TRUE, 
-                              summaryFunction = twoClassSummary,
-                              seeds = seeds)
+train.control <- trainControl(method = "LOOCV")
 
 # cross-validation
 #train.control <- trainControl(method = "cv", number = 5)
@@ -148,11 +146,8 @@ train.control <- trainControl(method = "LOOCV", classProbs = TRUE,
 # Train the model
 model <- train(Kg_He ~., data = Field_Carmen, 
                method = "cforest",
-               ntree = 1000,
                trControl = train.control,
-               metric = "ROC", 
-               preProc = c("center", "scale"),
-               controls = party::cforest_unbiased(ntree = 20))
+               tuneGrid = data.frame(mtry = 12))
 
 # Summarize the results
 print(model)
