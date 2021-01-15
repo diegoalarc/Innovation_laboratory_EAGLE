@@ -117,7 +117,7 @@ p <- varImp(model)$importance %>%
   as.data.frame() %>%
   rownames_to_column() %>%
   arrange(Overall) %>%
-  mutate(rowname = forcats::fct_inorder(rowname )) %>%
+  mutate(rowname = forcats::fct_inorder(rowname)) %>%
   ggplot() +
   geom_col(aes(x = rowname, y = Overall)) +
   coord_flip() +
@@ -186,13 +186,13 @@ RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
 #confusionMatrix(my_data3[my_data3$type == "prediction",1], my_data3[my_data3$type == "real",1])
 
 # variable importance
-gbmImp <- varImp(model, scale = F)
+gbmImp <- varImp(model, scale = T)
 gbmImp
 
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_cforest.png', units = "px",
     width = 1200, height = 700)
-#plot(gbmImp, top = 19, main = "Random Forest - Variable Importance plot")
+#plot(gbmImp, top = 19, main = "Conditional Random Forests - Variable Importance plot")
 
 nrow(varImp(model)$importance) #34 variables extracted
 
@@ -200,7 +200,7 @@ p <- varImp(model)$importance %>%
   as.data.frame() %>%
   rownames_to_column() %>%
   arrange(Overall) %>%
-  mutate(rowname = forcats::fct_inorder(rowname )) %>%
+  mutate(rowname = forcats::fct_inorder(rowname)) %>%
   ggplot() +
   geom_col(aes(x = rowname, y = Overall)) +
   coord_flip() +
