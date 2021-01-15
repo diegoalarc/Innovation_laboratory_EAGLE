@@ -138,6 +138,8 @@ p <- ggplot(data = big_data, aes(x=Year, y=NDVI, fill=Field)) +
   stat_summary(fun=mean, geom="point", shape=20, size=4, color="red", fill="red") +
   labs(title = "Time-series NDVI between November and December in the Carmen Rosa Farm for each year", 
        caption = "All data here is produced under the Copernicus Programme, free of charge, without restriction of use.") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
+  theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
   facet_wrap(~Field, ncol = 4)
 
 # Save boxplot as .png
