@@ -147,7 +147,7 @@ train.control <- trainControl(method = "LOOCV")
 #train.control <- trainControl(method = "cv", number = 5)
 
 # Train the model
-model <- train(Kg_He ~.,-id, data = Field_Carmen, 
+model <- train(Kg_He ~., data = Field_Carmen, 
                method = "cforest",
                trControl = train.control,
                tuneGrid = data.frame(mtry = mtry))
