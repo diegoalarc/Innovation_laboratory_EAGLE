@@ -52,13 +52,6 @@ bestmtry <- tuneRF(x, y, stepFactor=0.5, improve=0.05, ntree=1000)
 print(bestmtry)
 
 ################################################################################
-# It is because, one of your dependent variables has NA for Coefficients given as
-# output by the lm(..) function. Such a variable is making no difference to the 
-# model, often due to multicollinearity problem ie, that predictor variable is 
-# linearly dependent on other predictor variables OR because, that predictor 
-# variable is constant for all the records(rows). The best thing to do is to drop
-# that variable from the formula in lm(..) function and do the regression again.
-################################################################################
 
 # RandomForest
 # https://topepo.github.io/caret/train-models-by-tag.html#random-forest
@@ -66,7 +59,7 @@ print(bestmtry)
 # https://stats.stackexchange.com/questions/50210/caret-and-randomforest-number-of-trees
 
 # Define training control
-set.seed(234)
+set.seed(123)
 
 # http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
 # Leave one out cross validation - LOOCV
@@ -80,7 +73,7 @@ model <- train(Kg_He ~., data = Field_Carmen,
                method = "rf",
                ntree = 1000,
                trControl = train.control,
-               tuneGrid = data.frame(mtry = 24))
+               tuneGrid = data.frame(mtry = 12))
 
 # Summarize the results
 print(model)
@@ -100,18 +93,8 @@ data.frame( R2 = R2(predictions, test.data$Kg_He),
 # the prediction error rate, which should be as small as possible:
 RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
 
-# Building data for confusion matrix of the model
-#pred <- factor(unname(predictions))
-#true_value <- factor(test.data$Kg_He)
-
-#my_data1 <- data.frame(data = pred, type = "prediction")
-#my_data2 <- data.frame(data = true_value, type = "real")
-#my_data3 <- rbind(my_data1,my_data2)
-
-#identical(levels(my_data3[my_data3$type == "prediction",1]) , levels(my_data3[my_data3$type == "real",1]))
-
 # See the confusion matrix of the model in the test set
-#confusionMatrix(my_data3[my_data3$type == "prediction",1], my_data3[my_data3$type == "real",1])
+#confusionMatrix(predictions, test.data$Kg_He)
 
 # variable importance
 gbmImp <- varImp(model, scale = F)
@@ -120,6 +103,7 @@ gbmImp
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_rforest.png', units = "px",
     width = 1200, height = 700)
+
 plot(gbmImp, top = 28, main = "Random Forest - Variable Importance plot")
 
 dev.off()
@@ -151,7 +135,7 @@ dev.off()
 ################################################################################
 # Conditional Random Forests
 # Define training control
-set.seed(234)
+set.seed(123)
 
 # http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
 # Leave one out cross validation - LOOCV
@@ -164,7 +148,7 @@ train.control <- trainControl(method = "LOOCV")
 model <- train(Kg_He ~., data = Field_Carmen, 
                method = "cforest",
                trControl = train.control,
-               tuneGrid = data.frame(mtry = 24))
+               tuneGrid = data.frame(mtry = 12))
 
 # Summarize the results
 print(model)
@@ -184,18 +168,8 @@ data.frame( R2 = R2(predictions, test.data$Kg_He),
 # the prediction error rate, which should be as small as possible:
 RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
 
-# Building data for confusion matrix of the model
-#pred <- factor(unname(predictions))
-#true_value <- factor(test.data$Kg_He)
-
-#my_data1 <- data.frame(data = pred, type = "prediction")
-#my_data2 <- data.frame(data = true_value, type = "real")
-#my_data3 <- rbind(my_data1,my_data2)
-
-#identical(levels(my_data3[my_data3$type == "prediction",1]) , levels(my_data3[my_data3$type == "real",1]))
-
 # See the confusion matrix of the model in the test set
-#confusionMatrix(my_data3[my_data3$type == "prediction",1], my_data3[my_data3$type == "real",1])
+#confusionMatrix(predictions, test.data$Kg_He)
 
 # variable importance
 gbmImp <- varImp(model, scale = F)
@@ -204,7 +178,8 @@ gbmImp
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_cforest.png', units = "px",
     width = 1200, height = 700)
-#plot(gbmImp, top = 28, main = "Conditional Random Forests - Variable Importance plot")
+
+plot(gbmImp, top = 28, main = "Conditional Random Forests - Variable Importance plot")
 
 dev.off()
 
