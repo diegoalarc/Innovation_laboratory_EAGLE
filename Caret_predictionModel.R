@@ -46,9 +46,10 @@ test.data <- Field_Carmen[-training.samples, ]
 dataset <- Field_Carmen
 x <- cbind(dataset[,2:5],dataset[,7:29])
 y <- dataset[,6]
+ntree <- 2000
 
 set.seed(123)
-bestmtry <- tuneRF(x, y, stepFactor=0.5, improve=0.05, ntree=1000)
+bestmtry <- tuneRF(x, y, stepFactor=0.5, improve=1e-5, ntree=ntree)
 print(bestmtry)
 
 mtry <- max(bestmtry[,1])
@@ -73,7 +74,7 @@ train.control <- trainControl(method = "LOOCV")
 # Train the model
 model <- train(Kg_He ~., data = Field_Carmen, 
                method = "rf",
-               ntree = 1000,
+               ntree = ntree,
                trControl = train.control,
                tuneGrid = data.frame(mtry = mtry))
 
