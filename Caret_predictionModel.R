@@ -76,15 +76,29 @@ summary(model)
 print(model)
 
 # Make predictions and compute the R2, RMSE and MAE
-predictions <- model %>% predict(test.data, na.action=na.exclude)
+predictions <- model %>% predict(test.data, na.action=na.omit)
 
 predictions
 
 data.frame( R2 = R2(predictions, test.data$Kg_He),
+            # RMSE will be expressed in kilograms
             RMSE = RMSE(predictions, test.data$Kg_He),
             MAE = MAE(predictions, test.data$Kg_He))
 
 RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
+
+# Building data for confusion matrix of the model
+#pred <- factor(unname(predictions))
+#true_value <- factor(test.data$Kg_He)
+
+#my_data1 <- data.frame(data = pred, type = "prediction")
+#my_data2 <- data.frame(data = true_value, type = "real")
+#my_data3 <- rbind(my_data1,my_data2)
+
+#identical(levels(my_data3[my_data3$type == "prediction",1]) , levels(my_data3[my_data3$type == "real",1]))
+
+# See the confusion matrix of the model in the test set
+#confusionMatrix(my_data3[my_data3$type == "prediction",1], my_data3[my_data3$type == "real",1])
 
 # variable importance
 gbmImp <- varImp(model, scale = T)
