@@ -1,6 +1,7 @@
 # Load packages
 # https://www.machinelearningplus.com/machine-learning/caret-package/
 # https://www.youtube.com/watch?v=fSytzGwwBVw
+library(randomForest)
 library(tidyverse)
 library(mlbench)
 library(ggplot2)
@@ -29,30 +30,23 @@ training.samples <- Field_Carmen$Kg_He %>%
 train.data  <- Field_Carmen[training.samples, ]
 test.data <- Field_Carmen[-training.samples, ]
 
+# Algorithm Tune (tuneRF)
+# https://machinelearningmastery.com/tune-machine-learning-algorithms-in-r/
+dataset <- Field_Carmen
+x <- dataset[,2:20]
+y <- dataset[,1]
+
+set.seed(123)
+bestmtry <- tuneRF(x, y, stepFactor=0.5, improve=0.05, ntree=1000)
+print(bestmtry)
+
 ################################################################################
-
-# Build the model
-#model <- lm(Kg_He ~., data = train.data)
-
-# Observe the model
-#model
-
 # It is because, one of your dependent variables has NA for Coefficients given as
 # output by the lm(..) function. Such a variable is making no difference to the 
 # model, often due to multicollinearity problem ie, that predictor variable is 
 # linearly dependent on other predictor variables OR because, that predictor 
 # variable is constant for all the records(rows). The best thing to do is to drop
 # that variable from the formula in lm(..) function and do the regression again.
-
-# Make predictions and compute the R2, RMSE and MAE
-#predictions <- model %>% predict(test.data, na.action=na.exclude)
-
-#data.frame( R2 = R2(predictions, test.data$Kg_He),
-#            RMSE = RMSE(predictions, test.data$Kg_He),
-#            MAE = MAE(predictions, test.data$Kg_He))
-
-#RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
-
 ################################################################################
 
 # RandomForest
@@ -75,10 +69,9 @@ model <- train(Kg_He ~., data = Field_Carmen,
                method = "rf",
                ntree = 1000,
                trControl = train.control,
-               tuneGrid = data.frame(mtry = 6))
+               tuneGrid = data.frame(mtry = 12))
 
 # Summarize the results
-summary(model)
 print(model)
 
 # Make predictions and compute the R2, RMSE and MAE
