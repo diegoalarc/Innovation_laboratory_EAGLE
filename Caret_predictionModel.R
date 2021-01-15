@@ -62,7 +62,13 @@ test.data <- Field_Carmen[-training.samples, ]
 
 # Define training control
 set.seed(234)
-train.control <- trainControl(method = "none")
+
+# http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
+# Leave one out cross validation - LOOCV
+train.control <- trainControl(method = "LOOCV")
+
+# cross-validation
+#train.control <- trainControl(method = "cv", number = 5)
 
 # Train the model
 model <- train(Kg_He ~., data = Field_Carmen, 
