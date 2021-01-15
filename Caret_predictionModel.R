@@ -17,13 +17,13 @@ setwd('/home/diego/GITHUP_REPO/Innovation_laboratory_EAGLE')
 Field_Carmen <- read.csv('./Original_data/summary.csv')
 
 # Clean data frame of data without importance
-Field_Carmen <- Field_Carmen[,-1]
-Field_Carmen[,4] <- NULL
+Field_Carmen[,5] <- NULL
 
-# the dummyVars will transform all characters and factors columns
+# The dummyVars will transform all characters and factors columns
 # The general rule for creating dummy variables is to have one less variable 
 # than the number of categories present to avoid perfect collinearity (dummy variable trap).
-dmy <- dummyVars(" ~ .", data = Field_Carmen, fullRank=T)
+# The id column is remove by applying -id inside of dummyVars.
+dmy <- dummyVars(" ~ .",-id, data = Field_Carmen, fullRank=T)
 Field_Carmen <- data.frame(predict(dmy, newdata = Field_Carmen))
 print(Field_Carmen)
 
