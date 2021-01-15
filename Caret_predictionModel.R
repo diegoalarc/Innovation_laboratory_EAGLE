@@ -85,6 +85,9 @@ data.frame( R2 = R2(predictions, test.data$Kg_He),
             RMSE = RMSE(predictions, test.data$Kg_He),
             MAE = MAE(predictions, test.data$Kg_He))
 
+# The RMSE and the MAE are measured in the same scale as the outcome variable. 
+# Dividing the RMSE by the average value of the outcome variable will give you 
+# the prediction error rate, which should be as small as possible:
 RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
 
 # Building data for confusion matrix of the model
