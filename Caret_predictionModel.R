@@ -3,6 +3,7 @@
 # https://www.youtube.com/watch?v=fSytzGwwBVw
 library(tidyverse)
 library(mlbench)
+library(ggplot2)
 library(caret)
 
 # Set the folder location
@@ -92,5 +93,21 @@ gbmImp
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance.png', units = "px",
     width = 600, height = 700)
-plot(gbmImp, top = 19, main = "Random Forest - Variable Importance plot")
+#plot(gbmImp, top = 19, main = "Random Forest - Variable Importance plot")
+
+nrow(varImp(model)$importance) #34 variables extracted
+
+p <- varImp(model)$importance %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>%
+  arrange(Overall) %>%
+  mutate(rowname = forcats::fct_inorder(rowname )) %>%
+  ggplot() +
+  geom_col(aes(x = rowname, y = Overall)) +
+  coord_flip() +
+  labs(title = "Random Forest - Variable Importance plot") +
+  geom_hline(yintercept = 50, color = "blue", size=0.5)
+
+plot(p)
+
 dev.off()

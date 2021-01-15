@@ -141,7 +141,7 @@ p <- ggplot(data = big_data, aes(x=Year, y=NDVI, fill=Field)) +
   facet_wrap(~Field, ncol = 4)
 
 # Save boxplot as .png
-png(file = paste0('./Plots/NDVI_2017_to_2020.png'), units = "px",
+png(file = './Plots/NDVI_2017_to_2020.png', units = "px",
     width = 1200, height = 700)
 
 # Plot the graph
