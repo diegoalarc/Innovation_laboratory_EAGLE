@@ -72,7 +72,7 @@ Something important when looking at the generated model, is variable importance,
 ## Values of R2, RMSE & MAE
 - RandomForest model:
 
-| `R2` | `RMSE` | `MAE` |
+| `R2` | `RMSE Kg` | `MAE Kg` |
 | :-------: | :------: | :-----: |
 | 0.9660773 | 2091.789 | 1916.605|
 
@@ -82,7 +82,7 @@ Something important when looking at the generated model, is variable importance,
 
 - Conditional RandomForest model:
 
-| `R2` | `RMSE` | `MAE` |
+| `R2` | `RMSE Kg` | `MAE Kg` |
 | :-------: | :------: | :-----: |
 | 0.8481954 | 5170.397 | 4540.747|
 
