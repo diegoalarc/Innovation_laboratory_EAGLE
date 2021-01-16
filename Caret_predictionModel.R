@@ -46,6 +46,7 @@ test.data <- Field_Carmen[-training.samples, ]
 dataset <- Field_Carmen
 x <- cbind(dataset[,2:5],dataset[,7:29])
 y <- dataset[,6]
+
 ntree <- 2000
 
 set.seed(123)

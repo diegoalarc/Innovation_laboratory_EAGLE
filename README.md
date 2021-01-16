@@ -84,8 +84,8 @@ Something important when looking at the generated model, is variable importance,
 
 | `R2` | `RMSE Kg` | `MAE Kg` |
 | :-------: | :------: | :-----: |
-| 0.793292 | 6142.3 | 4798.077 |
+| 0.8056264 | 6080.489 | 4714.623 |
 
 |`RMSE without dimension`|
 | :--------------------: |
-| 0.1511472 |
+| 0.1496262 |
