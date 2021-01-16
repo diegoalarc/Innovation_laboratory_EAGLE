@@ -43,6 +43,7 @@ test.data <- Field_Carmen[-training.samples, ]
 
 # Algorithm Tune (tuneRF)
 # https://machinelearningmastery.com/tune-machine-learning-algorithms-in-r/
+# https://machinelearningmastery.com/machine-learning-evaluation-metrics-in-r/
 dataset <- Field_Carmen
 x <- cbind(dataset[,2:5],dataset[,7:29])
 y <- dataset[,6]
