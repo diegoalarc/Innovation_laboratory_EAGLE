@@ -16,19 +16,19 @@ setwd('/home/diego/GITHUP_REPO/Innovation_laboratory_EAGLE')
 # is summary.csv
 Field_Carmen <- read.csv('./Original_data/summary.csv')
 
-# Clean data frame of data without importance
+# Clean column 'Week' in the data frame
 Field_Carmen[,5] <- NULL
 
 # The dummyVars will transform all characters and factors columns
 # The general rule for creating dummy variables is to have one less variable 
 # than the number of categories present to avoid perfect collinearity (dummy variable trap).
 # The id column is remove by applying -id inside of dummyVars.
-dmy <- dummyVars(" ~ .",-id, data = Field_Carmen, fullRank=T)
+dmy <- dummyVars(" ~ .",data = Field_Carmen, fullRank=T)
 Field_Carmen <- data.frame(predict(dmy, newdata = Field_Carmen))
-print(Field_Carmen)
+#print(Field_Carmen)
 
 # Structure of the dataframe
-str(Field_Carmen)
+#str(Field_Carmen)
 
 # See top 6 rows and 10 columns
 head(Field_Carmen[, 1:10])
@@ -45,17 +45,17 @@ test.data <- Field_Carmen[-training.samples, ]
 # https://machinelearningmastery.com/tune-machine-learning-algorithms-in-r/
 # https://machinelearningmastery.com/machine-learning-evaluation-metrics-in-r/
 dataset <- Field_Carmen
-x <- cbind(dataset[,2:5],dataset[,7:29])
-y <- dataset[,6]
+x <- cbind(dataset[,2:19],dataset[,21:43])
+y <- dataset$Kg_He
 
-ntree <- 2000
+ntree <- 1500
 
 set.seed(123)
 bestmtry <- tuneRF(x, y, stepFactor=0.5, improve=1e-5, ntree=ntree)
 print(bestmtry)
 
 mtry <- max(bestmtry[,1])
-mtry
+#mtry
 
 ################################################################################
 
@@ -69,8 +69,9 @@ set.seed(123)
 
 # http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
 # Leave one out cross validation - LOOCV
-train.control <- trainControl(method = "LOOCV", savePredictions = T)
-train.control
+#train.control <- trainControl(method = "LOOCV", savePredictions = T)
+
+#train.control
 
 # Random Search
 #train.control <- trainControl(method = "LOOCV", savePredictions = T,
@@ -80,11 +81,11 @@ train.control
 #tunegrid <- expand.grid(.mtry=mtry)
 
 # Grid Search
-#train.control <- trainControl(method = "LOOCV", savePredictions = T,
-#                              search="grid")
+train.control <- trainControl(method = "LOOCV", savePredictions = T,
+                              search="grid")
 #train.control
 
-#tunegrid <- expand.grid(.mtry=c(1:15))
+tunegrid <- expand.grid(.mtry=c(1:30))
 
 metric <- "RMSE"
 
@@ -100,7 +101,7 @@ model <- train(Kg_He ~., data = Field_Carmen,
 
 # Summarize the results
 print(model)
-plot(model)
+#plot(model)
 
 # Make predictions and compute the R2, RMSE and MAE
 predictions <- model %>% predict(test.data, na.action=na.omit)
@@ -165,11 +166,13 @@ set.seed(123)
 # Leave one out cross validation - LOOCV
 # Leave one out cross validation - LOOCV
 #train.control <- trainControl(method = "LOOCV", savePredictions = T)
+
 #train.control
 
 # Random Search
 #train.control <- trainControl(method = "LOOCV", savePredictions = T,
 #                              search="random")
+
 #train.control
 
 #tunegrid <- expand.grid(.mtry=mtry)
@@ -177,9 +180,10 @@ set.seed(123)
 # Grid Search
 train.control <- trainControl(method = "LOOCV", savePredictions = T,
                               search="grid")
+
 train.control
 
-tunegrid <- expand.grid(.mtry=c(1:18))
+tunegrid <- expand.grid(.mtry=c(1:30))
 
 # Train the model
 model <- train(Kg_He ~., data = Field_Carmen, 
