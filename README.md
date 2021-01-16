@@ -64,10 +64,10 @@ Something important when looking at the generated model, is variable importance,
 
 #### Plot of variable importance:
 - RandomForest model:
-![variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_rforest.png?raw=true "variable importance ML model")
+![variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_rforest_ggplo2.png?raw=true "variable importance ML model")
 
 - Conditional RandomForest model:
-![variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_cforest.png?raw=true "variable importance ML model")
+![variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_cforest_ggplo2.png?raw=true "variable importance ML model")
 
 ## Values of R2, RMSE & MAE
 - RandomForest model:
