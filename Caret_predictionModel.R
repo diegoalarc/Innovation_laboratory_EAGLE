@@ -93,7 +93,7 @@ model <- train(Kg_He ~., data = Field_Carmen,
                method = "rf",
                ntree = ntree,
                metric=metric,
-#               tuneLength = 15,
+#               tuneLength = 15, # Error in plot.train(model) : There are no tuning parameters with more than 1 value.
 #               tuneGrid = tunegrid,
                tuneGrid = data.frame(mtry = mtry),
                trControl = train.control)
@@ -185,7 +185,7 @@ tunegrid <- expand.grid(.mtry=c(1:18))
 model <- train(Kg_He ~., data = Field_Carmen, 
                method = "cforest",
                metric=metric,
-#               tuneLength = 18,
+               tuneLength = 18,
                tuneGrid = tunegrid,
 #               tuneGrid = data.frame(mtry = mtry),
                trControl = train.control)
