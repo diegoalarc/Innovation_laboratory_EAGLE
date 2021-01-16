@@ -69,7 +69,7 @@ set.seed(123)
 
 # http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
 # Leave one out cross validation - LOOCV
-#train.control <- trainControl(method = "LOOCV", savePredictions = T)
+train.control <- trainControl(method = "LOOCV", savePredictions = T)
 
 #train.control
 
@@ -81,11 +81,11 @@ set.seed(123)
 #tunegrid <- expand.grid(.mtry=mtry)
 
 # Grid Search
-train.control <- trainControl(method = "LOOCV", savePredictions = T,
-                              search="grid")
+#train.control <- trainControl(method = "LOOCV", savePredictions = T,
+#                              search="grid")
 #train.control
 
-tunegrid <- expand.grid(.mtry=c(1:30))
+#tunegrid <- expand.grid(.mtry=c(1:30))
 
 metric <- "RMSE"
 
@@ -181,7 +181,7 @@ set.seed(123)
 train.control <- trainControl(method = "LOOCV", savePredictions = T,
                               search="grid")
 
-train.control
+#train.control
 
 tunegrid <- expand.grid(.mtry=c(1:30))
 
