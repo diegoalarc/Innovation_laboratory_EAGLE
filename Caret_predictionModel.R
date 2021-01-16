@@ -66,22 +66,38 @@ set.seed(123)
 
 # http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
 # Leave one out cross validation - LOOCV
-train.control <- trainControl(method = "LOOCV")
+train.control <- trainControl(method = "LOOCV", savePredictions = T)
+train.control
 
-# cross-validation
-#train.control <- trainControl(method = "cv", number = 5)
+# Random Search
+#train.control <- trainControl(method = "LOOCV", savePredictions = T,
+#                              search="random")
+#train.control
+
+#tunegrid <- expand.grid(.mtry=mtry)
+
+# Grid Search
+#train.control <- trainControl(method = "LOOCV", savePredictions = T,
+#                              search="grid")
+#train.control
+
+#tunegrid <- expand.grid(.mtry=c(1:15))
+
+metric <- "RMSE"
 
 # Train the model
 model <- train(Kg_He ~., data = Field_Carmen, 
                method = "rf",
                ntree = ntree,
-               tuneLength = 3,
-               trControl = train.control,
-               tuneGrid = data.frame(mtry = mtry))
+               metric=metric,
+#               tuneLength = 15,
+#               tuneGrid = tunegrid,
+               tuneGrid = data.frame(mtry = mtry),
+               trControl = train.control)
 
 # Summarize the results
 print(model)
-model$results
+plot(model)
 
 # Make predictions and compute the R2, RMSE and MAE
 predictions <- model %>% predict(test.data, na.action=na.omit)
@@ -144,20 +160,36 @@ set.seed(123)
 
 # http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
 # Leave one out cross validation - LOOCV
-train.control <- trainControl(method = "LOOCV")
+# Leave one out cross validation - LOOCV
+#train.control <- trainControl(method = "LOOCV", savePredictions = T)
+#train.control
 
-# cross-validation
-#train.control <- trainControl(method = "cv", number = 5)
+# Random Search
+#train.control <- trainControl(method = "LOOCV", savePredictions = T,
+#                              search="random")
+#train.control
+
+#tunegrid <- expand.grid(.mtry=mtry)
+
+# Grid Search
+train.control <- trainControl(method = "LOOCV", savePredictions = T,
+                              search="grid")
+train.control
+
+tunegrid <- expand.grid(.mtry=c(1:18))
 
 # Train the model
 model <- train(Kg_He ~., data = Field_Carmen, 
                method = "cforest",
-               trControl = train.control,
-               tuneGrid = data.frame(mtry = mtry))
+               metric=metric,
+#               tuneLength = 18,
+               tuneGrid = tunegrid,
+#               tuneGrid = data.frame(mtry = mtry),
+               trControl = train.control)
 
 # Summarize the results
 print(model)
-model$results
+plot(model)
 
 # Make predictions and compute the R2, RMSE and MAE
 predictions <- model %>% predict(test.data, na.action=na.omit)
