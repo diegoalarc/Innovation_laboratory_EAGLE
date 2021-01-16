@@ -55,6 +55,7 @@ bestmtry <- tuneRF(x, y, stepFactor=0.5, improve=1e-5, ntree=ntree)
 print(bestmtry)
 
 mtry <- max(bestmtry[,1])
+mtry
 
 ################################################################################
 
