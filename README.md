@@ -191,4 +191,4 @@ To make this comparison, two functions of the Caret package were used:
 
 - Rsquared's Bloxplot:
 
-![Rsquared's Bloxplot](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RF_vs_cRF_Boxplot_Rsquared_ggplot.png?raw=true "Rsquared's Bloxplot")
+![Rsquared's Bloxplot](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RF_vs_cRF_Boxplot_Rsquared.png?raw=true "Rsquared's Bloxplot")
