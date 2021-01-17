@@ -286,7 +286,7 @@ df = data.frame(Rsquared=c(model_rf$resample$Rsquared, model_crf$resample$Rsquar
 p <- ggplot(data = df, aes(x=model, y=Rsquared, fill=model)) + 
   geom_boxplot(aes(fill=model)) + 
   stat_summary(fun=mean, geom="point", shape=20, size=4, color="red", fill="red") +
-  labs(title = "RF vs cRF Boxplot_Rsquared") +
+  labs(title = "RF vs cRF Boxplot Rsquared") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
   theme(axis.text.y = element_text(hjust = 1, colour = "black"))
 
