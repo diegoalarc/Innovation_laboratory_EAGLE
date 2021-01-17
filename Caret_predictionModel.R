@@ -152,7 +152,7 @@ p <- varImp(model_rf)$importance %>%
   arrange(Overall) %>%
   mutate(rowname = forcats::fct_inorder(rowname)) %>%
   ggplot() +
-  geom_boxplot(aes(x = rowname, y = Overall)) +
+  geom_col(aes(x = rowname, y = Overall)) +
   coord_flip() +
   labs(title = "Random Forest - Variable Importance plot") +
   geom_hline(yintercept = 50, color = "blue", size=0.5) +
