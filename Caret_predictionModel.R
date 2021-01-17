@@ -85,12 +85,12 @@ set.seed(123)
 #tunegrid <- expand.grid(.mtry=mtry)
 
 # Grid Search
-train.control <- trainControl(method="cv", number=10,
+train.control <- trainControl(method="repeatedcv", number=4, repeats = 100,
                               savePredictions = T, search="grid")
 
 #train.control
 
-tunegrid <- expand.grid(.mtry=c(1:100))
+tunegrid <- expand.grid(.mtry=c(1:20))
 ntree <- 1200
 metric <- "RMSE"
 
@@ -118,10 +118,7 @@ predictions_rf <- model_rf %>% predict(test.data, na.action=na.omit)
 
 predictions_rf
 
-data.frame( R2 = R2(predictions_rf, test.data$Kg_He),
-            # RMSE will be expressed in kilograms
-            RMSE = RMSE(predictions_rf, test.data$Kg_He),
-            MAE = MAE(predictions_rf, test.data$Kg_He))
+postResample(pred = predictions_rf, obs = test.data$Kg_He)
 
 # The RMSE and the MAE are measured in the same scale as the outcome variable. 
 # Dividing the RMSE by the average value of the outcome variable will give you 
@@ -147,7 +144,7 @@ dev.off()
 png(file = './Plots/Variable_Importance_rforest_ggplo2.png', units = "px",
     width = 1200, height = 700)
 
-nrow(varImp(model_rf)$importance) #34 variables extracted
+nrow(varImp(model_rf)$importance) #42 variables extracted
 
 p <- varImp(model_rf)$importance %>% 
   as.data.frame() %>%
@@ -155,7 +152,7 @@ p <- varImp(model_rf)$importance %>%
   arrange(Overall) %>%
   mutate(rowname = forcats::fct_inorder(rowname)) %>%
   ggplot() +
-  geom_col(aes(x = rowname, y = Overall)) +
+  geom_boxplot(aes(x = rowname, y = Overall)) +
   coord_flip() +
   labs(title = "Random Forest - Variable Importance plot") +
   geom_hline(yintercept = 50, color = "blue", size=0.5) +
@@ -188,12 +185,12 @@ set.seed(123)
 #tunegrid <- expand.grid(.mtry=mtry)
 
 # Grid Search
-train.control <- trainControl(method="cv", number=10,
+train.control <- trainControl(method="repeatedcv", number=4, repeats = 100,
                               savePredictions = T, search="grid")
 
 #train.control
 
-tunegrid <- expand.grid(.mtry=c(1:100))
+tunegrid <- expand.grid(.mtry=c(1:20))
 
 # Train the model
 model_crf <- train(Kg_He ~., data = Field_Carmen, 
@@ -218,15 +215,13 @@ predictions_crf <- model_crf %>% predict(test.data, na.action=na.omit)
 
 predictions_crf
 
-data.frame( R2 = R2(predictions_crf, test.data$Kg_He),
-            # RMSE will be expressed in kilograms
-            RMSE = RMSE(predictions_crf, test.data$Kg_He),
-            MAE = MAE(predictions_crf, test.data$Kg_He))
+postResample(pred = predictions_crf, obs = test.data$Kg_He)
 
 # The RMSE and the MAE are measured in the same scale as the outcome variable. 
 # Dividing the RMSE by the average value of the outcome variable will give you 
 # the prediction error rate, which should be as small as possible:
 RMSE(predictions_crf, test.data$Kg_He)/mean(test.data$Kg_He)
+
 
 # See the confusion matrix of the model in the test set
 #confusionMatrix(predictions_crf, test.data$Kg_He)
@@ -247,7 +242,7 @@ dev.off()
 png(file = './Plots/Variable_Importance_cforest_ggplo2.png', units = "px",
     width = 1200, height = 700)
 
-nrow(varImp(model_crf)$importance) #34 variables extracted
+nrow(varImp(model_crf)$importance) #42 variables extracted
 
 p <- varImp(model_crf)$importance %>% 
   as.data.frame() %>%
@@ -268,31 +263,18 @@ plot(p)
 dev.off()
 
 # Resampling train values for each model
-resamps <- resamples(list(model_rf, model_crf), c("Random Forest", "Conditional Random Forest"))
+resamps <- resamples(list(model_rf, model_crf), 
+                     c("Random Forest", "Conditional Random Forest"))
 
 # Save boxplot as .png
 png(file = './Plots/RF_vs_cRF_Boxplot_Rsquared.png', units = "px",
-    width = 1200, height = 700)
-
-# Boxplot of Rsquared for each model
-bwplot(resamps, col=c('powderblue', 'mistyrose'), metric = "Rsquared")
-
-dev.off()
-
-df = data.frame(Rsquared=c(model_rf$resample$Rsquared, model_crf$resample$Rsquared),
-                model=rep(c("RF","cRF"),each=length(model_rf$resample$Rsquared)))
-
-# plot
-p <- ggplot(data = df, aes(x=model, y=Rsquared, fill=model)) + 
-  geom_boxplot(aes(fill=model)) + 
-  stat_summary(fun=mean, geom="point", shape=20, size=4, color="red", fill="red") +
-  labs(title = "RF vs cRF Boxplot Rsquared") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
-  theme(axis.text.y = element_text(hjust = 1, colour = "black"))
-
-# Save boxplot as .png
-png(file = './Plots/RF_vs_cRF_Boxplot_Rsquared_ggplot.png', units = "px",
     width = 600, height = 400)
 
-plot(p)
+# Boxplot of Rsquared for each model
+bwplot(resamps, metric = "Rsquared",
+       main = "RF vs cRF Boxplot Rsquared",
+       par.settings = list(box.rectangle = list(fill= rep(c('blue','green'),2)),
+                           box.rectangle = list(col= c('blue','green'))),
+       horizontal = T)
+
 dev.off()
