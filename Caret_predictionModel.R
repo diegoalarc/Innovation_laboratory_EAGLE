@@ -107,7 +107,7 @@ model_rf <- train(Kg_He ~., data = Field_Carmen,
 print(model_rf)
 
 png(file = './Plots/RMSE_vs_Ramdom_Predictors_rforest.png', units = "px",
-    width = 1200, height = 700)
+    width = 600, height = 400)
 
 plot(model_rf)
 
@@ -207,7 +207,7 @@ model_crf <- train(Kg_He ~., data = Field_Carmen,
 print(model_crf)
 
 png(file = './Plots/RMSE_vs_Ramdom_Predictors_cforest.png', units = "px",
-    width = 1200, height = 700)
+    width = 600, height = 400)
 
 plot(model_crf)
 
@@ -279,8 +279,20 @@ bwplot(resamps, col=c('powderblue', 'mistyrose'), metric = "Rsquared")
 
 dev.off()
 
-df = data.frame(MAE=c(model_rf$resample$Rsquared, model_crf$resample$Rsquared),
-                model=rep(c("nnet","svm"),each=length(svm2$resample$Rsquared)))
+df = data.frame(Rsquared=c(model_rf$resample$Rsquared, model_crf$resample$Rsquared),
+                model=rep(c("RF","cRF"),each=length(model_crf$resample$Rsquared)))
 
-ggboxplot(df, x = "model",y= "Rsquared",col="model",palette = c("#00AFBB", "#E7B800")) + 
-  stat_compare_means()
+# plot
+p <- ggplot(data = df, aes(x=model, y=Rsquared, fill=model)) + 
+  geom_boxplot(aes(fill=model)) + 
+  stat_summary(fun=mean, geom="point", shape=20, size=4, color="red", fill="red") +
+  labs(title = "RF vs cRF Boxplot_Rsquared") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
+  theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
+
+# Save boxplot as .png
+png(file = './Plots/RF_vs_cRF_Boxplot_Rsquared_ggplot.png', units = "px",
+    width = 600, height = 400)
+
+plot(p)
+dev.off()
