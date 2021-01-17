@@ -104,6 +104,10 @@ model_rf <- train(Kg_He ~., data = Field_Carmen,
 
 # Summarize the results
 print(model_rf)
+
+png(file = './Plots/RMSE_vs_Ramdom_Predictors_rforest.png', units = "px",
+    width = 1200, height = 700)
+
 plot(model_rf)
 
 # Make predictions and compute the R2, RMSE and MAE
@@ -199,6 +203,10 @@ model_crf <- train(Kg_He ~., data = Field_Carmen,
 
 # Summarize the results
 print(model_crf)
+
+png(file = './Plots/RMSE_vs_Ramdom_Predictors_cforest.png', units = "px",
+    width = 1200, height = 700)
+
 plot(model_crf)
 
 # Make predictions and compute the R2, RMSE and MAE
