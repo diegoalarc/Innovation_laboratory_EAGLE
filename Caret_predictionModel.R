@@ -48,13 +48,15 @@ dataset <- Field_Carmen
 x <- cbind(dataset[,2:19],dataset[,21:43])
 y <- dataset$Kg_He
 
-ntree <- 1500
+#ntree <- 1500
 
-set.seed(123)
-bestmtry <- tuneRF(x, y, stepFactor=0.5, improve=1e-5, ntree=ntree)
-print(bestmtry)
+#set.seed(123)
+#bestmtry <- tuneRF(x, y, stepFactor=0.5, improve=1e-5, ntree=ntree)
+#print(bestmtry)
 
-mtry <- max(bestmtry[,1])
+#bestmtry[-1]
+
+#mtry <- min(bestmtry[,1])
 #mtry
 
 ################################################################################
@@ -68,8 +70,9 @@ mtry <- max(bestmtry[,1])
 set.seed(123)
 
 # http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
+# https://machinelearningmastery.com/how-to-estimate-model-accuracy-in-r-using-the-caret-package/
 # Leave one out cross validation - LOOCV
-train.control <- trainControl(method = "LOOCV", savePredictions = T)
+#train.control <- trainControl(method = "LOOCV", savePredictions = T)
 
 #train.control
 
@@ -81,55 +84,55 @@ train.control <- trainControl(method = "LOOCV", savePredictions = T)
 #tunegrid <- expand.grid(.mtry=mtry)
 
 # Grid Search
-#train.control <- trainControl(method = "LOOCV", savePredictions = T,
-#                              search="grid")
+train.control <- trainControl(method="cv", number=10,
+                              savePredictions = T, search="grid")
+
 #train.control
 
-#tunegrid <- expand.grid(.mtry=c(1:30))
-
+tunegrid <- expand.grid(.mtry=c(1:10))
+ntree <- 1200
 metric <- "RMSE"
 
 # Train the model
-model <- train(Kg_He ~., data = Field_Carmen, 
+model_rf <- train(Kg_He ~., data = Field_Carmen, 
                method = "rf",
                ntree = ntree,
                metric=metric,
-#               tuneLength = 15, # Error in plot.train(model) : There are no tuning parameters with more than 1 value.
-#               tuneGrid = tunegrid,
-               tuneGrid = data.frame(mtry = mtry),
+               tuneGrid = tunegrid,
+#               tuneGrid = data.frame(mtry = mtry),
                trControl = train.control)
 
 # Summarize the results
-print(model)
-#plot(model)
+print(model_rf)
+plot(model_rf)
 
 # Make predictions and compute the R2, RMSE and MAE
-predictions <- model %>% predict(test.data, na.action=na.omit)
+predictions_rf <- model_rf %>% predict(test.data, na.action=na.omit)
 
-predictions
+predictions_rf
 
-data.frame( R2 = R2(predictions, test.data$Kg_He),
+data.frame( R2 = R2(predictions_rf, test.data$Kg_He),
             # RMSE will be expressed in kilograms
-            RMSE = RMSE(predictions, test.data$Kg_He),
-            MAE = MAE(predictions, test.data$Kg_He))
+            RMSE = RMSE(predictions_rf, test.data$Kg_He),
+            MAE = MAE(predictions_rf, test.data$Kg_He))
 
 # The RMSE and the MAE are measured in the same scale as the outcome variable. 
 # Dividing the RMSE by the average value of the outcome variable will give you 
 # the prediction error rate, which should be as small as possible:
-RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
+RMSE(predictions_rf, test.data$Kg_He)/mean(test.data$Kg_He)
 
 # See the confusion matrix of the model in the test set
-#confusionMatrix(predictions, test.data$Kg_He)
+#confusionMatrix(predictions_rf, test.data$Kg_He)
 
 # variable importance
-gbmImp <- varImp(model, scale = F)
-gbmImp
+gbmImp_rf <- varImp(model_rf, scale = F)
+gbmImp_rf
 
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_rforest.png', units = "px",
     width = 1200, height = 700)
 
-plot(gbmImp, top = 29, main = "Random Forest - Variable Importance plot")
+plot(gbmImp_rf, top = 29, main = "Random Forest - Variable Importance plot")
 
 dev.off()
 
@@ -137,9 +140,9 @@ dev.off()
 png(file = './Plots/Variable_Importance_rforest_ggplo2.png', units = "px",
     width = 1200, height = 700)
 
-nrow(varImp(model)$importance) #34 variables extracted
+nrow(varImp(model_rf)$importance) #34 variables extracted
 
-p <- varImp(model)$importance %>% 
+p <- varImp(model_rf)$importance %>% 
   as.data.frame() %>%
   rownames_to_column() %>%
   arrange(Overall) %>%
@@ -178,15 +181,15 @@ set.seed(123)
 #tunegrid <- expand.grid(.mtry=mtry)
 
 # Grid Search
-train.control <- trainControl(method = "LOOCV", savePredictions = T,
-                              search="grid")
+train.control <- trainControl(method="cv", number=10,
+                              savePredictions = T, search="grid")
 
 #train.control
 
 tunegrid <- expand.grid(.mtry=c(1:30))
 
 # Train the model
-model <- train(Kg_He ~., data = Field_Carmen, 
+model_crf <- train(Kg_He ~., data = Field_Carmen, 
                method = "cforest",
                metric=metric,
                tuneLength = 18,
@@ -195,36 +198,36 @@ model <- train(Kg_He ~., data = Field_Carmen,
                trControl = train.control)
 
 # Summarize the results
-print(model)
-plot(model)
+print(model_crf)
+plot(model_crf)
 
 # Make predictions and compute the R2, RMSE and MAE
-predictions <- model %>% predict(test.data, na.action=na.omit)
+predictions_crf <- model_crf %>% predict(test.data, na.action=na.omit)
 
-predictions
+predictions_crf
 
-data.frame( R2 = R2(predictions, test.data$Kg_He),
+data.frame( R2 = R2(predictions_crf, test.data$Kg_He),
             # RMSE will be expressed in kilograms
-            RMSE = RMSE(predictions, test.data$Kg_He),
-            MAE = MAE(predictions, test.data$Kg_He))
+            RMSE = RMSE(predictions_crf, test.data$Kg_He),
+            MAE = MAE(predictions_crf, test.data$Kg_He))
 
 # The RMSE and the MAE are measured in the same scale as the outcome variable. 
 # Dividing the RMSE by the average value of the outcome variable will give you 
 # the prediction error rate, which should be as small as possible:
-RMSE(predictions, test.data$Kg_He)/mean(test.data$Kg_He)
+RMSE(predictions_crf, test.data$Kg_He)/mean(test.data$Kg_He)
 
 # See the confusion matrix of the model in the test set
-#confusionMatrix(predictions, test.data$Kg_He)
+#confusionMatrix(predictions_crf, test.data$Kg_He)
 
 # variable importance
-gbmImp <- varImp(model, scale = F)
-gbmImp
+gbmImp_crf <- varImp(model_crf, scale = F)
+gbmImp_crf
 
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_cforest.png', units = "px",
     width = 1200, height = 700)
 
-plot(gbmImp, top = 29, main = "Conditional Random Forests - Variable Importance plot")
+plot(gbmImp_crf, top = 29, main = "Conditional Random Forests - Variable Importance plot")
 
 dev.off()
 
@@ -232,9 +235,9 @@ dev.off()
 png(file = './Plots/Variable_Importance_cforest_ggplo2.png', units = "px",
     width = 1200, height = 700)
 
-nrow(varImp(model)$importance) #34 variables extracted
+nrow(varImp(model_crf)$importance) #34 variables extracted
 
-p <- varImp(model)$importance %>% 
+p <- varImp(model_crf)$importance %>% 
   as.data.frame() %>%
   rownames_to_column() %>%
   arrange(Overall) %>%
