@@ -160,6 +160,8 @@ Something important when looking at the generated model, is variable importance,
 ![Variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_cforest_ggplo2.png?raw=true "Variable importance ML model")
 
 ### Values of R2, RMSE & MAE
+These are the values with the best performance, after the auto-selection of the tuning by means of the Caret package.
+
 - RandomForest model:
 
 | `R2` | `RMSE Kg` | `MAE Kg` |
