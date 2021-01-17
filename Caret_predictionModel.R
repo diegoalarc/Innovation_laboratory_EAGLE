@@ -5,6 +5,7 @@ library(randomForest)
 library(tidyverse)
 library(mlbench)
 library(ggplot2)
+library(ggpubr)
 library(caret)
 
 # Set the folder location
@@ -274,6 +275,12 @@ png(file = './Plots/RF_vs_cRF_Boxplot_Rsquared.png', units = "px",
     width = 1200, height = 700)
 
 # Boxplot of Rsquared for each model
-bwplot(resamps, metric = "Rsquared")
+bwplot(resamps, col=c('powderblue', 'mistyrose'), metric = "Rsquared")
 
 dev.off()
+
+df = data.frame(MAE=c(model_rf$resample$Rsquared, model_crf$resample$Rsquared),
+                model=rep(c("nnet","svm"),each=length(svm2$resample$Rsquared)))
+
+ggboxplot(df, x = "model",y= "Rsquared",col="model",palette = c("#00AFBB", "#E7B800")) + 
+  stat_compare_means()
