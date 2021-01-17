@@ -90,7 +90,7 @@ train.control <- trainControl(method="cv", number=10,
 
 #train.control
 
-tunegrid <- expand.grid(.mtry=c(1:10))
+tunegrid <- expand.grid(.mtry=c(1:100))
 ntree <- 1200
 metric <- "RMSE"
 
@@ -193,7 +193,7 @@ train.control <- trainControl(method="cv", number=10,
 
 #train.control
 
-tunegrid <- expand.grid(.mtry=c(1:30))
+tunegrid <- expand.grid(.mtry=c(1:100))
 
 # Train the model
 model_crf <- train(Kg_He ~., data = Field_Carmen, 
@@ -280,7 +280,7 @@ bwplot(resamps, col=c('powderblue', 'mistyrose'), metric = "Rsquared")
 dev.off()
 
 df = data.frame(Rsquared=c(model_rf$resample$Rsquared, model_crf$resample$Rsquared),
-                model=rep(c("RF","cRF"),each=length(model_crf$resample$Rsquared)))
+                model=rep(c("RF","cRF"),each=length(model_rf$resample$Rsquared)))
 
 # plot
 p <- ggplot(data = df, aes(x=model, y=Rsquared, fill=model)) + 
@@ -288,7 +288,7 @@ p <- ggplot(data = df, aes(x=model, y=Rsquared, fill=model)) +
   stat_summary(fun=mean, geom="point", shape=20, size=4, color="red", fill="red") +
   labs(title = "RF vs cRF Boxplot_Rsquared") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
-  theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
+  theme(axis.text.y = element_text(hjust = 1, colour = "black"))
 
 # Save boxplot as .png
 png(file = './Plots/RF_vs_cRF_Boxplot_Rsquared_ggplot.png', units = "px",
