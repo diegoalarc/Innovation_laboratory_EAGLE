@@ -110,6 +110,8 @@ png(file = './Plots/RMSE_vs_Ramdom_Predictors_rforest.png', units = "px",
 
 plot(model_rf)
 
+dev.off()
+
 # Make predictions and compute the R2, RMSE and MAE
 predictions_rf <- model_rf %>% predict(test.data, na.action=na.omit)
 
@@ -196,7 +198,6 @@ tunegrid <- expand.grid(.mtry=c(1:30))
 model_crf <- train(Kg_He ~., data = Field_Carmen, 
                method = "cforest",
                metric=metric,
-               tuneLength = 18,
                tuneGrid = tunegrid,
 #               tuneGrid = data.frame(mtry = mtry),
                trControl = train.control)
@@ -208,6 +209,8 @@ png(file = './Plots/RMSE_vs_Ramdom_Predictors_cforest.png', units = "px",
     width = 1200, height = 700)
 
 plot(model_crf)
+
+dev.off()
 
 # Make predictions and compute the R2, RMSE and MAE
 predictions_crf <- model_crf %>% predict(test.data, na.action=na.omit)

@@ -29,7 +29,8 @@ Image of Carmen Rosa Farm:
 ---
 
 ## Google Earth Engine
-To start we created two scripts in GEE to download the images cut with all the bands.
+To carry out this project, an algorithm was generated through Google Earth Engine to obtain the images between November and December from 2016 to 2019, which represent the most important phenological stage for these grapes in this area of Chile. In the algorithm the images of GNDVI, NDVI and EVI were generated, which give us information about the crops and their health. Within the same algorithm, a mean of all the images for all their bands was obtained, which were downloaded and processed by the algorithms generated in R.
+To obtain the information for the prediction of the year 2021, this algorithm was also used to obtain the desired images and bands.
 
 The codes are as follows:
 [Sentinel-2](https://code.earthengine.google.com/10bef8017a4fcacec6ef47296e2b9018)
@@ -60,16 +61,105 @@ For the fields 'INIAGRAPE ONE 15' and 'SABLE 16', only the years 2018 - 2019 are
 Applying the [Caret](https://topepo.github.io/caret/index.html) de R package, a [Machine Learning](https://en.wikipedia.org/wiki/Machine_learning) model was made to make a prediction of the Yield of Carmen Rosa farm.
 According to what has been done, the need for more data to make a prediction with better precision is evident. But considering the lack of these, it was decided to make (anyway) an [ML](https://en.wikipedia.org/wiki/Machine_learning) model, considering that it will improve over the years as more information is available.
 
+### Evaluation and selection of Hyperparameters
+
+When analyzing the values for tuning in the [Random Forest](https://en.wikipedia.org/wiki/Random_forest#:~:text=Random%20forests%20or%20random%20decision,average%20prediction%20(regression)%20of%20the) model and in the Conditional Random Forest model, the Caret package was used, which provides an analysis of the values and search for the best one for the model evaluation and for a better application. results.
+
+Random Forest hyperparameters:
+```r
+44 samples
+42 predictors
+
+No pre-processing
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 40, 38, 40, 41, 39, 40, ... 
+Resampling results across tuning parameters:
+
+  mtry  RMSE      Rsquared   MAE     
+   1    11313.02  0.5913641  8805.113
+   2    11233.78  0.5739389  8595.103
+   3    11190.36  0.5421181  8522.698
+   4    11336.41  0.5071823  8580.285
+   5    11297.34  0.4935617  8609.997
+   6    11331.10  0.4550093  8628.867
+   7    11462.52  0.4813677  8686.385
+   8    11392.63  0.5200848  8629.688
+   9    11349.73  0.4646055  8596.461
+  10    11554.35  0.4699390  8791.347
+
+RMSE was used to select the optimal model using the smallest value.
+The final value used for the model was mtry = 3.
+
+predictions_rf
+       2        6        7       15       16       23       24       27       31       35 
+37350.00 51419.28 21576.30 48898.07 47736.55 31887.30 30553.16 48768.50 33569.82 37489.89 
+      38       39 
+51990.50 44394.46 
+```
+![RMS vs Ramdom Predictors Random Forest model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RMSE_vs_Ramdom_Predictors_rforest.png?raw=true "RMS vs Ramdom Predictors Random Forest model")
+
+
+Conditional Random Forest hyperparameters:
+```r
+44 samples
+42 predictors
+
+No pre-processing
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 39, 39, 40, 39, 40, 40, ... 
+Resampling results across tuning parameters:
+
+  mtry  RMSE      Rsquared   MAE      
+   1    12053.26  0.4298993  10080.184
+   2    11814.87  0.3791793   9778.230
+   3    11689.42  0.4019155   9580.477
+   4    11591.90  0.3775144   9397.946
+   5    11534.47  0.3684445   9335.193
+   6    11457.66  0.3622635   9179.390
+   7    11480.85  0.3748539   9206.903
+   8    11479.33  0.3397349   9171.475
+   9    11478.41  0.3233077   9119.884
+  10    11443.39  0.3306709   9107.359
+  11    11502.91  0.3167354   9164.722
+  12    11548.07  0.2954789   9212.756
+  13    11590.20  0.3059548   9193.360
+  14    11539.12  0.3029505   9139.306
+  15    11589.38  0.3106756   9220.703
+  16    11497.30  0.3072841   9130.800
+  17    11502.25  0.3015877   9099.461
+  18    11517.28  0.3009394   9133.289
+  19    11581.38  0.2850629   9207.241
+  20    11496.29  0.3013609   9119.681
+  21    11511.56  0.2989071   9145.873
+  22    11526.58  0.2913248   9083.042
+  23    11570.59  0.2932375   9154.639
+  24    11611.12  0.3028381   9162.697
+  25    11466.83  0.3084365   9068.082
+  26    11600.29  0.2818326   9148.720
+  27    11606.32  0.2925889   9200.412
+  28    11528.23  0.3013926   9082.504
+  29    11531.90  0.3031029   9139.294
+  30    11574.06  0.3030992   9171.680
+
+RMSE was used to select the optimal model using the smallest value.
+The final value used for the model was mtry = 10.
+
+predictions_crf
+ [1] 39564.89 45875.62 31771.34 48094.92 47655.84 34375.79 34443.04 42533.70 35074.93 36167.06
+[11] 48650.54 45200.77
+```
+![RMS vs Ramdom Predictors Conditional Random Forest model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RMSE_vs_Ramdom_Predictors_cforest.png?raw=true "RMS vs Ramdom Predictors Conditional Random Forest model")
+
+### Plot of variable importance
 Something important when looking at the generated model, is variable importance, which is possible thanks to Caret's "varImp" function.
 
-#### Plot of variable importance:
 - RandomForest model:
-![variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_rforest_ggplo2.png?raw=true "variable importance ML model")
+![Variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_rforest_ggplo2.png?raw=true "Variable importance ML model")
 
 - Conditional RandomForest model:
-![variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_cforest_ggplo2.png?raw=true "variable importance ML model")
+![Variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_cforest_ggplo2.png?raw=true "Variable importance ML model")
 
-## Values of R2, RMSE & MAE
+### Values of R2, RMSE & MAE
 - RandomForest model:
 
 | `R2` | `RMSE Kg` | `MAE Kg` |
@@ -84,8 +174,8 @@ Something important when looking at the generated model, is variable importance,
 
 | `R2` | `RMSE Kg` | `MAE Kg` |
 | :-------: | :------: | :-----: |
-| 0.8085934 | 5973.211 | 4652.136 |
+| 0.805903 | 6059.249 | 4653.996 |
 
 |`RMSE without dimension`|
 | :--------------------: |
-| 0.1469864 |
+| 0.1491036 |
