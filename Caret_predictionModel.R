@@ -265,3 +265,15 @@ p <- varImp(model_crf)$importance %>%
 plot(p)
 
 dev.off()
+
+# Resampling train values for each model
+resamps <- resamples(list(model_rf, model_crf), c("Random Forest", "Conditional Random Forest"))
+
+# Save boxplot as .png
+png(file = './Plots/RF_vs_cRF_Boxplot_Rsquared.png', units = "px",
+    width = 1200, height = 700)
+
+# Boxplot of Rsquared for each model
+bwplot(resamps, metric = "Rsquared")
+
+dev.off()
