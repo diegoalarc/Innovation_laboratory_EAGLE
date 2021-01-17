@@ -168,19 +168,11 @@ These are the values with the best performance, after the auto-selection of the 
 | :-------: | :------: | :-----: |
 | 0.9490709 | 3037.2625979 | 2430.5169700 |
 
-|`RMSE without dimension`|
-| :--------------------: |
-| 0.07473974 |
-
 - Conditional RandomForest model:
 
 | `R2` | `RMSE Kg` | `MAE Kg` |
 | :-------: | :------: | :-----: |
 | 0.8061893 | 6121.8310575 | 4740.1615328 |
-
-|`RMSE without dimension`|
-| :--------------------: |
-| 0.1506436 |
 
 ### Model comparison
 

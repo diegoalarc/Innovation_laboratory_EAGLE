@@ -60,6 +60,10 @@ y <- dataset$Kg_He
 #mtry <- min(bestmtry[,1])
 #mtry
 
+# Get tree from randomForest package
+mod <- randomForest(Kg_He ~., data = Field_Carmen)
+tree <- getTree(mod,26,labelVar=TRUE)
+tree
 ################################################################################
 
 # RandomForest
@@ -126,13 +130,16 @@ postResample(pred = predictions_rf, obs = test.data$Kg_He)
 RMSE(predictions_rf, test.data$Kg_He)/mean(test.data$Kg_He)
 
 # See the confusion matrix of the model in the test set
-#confusionMatrix(predictions_rf, test.data$Kg_He)
+#df1 <- data.frame(Original = test.data$Kg_He, Predicted = predictions_rf)
+#confusionMatrix(table(df1$Original, df1$Predicted))
 
 # variable importance
 gbmImp_rf <- varImp(model_rf, scale = F)
 gbmImp_rf
 
-# Save boxplot as .png
+dotPlot(gbmImp_rf)
+
+# Save plot as .png
 png(file = './Plots/Variable_Importance_rforest.png', units = "px",
     width = 1200, height = 700)
 
@@ -222,13 +229,15 @@ postResample(pred = predictions_crf, obs = test.data$Kg_He)
 # the prediction error rate, which should be as small as possible:
 RMSE(predictions_crf, test.data$Kg_He)/mean(test.data$Kg_He)
 
-
 # See the confusion matrix of the model in the test set
-#confusionMatrix(predictions_crf, test.data$Kg_He)
+#df1 <- data.frame(Original = test.data$Kg_He, Predicted = predictions_rf)
+#confusionMatrix(table(df1$Original, df1$Predicted))
 
 # variable importance
 gbmImp_crf <- varImp(model_crf, scale = F)
 gbmImp_crf
+
+dotPlot(gbmImp_rf)
 
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_cforest.png', units = "px",
