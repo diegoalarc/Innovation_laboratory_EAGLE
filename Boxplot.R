@@ -21,6 +21,7 @@ year <- 2017
 year2 <- 2018
 year3 <- 2019
 year4 <- 2020
+year5 <- 2021
 
 # List all NDVI GeoTIFF files by year
 fllst <- list.files(path=rasdir,
@@ -47,8 +48,16 @@ fllst4 <- list.files(path=rasdir,
 
 fllst_stack4 <- stack(fllst4[4])
 
+fllst5 <- list.files(path=rasdir,
+                     full.names = TRUE,
+                     pattern = paste0(year5,'.tif$'))
+
+fllst_stack5 <- stack(fllst5[4])
+
 # Band stack of NVDI by year in order
-fllst_stack5 <- stack(fllst_stack, fllst_stack2, fllst_stack3, fllst_stack4)
+fllst_stack5 <- stack(fllst_stack, fllst_stack2, 
+                      fllst_stack3, fllst_stack4,
+                      fllst_stack5)
 
 # Progress bar creation using the number of images as total length
 pb = txtProgressBar(min = 0, max = 12, initial = 0, char = " ^-^ ") 
@@ -84,7 +93,8 @@ for (x in 1:length(roi)){
   nvdi_names <- c(paste0('NDVI_Carmen_Rosa_Field_',year),
                   paste0('NDVI_Carmen_Rosa_Field_',year2),
                   paste0('NDVI_Carmen_Rosa_Field_',year3),
-                  paste0('NDVI_Carmen_Rosa_Field_',year4))
+                  paste0('NDVI_Carmen_Rosa_Field_',year4),
+                  paste0('NDVI_Carmen_Rosa_Field_',year5))
   
   # Save the names in a vector
   names(roi_1_crop5) <- nvdi_names
@@ -114,14 +124,20 @@ for (x in 1:length(roi)){
   my_df4[,2] <- data.frame(Year = as.character(year4 - 1))
   my_df4[,3] <- as.numeric(band_mean4[,2])
   
+  band_mean5 <- raster::extract(roi_1_crop5[[5]], roi_1, method='simple',df=TRUE)
+  my_df5 <- matrix(data = roi_1$Name, nrow = 4*nrow(band_mean5), ncol = 3)
+  my_df5 <- data.frame(my_df5)
+  my_df5[,2] <- data.frame(Year = as.character(year5 - 1))
+  my_df5[,3] <- as.numeric(band_mean5[,2])
+  
   # Apply rbind to merge all the dataframe
-  my_df5 <- rbind(my_df,my_df2,my_df3,my_df4)
+  my_df_fn <- rbind(my_df,my_df2,my_df3,my_df4,my_df5)
   
   # Add column names into the dataframe
-  names(my_df5) <- c('Field', 'Year', 'NDVI')
+  names(my_df_fn) <- c('Field', 'Year', 'NDVI')
   
   # Create a List using the iterator
-  df[[x]] <- my_df5
+  df[[x]] <- my_df_fn
 
 }
 
@@ -129,7 +145,7 @@ for (x in 1:length(roi)){
 big_data <- do.call(rbind, df)
 
 # Save dataframe as .CSV
-write.csv(big_data,'./Plots/NDVI_2017_to_2020.csv',row.names = F, quote = F)
+write.csv(big_data,'./Original_data/NDVI_2017_to_2021.csv',row.names = F, quote = F)
 
 # plot
 p <- ggplot(data = big_data, aes(x=Year, y=NDVI, fill=Field)) + 
@@ -143,7 +159,7 @@ p <- ggplot(data = big_data, aes(x=Year, y=NDVI, fill=Field)) +
   facet_wrap(~Field, ncol = 4)
 
 # Save boxplot as .png
-png(file = './Plots/NDVI_2017_to_2020.png', units = "px",
+png(file = './Plots/NDVI_2017_to_2021.png', units = "px",
     width = 1200, height = 700)
 
 # Plot the graph

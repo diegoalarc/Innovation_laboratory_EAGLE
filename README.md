@@ -55,7 +55,7 @@ The codes are as follows:
 For the fields 'INIAGRAPE ONE 15' and 'SABLE 16', only the years 2018 - 2019 are valid, since they did not present production in the years 2016 - 2017. This data was eliminated from the dataframe to create the machine learning model.
 
 #### Boxplot:
-![Example of NDVI for each field from the years 2016 -2019](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/NDVI_2017_to_2020.png?raw=true "Example of NDVI for each field from the years 2016 -2019")
+![Example of NDVI for each field from the years 2016 -2019](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/NDVI_2017_to_2021.png?raw=true "Example of NDVI for each field from the years 2016 -2019")
 
 ## R Code [Caret Package](https://topepo.github.io/caret/index.html)
 Applying the [Caret](https://topepo.github.io/caret/index.html) de R package, a [Machine Learning](https://en.wikipedia.org/wiki/Machine_learning) model was made to make a prediction of the Yield of Carmen Rosa farm.

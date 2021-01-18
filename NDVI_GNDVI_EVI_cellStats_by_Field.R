@@ -31,6 +31,7 @@ year <- '2017'
 year2 <- '2018'
 year3 <- '2019'
 year4 <- '2020'
+year5 <- '2021'
 
 # List all GeoTIFF files in folder, change extension in pattern if different format
 fllst <- list.files(path=rasdir,
@@ -56,6 +57,12 @@ fllst4 <- list.files(path=rasdir,
                      pattern = paste0(year4,'.tif$'))
 
 fllst_stack4 <- stack(fllst4)
+
+fllst5 <- list.files(path=rasdir,
+                     full.names = TRUE,
+                     pattern = paste0(year5,'.tif$'))
+
+fllst_stack5 <- stack(fllst5)
 
 ##############################################################################
 
@@ -170,6 +177,31 @@ for (x in 1:length(roi)){
   
   ##############################################################################
   
+  # Create a List of the crop list
+  crop_list5 <- list()
+  
+  # For-loop to crop the raster in order to obtain the study area
+  for (i in 1:nlayers(fllst_stack5)){
+    crop_list5[[i]] <- mask(fllst_stack5[[i]],roi_1)
+  }
+  
+  # Create a stack of Raster Files with all the *.tiff cropped
+  roi_1_crop5 <- stack(crop_list5)
+  
+  # Create the vector with the name file
+  names_file5 <- vector(mode='character')
+  
+  names_file5 <- c('B1_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
+                   'B7_mean', 'B8_mean', 'B8A_mean', 'B9_mean', 'B10_mean', 'B11_mean',
+                   'B12_mean', paste0('EVI_Carmen_Rosa_Field_',year5), 
+                   paste0('GNDVI_Carmen_Rosa_Field_',year5),
+                   paste0('NDVI_Carmen_Rosa_Field_',year5))
+  
+  # Save the names in a vector
+  names(roi_1_crop5) <- names_file5
+  
+  ##############################################################################
+  
   # Plot Area to observe scenes
     # Select band
   #band <- 15
@@ -194,15 +226,21 @@ for (x in 1:length(roi)){
     
     band_mean4 <- cellStats(roi_1_crop4[[i]], 'mean', progress = 'text')
     my_df[i,5] <- as.numeric(band_mean4)
+    
+    band_mean5 <- cellStats(roi_1_crop5[[i]], 'mean', progress = 'text')
+    my_df[i,6] <- as.numeric(band_mean5)
   }
-  names(my_df) <- c('band', paste0('mean_',year), paste0('mean_',year2), paste0('mean_',year3),paste0('mean_',year4))
+  names(my_df) <- c('band', 
+                    paste0('mean_',year), paste0('mean_',year2), 
+                    paste0('mean_',year3),paste0('mean_',year4), 
+                    paste0('mean_',year5))
   
   my_df_or <- transpose(my_df)
   colnames(my_df_or) <- rownames(my_df)
   rownames(my_df_or) <- colnames(my_df)
   my_df_or <- my_df_or[-1,]
-  my_df_or[,17] <- c(year,year2,year3,year4)
-  my_df_or[,18] <- c(roi_1$Name,roi_1$Name,roi_1$Name,roi_1$Name)
+  my_df_or[,17] <- c(year,year2,year3,year4,year5)
+  my_df_or[,18] <- c(roi_1$Name,roi_1$Name,roi_1$Name,roi_1$Name,roi_1$Name)
   names(my_df_or) <- c('B1_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
                        'B7_mean', 'B8_mean', 'B8A_mean', 'B9_mean', 'B10_mean', 'B11_mean',
                        'B12_mean', 'EVI', 'GNDVI', 'NDVI', 'Year', 'Field´')
@@ -216,7 +254,7 @@ for (x in 1:length(roi)){
 band_big_data <- do.call(rbind, df_band)
 
 # Save dataframe as .CSV
-write.csv(band_big_data,'./Original_data/Band_2017_to_2020.csv',row.names = F, quote = F)
+write.csv(band_big_data,'./Original_data/Band_2017_to_2021.csv',row.names = F, quote = F)
 
 # Disabling the cores on the device when the process ends
 #endCluster()
