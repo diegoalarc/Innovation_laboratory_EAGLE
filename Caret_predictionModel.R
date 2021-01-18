@@ -75,6 +75,13 @@ tree
 # Define training control
 set.seed(123)
 
+# Settings
+n_repeats <- 100
+train_fraction <- 0.7
+
+# First we fit the models on the random sampling data partitions
+parts <- createDataPartition(Field_Carmen$Kg_He, times = n_repeats, p = train_fraction, list = T)
+
 # http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
 # https://machinelearningmastery.com/how-to-estimate-model-accuracy-in-r-using-the-caret-package/
 # Leave one out cross validation - LOOCV
@@ -90,7 +97,7 @@ set.seed(123)
 #tunegrid <- expand.grid(.mtry=mtry)
 
 # Grid Search
-train.control <- trainControl(method="repeatedcv", number=4, repeats = 100,
+train.control <- trainControl(method="repeatedcv", index= parts,
                               savePredictions = T, search="grid")
 
 #train.control
@@ -170,6 +177,7 @@ plot(p_rf)
 
 dev.off()
 
+# https://www.machinelearningplus.com/machine-learning/feature-selection/
 # Calculate Feature Importance Explanations As Loss From Feature Dropout
 explained_rf <- explain(model_rf, data=test.data, y=test.data$Kg_He)
 
@@ -177,6 +185,7 @@ explained_rf <- explain(model_rf, data=test.data, y=test.data$Kg_He)
 # that is how much loss is incurred by removing a variable from the model.
 varimps_rf <- variable_importance(explained_rf, type='raw')
 
+varimps_rf <- varimps_rf[!varimps_rf$variable == "id", ]
 varimps_rf <- varimps_rf[!varimps_rf$variable == "_baseline_", ]
 varimps_rf <- varimps_rf[!varimps_rf$variable == "_full_model_", ]
 
@@ -219,7 +228,7 @@ set.seed(123)
 #tunegrid <- expand.grid(.mtry=mtry)
 
 # Grid Search
-train.control <- trainControl(method="repeatedcv", number=4, repeats = 100,
+train.control <- trainControl(method="repeatedcv",index= parts,
                               savePredictions = T, search="grid")
 
 #train.control
@@ -298,6 +307,7 @@ plot(p_crf)
 
 dev.off()
 
+# https://www.machinelearningplus.com/machine-learning/feature-selection/
 # Calculate Feature Importance Explanations As Loss From Feature Dropout
 explained_crf <- explain(model_crf, data=test.data, y=test.data$Kg_He)
 
@@ -305,6 +315,7 @@ explained_crf <- explain(model_crf, data=test.data, y=test.data$Kg_He)
 # that is how much loss is incurred by removing a variable from the model.
 varimps_crf <- variable_importance(explained_crf, type='raw')
 
+varimps_crf <- varimps_crf[!varimps_crf$variable == "id", ]
 varimps_crf <- varimps_crf[!varimps_crf$variable == "_baseline_", ]
 varimps_crf <- varimps_crf[!varimps_crf$variable == "_full_model_", ]
 
