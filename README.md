@@ -159,6 +159,14 @@ Something important when looking at the generated model, is variable importance,
 - Conditional RandomForest model:
 ![Variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_cforest_ggplo2.png?raw=true "Variable importance ML model")
 
+We have also calculate Feature Importance Explanations As Loss From Feature Dropout.
+
+- RandomForest model:
+![Variable importance boxplot ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_boxplot_rforest_ggplo2.png?raw=true "Variable importance boxplot ML model")
+
+- Conditional RandomForest model:
+![Variable importance boxplot ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_boxplot_crforest_ggplo2.png?raw=true "Variable importance boxplot ML model")
+
 ### Values of R2, RMSE & MAE
 These are the values with the best performance, after the auto-selection of the tuning through the use of the Caret package.
 

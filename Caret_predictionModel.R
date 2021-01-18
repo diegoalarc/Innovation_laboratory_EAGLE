@@ -7,6 +7,7 @@ library(mlbench)
 library(ggplot2)
 library(ggpubr)
 library(caret)
+library(DALEX)
 
 # Set the folder location
 #setwd('~/Dropbox/RS Project/RSSTARTUP_repo/Product_Development/Yield_forcasting_R/Innovation_laboratory_EAGLE')
@@ -134,10 +135,8 @@ RMSE(predictions_rf, test.data$Kg_He)/mean(test.data$Kg_He)
 #confusionMatrix(table(df1$Original, df1$Predicted))
 
 # variable importance
-gbmImp_rf <- varImp(model_rf, scale = F)
+gbmImp_rf <- varImp(model_rf, useModel = T, scale = F)
 gbmImp_rf
-
-dotPlot(gbmImp_rf)
 
 # Save plot as .png
 png(file = './Plots/Variable_Importance_rforest.png', units = "px",
@@ -153,7 +152,7 @@ png(file = './Plots/Variable_Importance_rforest_ggplo2.png', units = "px",
 
 nrow(varImp(model_rf)$importance) #42 variables extracted
 
-p <- varImp(model_rf)$importance %>% 
+p_rf <- varImp(model_rf)$importance %>% 
   as.data.frame() %>%
   rownames_to_column() %>%
   arrange(Overall) %>%
@@ -167,7 +166,35 @@ p <- varImp(model_rf)$importance %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
   theme(axis.text.y = element_text(hjust = 1, colour = "black"))
 
-plot(p)
+plot(p_rf)
+
+dev.off()
+
+# Calculate Feature Importance Explanations As Loss From Feature Dropout
+explained_rf <- explain(model_rf, data=test.data, y=test.data$Kg_He)
+
+# you can find out how important a variable is based on a dropout loss, 
+# that is how much loss is incurred by removing a variable from the model.
+varimps_rf <- variable_importance(explained_rf, type='raw')
+
+varimps_rf <- varimps_rf[!varimps_rf$variable == "_baseline_", ]
+varimps_rf <- varimps_rf[!varimps_rf$variable == "_full_model_", ]
+
+# Save boxplot as .png
+png(file = './Plots/Variable_Importance_boxplot_rforest_ggplo2.png', units = "px",
+    width = 1400, height = 800)
+
+p_rf2 <- varimps_rf %>% 
+  ggplot(aes(x = dropout_loss, y = variable)) +
+  geom_boxplot(aes(x = dropout_loss, y = variable)) +
+  coord_flip() +
+  labs(title = "Random Forest - Variable Importance boxplot") +
+  ylab('Variables') + xlab('Dropout Loss') + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
+  theme(axis.text.y = element_text(hjust = 1, colour = "black"))
+#  facet_wrap(~variable, ncol = 4)
+
+plot(p_rf2)
 
 dev.off()
 
@@ -253,7 +280,7 @@ png(file = './Plots/Variable_Importance_cforest_ggplo2.png', units = "px",
 
 nrow(varImp(model_crf)$importance) #42 variables extracted
 
-p <- varImp(model_crf)$importance %>% 
+p_crf <- varImp(model_crf)$importance %>% 
   as.data.frame() %>%
   rownames_to_column() %>%
   arrange(Overall) %>%
@@ -267,9 +294,38 @@ p <- varImp(model_crf)$importance %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
   theme(axis.text.y = element_text(hjust = 1, colour = "black"))
 
-plot(p)
+plot(p_crf)
 
 dev.off()
+
+# Calculate Feature Importance Explanations As Loss From Feature Dropout
+explained_crf <- explain(model_crf, data=test.data, y=test.data$Kg_He)
+
+# you can find out how important a variable is based on a dropout loss, 
+# that is how much loss is incurred by removing a variable from the model.
+varimps_crf <- variable_importance(explained_crf, type='raw')
+
+varimps_crf <- varimps_crf[!varimps_crf$variable == "_baseline_", ]
+varimps_crf <- varimps_crf[!varimps_crf$variable == "_full_model_", ]
+
+# Save boxplot as .png
+png(file = './Plots/Variable_Importance_boxplot_crforest_ggplo2.png', units = "px",
+    width = 1400, height = 800)
+
+p_crf2 <- varimps_crf %>% 
+  ggplot(aes(x = dropout_loss, y = variable)) +
+  geom_boxplot(aes(x = dropout_loss, y = variable)) +
+  coord_flip() +
+  labs(title = "Conditional Random Forest - Variable Importance boxplot") +
+  ylab('Variables') + xlab('Dropout Loss') + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
+  theme(axis.text.y = element_text(hjust = 1, colour = "black"))
+#  facet_wrap(~variable, ncol = 4)
+
+plot(p_crf2)
+
+dev.off()
+################################################################################
 
 # Resampling train values for each model
 resamps <- resamples(list(model_rf, model_crf), 
