@@ -35,36 +35,31 @@ Field_Carmen <- data.frame(predict(dmy, newdata = Field_Carmen))
 # See top 6 rows and 10 columns
 head(Field_Carmen[, 1:10])
 
+# Settings
+number <- 4
+n_repeats <- 100
+train_fraction <- 0.7
+
 # Split the data into training and test set
 set.seed(123)
 training.samples <- Field_Carmen$Kg_He %>%
-  createDataPartition(p = 0.7, list = FALSE)
+  createDataPartition(p = train_fraction, list = FALSE)
 
 train.data  <- Field_Carmen[training.samples, ]
 test.data <- Field_Carmen[-training.samples, ]
 
-# Algorithm Tune (tuneRF)
-# https://machinelearningmastery.com/tune-machine-learning-algorithms-in-r/
-# https://machinelearningmastery.com/machine-learning-evaluation-metrics-in-r/
-dataset <- Field_Carmen
-x <- cbind(dataset[,2:19],dataset[,21:43])
-y <- dataset$Kg_He
+################################################################################
 
-#ntree <- 1500
+# Define training control
+set.seed(123)
 
-#set.seed(123)
-#bestmtry <- tuneRF(x, y, stepFactor=0.5, improve=1e-5, ntree=ntree)
-#print(bestmtry)
+# http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
+# https://machinelearningmastery.com/how-to-estimate-model-accuracy-in-r-using-the-caret-package/
+# Grid Search
+train.control <- trainControl(method="repeatedcv", 
+                              number = number, repeats = n_repeats,
+                              savePredictions = T, search="grid")
 
-#bestmtry[-1]
-
-#mtry <- min(bestmtry[,1])
-#mtry
-
-# Get tree from randomForest package
-mod <- randomForest(Kg_He ~., data = Field_Carmen)
-tree <- getTree(mod,26,labelVar=TRUE)
-tree
 ################################################################################
 
 # RandomForest
@@ -72,48 +67,18 @@ tree
 # https://stats.stackexchange.com/questions/348245/do-we-have-to-tune-the-number-of-trees-in-a-random-forest
 # https://stats.stackexchange.com/questions/50210/caret-and-randomforest-number-of-trees
 
-# Define training control
-set.seed(123)
-
-# Settings
-n_repeats <- 100
-train_fraction <- 0.7
-
-# First we fit the models on the random sampling data partitions
-parts <- createDataPartition(Field_Carmen$Kg_He, times = n_repeats, p = train_fraction, list = T)
-
-# http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
-# https://machinelearningmastery.com/how-to-estimate-model-accuracy-in-r-using-the-caret-package/
-# Leave one out cross validation - LOOCV
-#train.control <- trainControl(method = "LOOCV", savePredictions = T)
-
-#train.control
-
-# Random Search
-#train.control <- trainControl(method = "LOOCV", savePredictions = T,
-#                              search="random")
-#train.control
-
-#tunegrid <- expand.grid(.mtry=mtry)
-
-# Grid Search
-train.control <- trainControl(method="repeatedcv", index= parts,
-                              savePredictions = T, search="grid")
-
-#train.control
-
 tunegrid <- expand.grid(.mtry=c(1:20))
 ntree <- 1200
 metric <- "RMSE"
 
 # Train the model
 model_rf <- train(Kg_He ~., data = Field_Carmen, 
-               method = "rf",
-               ntree = ntree,
-               metric=metric,
-               tuneGrid = tunegrid,
-#               tuneGrid = data.frame(mtry = mtry),
-               trControl = train.control)
+                  method = "rf",
+                  ntree = ntree,
+                  metric=metric,
+                  tuneGrid = tunegrid,
+                  #               tuneGrid = data.frame(mtry = mtry),
+                  trControl = train.control)
 
 # Summarize the results
 print(model_rf)
@@ -212,36 +177,15 @@ dev.off()
 # Define training control
 set.seed(123)
 
-# http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
-# Leave one out cross validation - LOOCV
-# Leave one out cross validation - LOOCV
-#train.control <- trainControl(method = "LOOCV", savePredictions = T)
-
-#train.control
-
-# Random Search
-#train.control <- trainControl(method = "LOOCV", savePredictions = T,
-#                              search="random")
-
-#train.control
-
-#tunegrid <- expand.grid(.mtry=mtry)
-
-# Grid Search
-train.control <- trainControl(method="repeatedcv",index= parts,
-                              savePredictions = T, search="grid")
-
-#train.control
-
 tunegrid <- expand.grid(.mtry=c(1:20))
 
 # Train the model
 model_crf <- train(Kg_He ~., data = Field_Carmen, 
-               method = "cforest",
-               metric=metric,
-               tuneGrid = tunegrid,
-#               tuneGrid = data.frame(mtry = mtry),
-               trControl = train.control)
+                   method = "cforest",
+                   metric=metric,
+                   tuneGrid = tunegrid,
+                   #               tuneGrid = data.frame(mtry = mtry),
+                   trControl = train.control)
 
 # Summarize the results
 print(model_crf)
