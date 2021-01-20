@@ -1,6 +1,7 @@
 # Load packages
 # https://www.machinelearningplus.com/machine-learning/caret-package/
 # https://www.youtube.com/watch?v=fSytzGwwBVw
+library(randomForestSRC)
 library(randomForest)
 library(tidyverse)
 library(mlbench)
@@ -8,6 +9,7 @@ library(ggplot2)
 library(ggpubr)
 library(caret)
 library(DALEX)
+library(party)
 
 # Set the folder location
 #setwd('~/Dropbox/RS Project/RSSTARTUP_repo/Product_Development/Yield_forcasting_R/Innovation_laboratory_EAGLE')
@@ -39,6 +41,9 @@ head(Field_Carmen[, 1:10])
 number <- 4
 n_repeats <- 100
 train_fraction <- 0.7
+tunegrid <- expand.grid(.mtry=c(1:20))
+ntree <- 1200
+metric <- "RMSE"
 
 # Split the data into training and test set
 set.seed(123)
@@ -49,7 +54,6 @@ train.data  <- Field_Carmen[training.samples, ]
 test.data <- Field_Carmen[-training.samples, ]
 
 ################################################################################
-
 # Define training control
 set.seed(123)
 
@@ -61,15 +65,29 @@ train.control <- trainControl(method="repeatedcv",
                               savePredictions = T, search="grid")
 
 ################################################################################
-
 # RandomForest
 # https://topepo.github.io/caret/train-models-by-tag.html#random-forest
 # https://stats.stackexchange.com/questions/348245/do-we-have-to-tune-the-number-of-trees-in-a-random-forest
 # https://stats.stackexchange.com/questions/50210/caret-and-randomforest-number-of-trees
 
-tunegrid <- expand.grid(.mtry=c(1:20))
-ntree <- 1200
-metric <- "RMSE"
+# Importance scores for each iteration
+# set.seed(123)
+# ctrl <- rfeControl(functions = caretFuncs, 
+#                    method = "repeatedcv",
+#                    number = number, repeats = n_repeats)
+# 
+# mod_rf <- rfe(Kg_He ~., data = Field_Carmen,
+#                rfeControl = ctrl,
+#                ## pass options to train(), 
+#                tuneGrid = tunegrid,
+#                method = "rf",
+#                controls = cforest_unbiased(ntree = ntree))
+# 
+# mod_fr$variables
+
+interact <- Interaction$new(predictor, feature = "alcohol")
+
+################################################################################
 
 # Train the model
 model_rf <- train(Kg_He ~., data = Field_Carmen, 
@@ -154,12 +172,19 @@ varimps_rf <- varimps_rf[!varimps_rf$variable == "id", ]
 varimps_rf <- varimps_rf[!varimps_rf$variable == "_baseline_", ]
 varimps_rf <- varimps_rf[!varimps_rf$variable == "_full_model_", ]
 
+varimps_rf$label[grepl("_mean", varimps_rf$variable)] <- 'Remote Sensing'
+varimps_rf$label[grepl("EVI", varimps_rf$variable)] <- 'Remote Sensing'
+varimps_rf$label[grepl("GNDVI", varimps_rf$variable)] <- 'Remote Sensing'
+varimps_rf$label[grepl("NDVI", varimps_rf$variable)] <- 'Remote Sensing'
+
+varimps_rf$label[grepl("train.formula", varimps_rf$label)] <- 'Other'
+
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_boxplot_rforest_ggplo2.png', units = "px",
     width = 1400, height = 800)
 
 p_rf2 <- varimps_rf %>% 
-  ggplot(aes(x = dropout_loss, y = variable)) +
+  ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
   geom_boxplot(aes(x = dropout_loss, y = variable)) +
   coord_flip() +
   labs(title = "Random Forest - Variable Importance boxplot") +
@@ -174,10 +199,24 @@ dev.off()
 
 ################################################################################
 # Conditional Random Forests
+# set.seed(123)
+# ctrl <- rfeControl(functions = caretFuncs, 
+#                    method = "repeatedcv",
+#                    number = number, repeats = n_repeats)
+# 
+# mod_crf <- rfe(Kg_He ~., data = Field_Carmen,
+#                rfeControl = ctrl,
+#                ## pass options to train(), 
+#                tuneGrid = tunegrid,
+#                method = "cforest",
+#                controls = cforest_unbiased(ntree = ntree))
+# 
+# mod_crf$variables
+
+################################################################################
+
 # Define training control
 set.seed(123)
-
-tunegrid <- expand.grid(.mtry=c(1:20))
 
 # Train the model
 model_crf <- train(Kg_He ~., data = Field_Carmen, 
@@ -263,12 +302,19 @@ varimps_crf <- varimps_crf[!varimps_crf$variable == "id", ]
 varimps_crf <- varimps_crf[!varimps_crf$variable == "_baseline_", ]
 varimps_crf <- varimps_crf[!varimps_crf$variable == "_full_model_", ]
 
+varimps_crf$label[grepl("_mean", varimps_crf$variable)] <- 'Remote Sensing'
+varimps_crf$label[grepl("EVI", varimps_crf$variable)] <- 'Remote Sensing'
+varimps_crf$label[grepl("GNDVI", varimps_crf$variable)] <- 'Remote Sensing'
+varimps_crf$label[grepl("NDVI", varimps_crf$variable)] <- 'Remote Sensing'
+
+varimps_crf$label[grepl("train.formula", varimps_crf$label)] <- 'Other'
+
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_boxplot_crforest_ggplo2.png', units = "px",
     width = 1400, height = 800)
 
 p_crf2 <- varimps_crf %>% 
-  ggplot(aes(x = dropout_loss, y = variable)) +
+  ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
   geom_boxplot(aes(x = dropout_loss, y = variable)) +
   coord_flip() +
   labs(title = "Conditional Random Forest - Variable Importance boxplot") +
