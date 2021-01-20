@@ -130,7 +130,7 @@ gbmImp_rf
 png(file = './Plots/Variable_Importance_rforest.png', units = "px",
     width = 1200, height = 700)
 
-plot(gbmImp_rf, top = 29, main = "Random Forest - Variable Importance plot")
+plot(gbmImp_rf, top = 28, main = "Random Forest - Variable Importance plot")
 
 dev.off()
 
@@ -260,7 +260,7 @@ gbmImp_crf
 png(file = './Plots/Variable_Importance_cforest.png', units = "px",
     width = 1200, height = 700)
 
-plot(gbmImp_crf, top = 29, main = "Conditional Random Forests - Variable Importance plot")
+plot(gbmImp_crf, top = 28, main = "Conditional Random Forests - Variable Importance plot")
 
 dev.off()
 
