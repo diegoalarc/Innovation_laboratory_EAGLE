@@ -85,8 +85,6 @@ train.control <- trainControl(method="repeatedcv",
 # 
 # mod_fr$variables
 
-interact <- Interaction$new(predictor, feature = "alcohol")
-
 ################################################################################
 
 # Train the model
@@ -168,10 +166,12 @@ explained_rf <- explain(model_rf, data=test.data, y=test.data$Kg_He)
 # that is how much loss is incurred by removing a variable from the model.
 varimps_rf <- variable_importance(explained_rf, type='raw')
 
+# Delete some columns that are not part of the study
 varimps_rf <- varimps_rf[!varimps_rf$variable == "id", ]
 varimps_rf <- varimps_rf[!varimps_rf$variable == "_baseline_", ]
 varimps_rf <- varimps_rf[!varimps_rf$variable == "_full_model_", ]
 
+# Rename the column label to separate RS and non RS data.
 varimps_rf$label[grepl("_mean", varimps_rf$variable)] <- 'Remote Sensing'
 varimps_rf$label[grepl("EVI", varimps_rf$variable)] <- 'Remote Sensing'
 varimps_rf$label[grepl("GNDVI", varimps_rf$variable)] <- 'Remote Sensing'
@@ -256,8 +256,6 @@ RMSE(predictions_crf, test.data$Kg_He)/mean(test.data$Kg_He)
 gbmImp_crf <- varImp(model_crf, scale = F)
 gbmImp_crf
 
-dotPlot(gbmImp_rf)
-
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_cforest.png', units = "px",
     width = 1200, height = 700)
@@ -298,10 +296,12 @@ explained_crf <- explain(model_crf, data=test.data, y=test.data$Kg_He)
 # that is how much loss is incurred by removing a variable from the model.
 varimps_crf <- variable_importance(explained_crf, type='raw')
 
+# Delete some columns that are not part of the study
 varimps_crf <- varimps_crf[!varimps_crf$variable == "id", ]
 varimps_crf <- varimps_crf[!varimps_crf$variable == "_baseline_", ]
 varimps_crf <- varimps_crf[!varimps_crf$variable == "_full_model_", ]
 
+# Rename the column label to separate RS and non RS data.
 varimps_crf$label[grepl("_mean", varimps_crf$variable)] <- 'Remote Sensing'
 varimps_crf$label[grepl("EVI", varimps_crf$variable)] <- 'Remote Sensing'
 varimps_crf$label[grepl("GNDVI", varimps_crf$variable)] <- 'Remote Sensing'

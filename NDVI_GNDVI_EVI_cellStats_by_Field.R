@@ -211,6 +211,8 @@ for (x in 1:length(roi)){
   #     main = paste(roi_1$Name,'/ Band:',names(roi_1_crop[[band]]),'/ Year:',year,'/ Sentinel-2'))
   #plot(roi_1, border = 'red', add = TRUE)
   
+  ##############################################################################
+  
   # Create the data frame with the data by Band
   my_df <- data.frame(names_file,stringsAsFactors=FALSE)
   
