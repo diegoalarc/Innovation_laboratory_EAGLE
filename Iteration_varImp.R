@@ -36,7 +36,8 @@ metric <- "RMSE"
 
 for (i in 123:223) {
 
-  print(i-122)
+  iteration_n <- i-122
+  print(iteration_n)
   
 # Split the data into training and test set
 set.seed(i)
@@ -149,6 +150,8 @@ varimps_crf$label[grepl("train.formula", varimps_crf$label)] <- 'Other'
 df_rf[[i-122]] <- varimps_rf
 
 df_crf[[i-122]] <- varimps_crf
+
+print(paste0("Ready Iteration: ", iteration_n))
 
 }
 
