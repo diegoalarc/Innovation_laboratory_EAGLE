@@ -149,7 +149,7 @@ predictions_crf
 ID           2        6        7       15       16       23
 Kg_He 39555.69 45965.34 31059.18 48257.10 47660.85 34870.79
 
-ID           24       27       31       35        38       39 
+ID           24       27       31       35       38       39 
 Kg_He  34825.09 43228.54 35510.17 35801.68 48564.00 44670.39
 ```
 ![RMS vs Ramdom Predictors Conditional Random Forest model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RMSE_vs_Ramdom_Predictors_cforest.png?raw=true "RMS vs Ramdom Predictors Conditional Random Forest model")
