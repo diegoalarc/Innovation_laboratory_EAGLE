@@ -200,3 +200,41 @@ To make this comparison, two functions of the Caret package were used:
 - Rsquared's Bloxplot:
 
 ![Rsquared's Bloxplot](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RF_vs_cRF_Boxplot_Rsquared.png?raw=true "Rsquared's Bloxplot")
+
+### Prediction Yields
+
+Finally the predictions obtained for each model are as follows.
+
+- RandomForest model:
+
+| `Variety`	| `Field`	| `Year`	| `Area_He`	| `Kg_He` |
+| :-------: | :---------: | :---: | :---: | :--------------: |
+| THOMPSON	| THOMPSON 00	| 2021	| 9.6	| 41357.7977096304 |
+| THOMPSON	| THOMPSON 07	| 2021	| 3.4	| 36689.4504366268 |
+| THOMPSON	| THOMPSON 08	| 2021	| 3.4	| 35831.9454180071 |
+| THOMPSON	| THOMPSON 96	| 2021	| 9.5	| 35798.0735234639 |
+| CRIMSON	| CRIMSON  99-00	| 2021	| 12.2	| 45890.9988594843 |
+| CRIMSON	| CRIMSON 04	| 2021	| 2.4	| 47082.2595503199 |
+| ARRA	| ARRA 15 CR	| 2021	| 2.9	| 44344.6312243955 |
+| TIMCO	| TIMCO 14 CR	| 2021	| 4.1	| 43648.8121403448 |
+| INIAGRAPEONE	| INIAGRAPE ONE 14	| 2021	| 1.1	| 42528.3456174134 |
+| INIAGRAPEONE	| INIAGRAPE ONE 15	| 2021	| 3	| 42693.726853647 |
+| SABLE	| SABLE 14	| 2021	| 4.2	| 36598.9735786702 |
+| SABLE	| SABLE 16	| 2021	| 1.9	| 40690.0046396989 |
+
+- Conditional RandomForest model:
+
+| `Variety`	| `Field`	| `Year`	| `Area_He`	| `Kg_He` |
+| :-------: | :---------: | :---: | :---: | :--------------: |
+| THOMPSON	| THOMPSON 00	| 2021	| 9.6	| 40630.3478980829 |
+| THOMPSON	| THOMPSON 07	| 2021	| 3.4	| 35272.6115914895 |
+| THOMPSON	| THOMPSON 08	| 2021	| 3.4	| 35009.3554826691 |
+| THOMPSON	| THOMPSON 96	| 2021	| 9.5	| 34895.3375997666 |
+| CRIMSON	| CRIMSON  99-00	| 2021	| 12.2	| 44551.796429587 |
+| CRIMSON	| CRIMSON 04	| 2021	| 2.4	| 45011.1310551689 |
+| ARRA	| ARRA 15 CR	| 2021	| 2.9	| 42912.3193929731 |
+| TIMCO	| TIMCO 14 CR	| 2021	| 4.1	| 42191.3154600087 |
+| INIAGRAPEONE	| INIAGRAPE ONE 14	| 2021	| 1.1	| 41554.7408015287 |
+| INIAGRAPEONE	| INIAGRAPE ONE 15	| 2021	| 3	| 41840.732953901 |
+| SABLE	| SABLE 14	| 2021	| 4.2	| 35848.9520325514 |
+| SABLE	| SABLE 16	| 2021	| 1.9	| 43400.768352273 |

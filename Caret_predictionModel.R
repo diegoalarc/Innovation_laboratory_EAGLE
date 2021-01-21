@@ -16,12 +16,12 @@ library(party)
 setwd('/home/diego/GITHUP_REPO/Innovation_laboratory_EAGLE')
 
 # Import dataset
-# The dataset used is summary_fn.csv, which was clean but the original one
-# is summary.csv
+# The dataset used is summary.csv
 Field_Carmen <- read.csv('./Original_data/summary.csv')
 
 # Clean column 'Week' in the data frame
-Field_Carmen[,5] <- NULL
+#Field_Carmen[,5] <- NULL
+Field_Carmen <- Field_Carmen[ , -which(names(Field_Carmen) %in% c("Week"))]
 
 # The dummyVars will transform all characters and factors columns
 # The general rule for creating dummy variables is to have one less variable 
@@ -166,12 +166,12 @@ explained_rf <- explain(model_rf, data=test.data, y=test.data$Kg_He)
 # that is how much loss is incurred by removing a variable from the model.
 varimps_rf <- variable_importance(explained_rf, type='raw')
 
-# Delete some columns that are not part of the study
+# Delete some rows that are not part of the study
 varimps_rf <- varimps_rf[!varimps_rf$variable == "id", ]
 varimps_rf <- varimps_rf[!varimps_rf$variable == "_baseline_", ]
 varimps_rf <- varimps_rf[!varimps_rf$variable == "_full_model_", ]
 
-# Rename the column label to separate RS and non RS data.
+# Rename data in the column label to separate RS and non RS data.
 varimps_rf$label[grepl("_mean", varimps_rf$variable)] <- 'Remote Sensing'
 varimps_rf$label[grepl("EVI", varimps_rf$variable)] <- 'Remote Sensing'
 varimps_rf$label[grepl("GNDVI", varimps_rf$variable)] <- 'Remote Sensing'
@@ -296,12 +296,12 @@ explained_crf <- explain(model_crf, data=test.data, y=test.data$Kg_He)
 # that is how much loss is incurred by removing a variable from the model.
 varimps_crf <- variable_importance(explained_crf, type='raw')
 
-# Delete some columns that are not part of the study
+# Delete some rows that are not part of the study
 varimps_crf <- varimps_crf[!varimps_crf$variable == "id", ]
 varimps_crf <- varimps_crf[!varimps_crf$variable == "_baseline_", ]
 varimps_crf <- varimps_crf[!varimps_crf$variable == "_full_model_", ]
 
-# Rename the column label to separate RS and non RS data.
+# Rename data in the column label to separate RS and non RS data.
 varimps_crf$label[grepl("_mean", varimps_crf$variable)] <- 'Remote Sensing'
 varimps_crf$label[grepl("EVI", varimps_crf$variable)] <- 'Remote Sensing'
 varimps_crf$label[grepl("GNDVI", varimps_crf$variable)] <- 'Remote Sensing'
@@ -344,3 +344,49 @@ bwplot(resamps, metric = "Rsquared",
        horizontal = T)
 
 dev.off()
+
+################################################################################
+
+# Import dataset for predictions
+# The dataset used is for_pred.csv
+Field_Carmen_pred <- read.csv('./Original_data/for_pred.csv')
+
+# Delete columns usless
+Field_Carmen_pred <- Field_Carmen_pred[ , -which(names(Field_Carmen_pred) %in% c("Week","Kg_He"))]
+
+# Convert to non categorical values
+dmy_pred <- dummyVars(" ~ .",data = Field_Carmen_pred, fullRank=T)
+Field_Carmen_pred <- data.frame(predict(dmy_pred, newdata = Field_Carmen_pred))
+
+# Random Forest
+# Make predictions and compute the R2, RMSE and MAE
+pred_rf_2021 <- model_rf %>% predict(Field_Carmen_pred, na.action=na.omit)
+
+unname(pred_rf_2021)
+
+# Conditional Random Forest
+# Make predictions and compute the R2, RMSE and MAE
+pred_crf_2021 <- model_crf %>% predict(Field_Carmen_pred, na.action=na.omit)
+
+pred_crf_2021
+
+################################################################################
+
+# The dataset used is for_pred.csv
+Field_Carmen_fn_rf <- read.csv('./Original_data/for_pred.csv')
+Field_Carmen_fn_crf <- read.csv('./Original_data/for_pred.csv')
+
+Field_Carmen_fn_rf$Kg_He <- unname(pred_rf_2021)
+Field_Carmen_fn_crf$Kg_He <- pred_crf_2021
+
+delete_col <- c('Week','Average_Temp', 'Max_Temp', 'Min_Temp', 'Average_Hum',
+                'Average_Evapotranspiration', 'Accumulated_degree_Days', 'B1_mean',
+                'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean', 'B7_mean',
+                'B8_mean', 'B8A_mean', 'B9_mean', 'B10_mean', 'B11_mean', 'B12_mean',
+                'EVI', 'GNDVI', 'NDVI')
+
+Field_Carmen_fn_rf[ ,delete_col] <- list(NULL)
+Field_Carmen_fn_crf[ ,delete_col] <- list(NULL)
+
+write.csv(Field_Carmen_fn_rf,'./Original_data/final_pred_rf.csv',row.names = F, quote = F)
+write.csv(Field_Carmen_fn_crf,'./Original_data/final_pred_crf.csv',row.names = F, quote = F)
