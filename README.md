@@ -101,10 +101,11 @@ RMSE was used to select the optimal model using the smallest value.
 The final value used for the model was mtry = 2.
 
 predictions_rf
-       2        6        7       15       16       23       24       27       31       35 
-37649.06 50594.18 22991.68 48395.64 47672.84 32429.35 31227.15 48233.68 34352.09 37294.73 
-      38       39 
-51572.88 44684.72
+ID           2        6        7       15       16       23       24       27       31       35 
+Kg_He 37649.06 50594.18 22991.68 48395.64 47672.84 32429.35 31227.15 48233.68 34352.09 37294.73 
+
+ID          38       39 
+Kg_He 51572.88 44684.72
 ```
 ![RMS vs Ramdom Predictors Random Forest model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RMSE_vs_Ramdom_Predictors_rforest.png?raw=true "RMS vs Ramdom Predictors Random Forest model")
 
@@ -145,8 +146,11 @@ RMSE was used to select the optimal model using the smallest value.
 The final value used for the model was mtry = 10.
 
 predictions_crf
- [1] 39555.69 45965.34 31059.18 48257.10 47660.85 34870.79 34825.09 43228.54 35510.17 35801.68
-[11] 48564.00 44670.39
+ID           2        6        7       15       16       23       24       27       31       35 
+Kg_He 39555.69 45965.34 31059.18 48257.10 47660.85 34870.79 34825.09 43228.54 35510.17 35801.68
+
+ID          38       39 
+Kg_He 48564.00 44670.39
 ```
 ![RMS vs Ramdom Predictors Conditional Random Forest model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RMSE_vs_Ramdom_Predictors_cforest.png?raw=true "RMS vs Ramdom Predictors Conditional Random Forest model")
 
