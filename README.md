@@ -77,7 +77,7 @@ Resampling results across tuning parameters:
 
   mtry  RMSE      Rsquared   MAE     
    1    11696.03  0.2650583  8908.104
-   2    11644.86  0.2573990  8595.478
+   2    11644.86  0.2573990  8595.478  <----- mtry selected
    3    11725.92  0.2491017  8578.859
    4    11801.20  0.2426962  8602.588
    5    11848.96  0.2400758  8615.154
@@ -129,7 +129,7 @@ Resampling results across tuning parameters:
    7    11981.69  0.2305238   9498.562
    8    11967.76  0.2313585   9472.172
    9    11966.86  0.2311443   9458.778
-  10    11965.38  0.2307080   9440.515
+  10    11965.38  0.2307080   9440.515  <----- mtry selected
   11    11967.84  0.2299629   9435.052
   12    11971.26  0.2270257   9425.480
   13    11978.07  0.2240470   9421.372
@@ -201,11 +201,11 @@ To make this comparison, two functions of the Caret package were used:
 
 ![Rsquared's Bloxplot](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RF_vs_cRF_Boxplot_Rsquared.png?raw=true "Rsquared's Bloxplot")
 
-### Prediction Yields
+## Results: Prediction Yields
 
 Finally the predictions obtained for each model are as follows.
 
-- RandomForest model:
+### RandomForest model:
 
 | `Variety`	| `Field`	| `Year`	| `Area_He`	| `Kg_He` |
 | :-------: | :---------: | :---: | :---: | :--------------: |
@@ -222,7 +222,7 @@ Finally the predictions obtained for each model are as follows.
 | SABLE	| SABLE 14	| 2021	| 4.2	| 36598.9735786702 |
 | SABLE	| SABLE 16	| 2021	| 1.9	| 40690.0046396989 |
 
-- Conditional RandomForest model:
+### Conditional RandomForest model:
 
 | `Variety`	| `Field`	| `Year`	| `Area_He`	| `Kg_He` |
 | :-------: | :---------: | :---: | :---: | :--------------: |
