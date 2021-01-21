@@ -179,13 +179,14 @@ png(file = './Plots/Variable_Importance_boxplot_rforest_by_year_ggplo2.png', uni
     width = 1400, height = 800)
 
 p_rf2 <- big_data_rf %>% 
-  ggplot(aes(x = dropout_loss, y = variable, fill = Year)) +
+  ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
   geom_boxplot(aes(x = dropout_loss, y = variable)) +
   coord_flip() +
   labs(title = "Conditional Random Forest - Variable Importance boxplot by year") +
   ylab('Variables') + xlab('Dropout Loss') + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
-  theme(axis.text.y = element_text(hjust = 1, colour = "black"))
+  theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
+  facet_wrap(~Year, scales = "free_y")
 
 plot(p_rf2)
 
@@ -196,13 +197,14 @@ png(file = './Plots/Variable_Importance_boxplot_crforest_by_year_ggplo2.png', un
     width = 1400, height = 800)
 
 p_crf2 <- big_data_crf %>% 
-  ggplot(aes(x = dropout_loss, y = variable, fill = Year)) +
+  ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
   geom_boxplot(aes(x = dropout_loss, y = variable)) +
   coord_flip() +
   labs(title = "Conditional Random Forest - Variable Importance boxplot by year") +
   ylab('Variables') + xlab('Dropout Loss') + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
-  theme(axis.text.y = element_text(hjust = 1, colour = "black"))
+  theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
+  facet_wrap(~Year, scales = "free_y")
 
 plot(p_crf2)
 
@@ -218,7 +220,7 @@ dev.off()
 #     width = 1400, height = 800)
 # 
 # p_rf2 <- big_data_rf %>% 
-#   ggplot(aes(x = dropout_loss, y = variable)) +
+#   ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
 #   geom_boxplot(aes(x = dropout_loss, y = variable)) +
 #   coord_flip() +
 #   labs(title = "Conditional Random Forest - Variable Importance boxplot by year") +
@@ -236,7 +238,7 @@ dev.off()
 #     width = 1400, height = 800)
 # 
 # p_crf2 <- big_data_crf %>% 
-#   ggplot(aes(x = dropout_loss, y = variable)) +
+#   ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
 #   geom_boxplot(aes(x = dropout_loss, y = variable)) +
 #   coord_flip() +
 #   labs(title = "Conditional Random Forest - Variable Importance boxplot by year") +
