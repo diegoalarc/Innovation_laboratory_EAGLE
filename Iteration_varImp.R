@@ -14,10 +14,6 @@ library(vivo)
 #setwd('~/Dropbox/RS Project/RSSTARTUP_repo/Product_Development/Yield_forcasting_R/Innovation_laboratory_EAGLE')
 setwd('/home/diego/GITHUP_REPO/Innovation_laboratory_EAGLE')
 
-# Import dataset as a list of dataframes
-df_rf <- list()
-df_crf <- list()
-
 # Settings
 number <- 4
 n_repeats <- 100
@@ -99,6 +95,10 @@ predictions_crf <- model_crf %>% predict(test.data, na.action = na.omit)
 
 predictions_crf
 
+# Import dataset as a list of dataframes
+df_rf <- list()
+df_crf <- list()
+
 for (i in 1:4) {
 
   # Dataframe by year
@@ -106,57 +106,57 @@ for (i in 1:4) {
 
   # https://cran.r-project.org/web/packages/vivo/vignettes/vignette_apartments_local.html
   # use explain from DALEX.
-  explainer_rf <- explain(model_rf, data = Field_Carmen_by_year, 
+  explainer_rf2 <- explain(model_rf, data = Field_Carmen_by_year, 
                           y = Field_Carmen_by_year$Kg_He)
   
   
   # you can find out how important a variable is based on a dropout loss, 
   # that is how much loss is incurred by removing a variable from the model.
-  varimps_rf <- variable_importance(explainer_rf, type='raw')
+  varimps_rf2 <- variable_importance(explainer_rf, type='raw')
   
-  varimps_rf <- varimps_rf[!varimps_rf$variable == "id", ]
-  varimps_rf <- varimps_rf[!varimps_rf$variable == "Kg_He", ]
-  varimps_rf <- varimps_rf[!varimps_rf$variable == "Year", ]
-  varimps_rf <- varimps_rf[!varimps_rf$variable == "_baseline_", ]
-  varimps_rf <- varimps_rf[!varimps_rf$variable == "_full_model_", ]
+  varimps_rf2 <- varimps_rf2[!varimps_rf2$variable == "id", ]
+  varimps_rf2 <- varimps_rf2[!varimps_rf2$variable == "Kg_He", ]
+  varimps_rf2 <- varimps_rf2[!varimps_rf2$variable == "Year", ]
+  varimps_rf2 <- varimps_rf2[!varimps_rf2$variable == "_baseline_", ]
+  varimps_rf2 <- varimps_rf2[!varimps_rf2$variable == "_full_model_", ]
   
-  varimps_rf$label[grepl("_mean", varimps_rf$variable)] <- 'Remote Sensing'
-  varimps_rf$label[grepl("EVI", varimps_rf$variable)] <- 'Remote Sensing'
-  varimps_rf$label[grepl("GNDVI", varimps_rf$variable)] <- 'Remote Sensing'
-  varimps_rf$label[grepl("NDVI", varimps_rf$variable)] <- 'Remote Sensing'
+  varimps_rf2$label[grepl("_mean", varimps_rf2$variable)] <- 'Remote Sensing'
+  varimps_rf2$label[grepl("EVI", varimps_rf2$variable)] <- 'Remote Sensing'
+  varimps_rf2$label[grepl("GNDVI", varimps_rf2$variable)] <- 'Remote Sensing'
+  varimps_rf2$label[grepl("NDVI", varimps_rf2$variable)] <- 'Remote Sensing'
   
-  varimps_rf$label[grepl("train.formula", varimps_rf$label)] <- 'Other'
+  varimps_rf2$label[grepl("train.formula", varimps_rf2$label)] <- 'Other'
 
   ################################################################################
 
   # https://cran.r-project.org/web/packages/vivo/vignettes/vignette_apartments_local.html
   # use explain from DALEX.
-  explainer_crf <- explain(model_crf, data = Field_Carmen_by_year, 
+  explainer_crf2 <- explain(model_crf, data = Field_Carmen_by_year, 
                           y = Field_Carmen_by_year$Kg_He)
   
   
   # you can find out how important a variable is based on a dropout loss, 
   # that is how much loss is incurred by removing a variable from the model.
-  varimps_crf <- variable_importance(explainer_crf, type='raw')
+  varimps_crf2 <- variable_importance(explainer_crf, type='raw')
   
-  varimps_crf <- varimps_crf[!varimps_crf$variable == "id", ]
-  varimps_crf <- varimps_crf[!varimps_crf$variable == "Kg_He", ]
-  varimps_crf <- varimps_crf[!varimps_crf$variable == "Year", ]
-  varimps_crf <- varimps_crf[!varimps_crf$variable == "_baseline_", ]
-  varimps_crf <- varimps_crf[!varimps_crf$variable == "_full_model_", ]
+  varimps_crf2 <- varimps_crf2[!varimps_crf2$variable == "id", ]
+  varimps_crf2 <- varimps_crf2[!varimps_crf2$variable == "Kg_He", ]
+  varimps_crf2 <- varimps_crf2[!varimps_crf2$variable == "Year", ]
+  varimps_crf2 <- varimps_crf2[!varimps_crf2$variable == "_baseline_", ]
+  varimps_crf2 <- varimps_crf2[!varimps_crf2$variable == "_full_model_", ]
   
-  varimps_crf$label[grepl("_mean", varimps_crf$variable)] <- 'Remote Sensing'
-  varimps_crf$label[grepl("EVI", varimps_crf$variable)] <- 'Remote Sensing'
-  varimps_crf$label[grepl("GNDVI", varimps_crf$variable)] <- 'Remote Sensing'
-  varimps_crf$label[grepl("NDVI", varimps_crf$variable)] <- 'Remote Sensing'
+  varimps_crf2$label[grepl("_mean", varimps_crf2$variable)] <- 'Remote Sensing'
+  varimps_crf2$label[grepl("EVI", varimps_crf2$variable)] <- 'Remote Sensing'
+  varimps_crf2$label[grepl("GNDVI", varimps_crf2$variable)] <- 'Remote Sensing'
+  varimps_crf2$label[grepl("NDVI", varimps_crf2$variable)] <- 'Remote Sensing'
   
-  varimps_crf$label[grepl("train.formula", varimps_crf$label)] <- 'Other'
+  varimps_crf2$label[grepl("train.formula", varimps_crf2$label)] <- 'Other'
   
   ################################################################################
   
-  varimps_rf[,5] <- data.frame(Year = as.character(2015 + i))
+  varimps_rf2[,5] <- data.frame(Year = as.character(2015 + i))
   
-  varimps_crf[,5] <- data.frame(Year = as.character(2015 + i))
+  varimps_crf2[,5] <- data.frame(Year = as.character(2015 + i))
   
   df_rf[[i]] <- varimps_rf
   
