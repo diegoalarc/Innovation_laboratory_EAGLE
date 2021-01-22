@@ -139,11 +139,11 @@ for (i in 1:4) {
   # that is how much loss is incurred by removing a variable from the model.
   varimps_crf <- variable_importance(explainer_crf, type='raw')
   
-  varimps_rf <- varimps_rf[!varimps_rf$variable == "id", ]
-  varimps_rf <- varimps_rf[!varimps_rf$variable == "Kg_He", ]
-  varimps_rf <- varimps_rf[!varimps_rf$variable == "Year", ]
-  varimps_rf <- varimps_rf[!varimps_rf$variable == "_baseline_", ]
-  varimps_rf <- varimps_rf[!varimps_rf$variable == "_full_model_", ]
+  varimps_crf <- varimps_crf[!varimps_crf$variable == "id", ]
+  varimps_crf <- varimps_crf[!varimps_crf$variable == "Kg_He", ]
+  varimps_crf <- varimps_crf[!varimps_crf$variable == "Year", ]
+  varimps_crf <- varimps_crf[!varimps_crf$variable == "_baseline_", ]
+  varimps_crf <- varimps_crf[!varimps_crf$variable == "_full_model_", ]
   
   varimps_crf$label[grepl("_mean", varimps_crf$variable)] <- 'Remote Sensing'
   varimps_crf$label[grepl("EVI", varimps_crf$variable)] <- 'Remote Sensing'
