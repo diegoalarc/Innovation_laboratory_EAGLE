@@ -28,14 +28,18 @@ metric <- "RMSE"
 # Define training control
 set.seed(123)
 
-train.control <- trainControl(method="repeatedcv", 
+train.control <- trainControl(method="repeatedcv", allowParallel = TRUE,
                               number = number, repeats = n_repeats,
                               savePredictions = T, search="grid")
 
 for (i in 1:4) {
+  # Import dataset
+  # The dataset used is summary.csv
+  Field_Carmen <- read.csv('./Original_data/summary.csv')
+  
   # Dataframe by year
-  Field_Carmen <- read.csv(paste0('./Original_data/summary_',2016+i,'.csv'))
-
+  Field_Carmen <- Field_Carmen %>% filter(Year == 2016+i)
+  
   # Clean column 'Week' in the data frame
   Field_Carmen[,5] <- NULL
   
