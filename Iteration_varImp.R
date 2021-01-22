@@ -52,6 +52,9 @@ Field_Carmen <- data.frame(predict(dmy, newdata = Field_Carmen))
 # Split the data into training and test set
 set.seed(123)
 
+training.samples <- Field_Carmen$Kg_He %>%
+  createDataPartition(p = train_fraction, list = FALSE)
+
 train.data <- Field_Carmen[training.samples, ]
 test.data <- Field_Carmen[-training.samples, ]
 
@@ -101,9 +104,6 @@ for (i in 1:4) {
   # Dataframe by year
   Field_Carmen_by_year <- Field_Carmen %>% filter(Year == 2016+i)
 
-  training.samples <- Field_Carmen$Kg_He %>%
-    createDataPartition(p = train_fraction, list = FALSE)
-  
   # https://cran.r-project.org/web/packages/vivo/vignettes/vignette_apartments_local.html
   # use explain from DALEX.
   explainer_rf <- explain(model_rf, data = Field_Carmen_by_year, 
