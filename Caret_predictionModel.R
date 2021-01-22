@@ -160,7 +160,7 @@ dev.off()
 
 # https://www.machinelearningplus.com/machine-learning/feature-selection/
 # Calculate Feature Importance Explanations As Loss From Feature Dropout
-explained_rf <- explain(model_rf, data=test.data, y=test.data$Kg_He)
+explained_rf <- explain(model_rf, data=Field_Carmen, y=Field_Carmen$Kg_He)
 
 # you can find out how important a variable is based on a dropout loss, 
 # that is how much loss is incurred by removing a variable from the model.
@@ -177,7 +177,7 @@ varimps_rf$label[grepl("EVI", varimps_rf$variable)] <- 'Remote Sensing'
 varimps_rf$label[grepl("GNDVI", varimps_rf$variable)] <- 'Remote Sensing'
 varimps_rf$label[grepl("NDVI", varimps_rf$variable)] <- 'Remote Sensing'
 
-varimps_rf$label[grepl("train.formula", varimps_rf$label)] <- 'Other'
+varimps_rf$label[grepl("train.formula", varimps_rf$label)] <- 'Ground truth data'
 
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_boxplot_rforest_ggplo2.png', units = "px",
@@ -290,7 +290,7 @@ dev.off()
 
 # https://www.machinelearningplus.com/machine-learning/feature-selection/
 # Calculate Feature Importance Explanations As Loss From Feature Dropout
-explained_crf <- explain(model_crf, data=test.data, y=test.data$Kg_He)
+explained_crf <- explain(model_crf, data=Field_Carmen, y=Field_Carmen$Kg_He)
 
 # you can find out how important a variable is based on a dropout loss, 
 # that is how much loss is incurred by removing a variable from the model.
@@ -307,7 +307,7 @@ varimps_crf$label[grepl("EVI", varimps_crf$variable)] <- 'Remote Sensing'
 varimps_crf$label[grepl("GNDVI", varimps_crf$variable)] <- 'Remote Sensing'
 varimps_crf$label[grepl("NDVI", varimps_crf$variable)] <- 'Remote Sensing'
 
-varimps_crf$label[grepl("train.formula", varimps_crf$label)] <- 'Other'
+varimps_crf$label[grepl("train.formula", varimps_crf$label)] <- 'Ground truth data'
 
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_boxplot_crforest_ggplo2.png', units = "px",

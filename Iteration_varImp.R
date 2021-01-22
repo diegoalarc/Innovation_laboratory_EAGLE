@@ -112,7 +112,7 @@ for (i in 1:4) {
   
   # you can find out how important a variable is based on a dropout loss, 
   # that is how much loss is incurred by removing a variable from the model.
-  varimps_rf2 <- variable_importance(explainer_rf, type='raw')
+  varimps_rf2 <- variable_importance(explainer_rf2, type='raw')
   
   varimps_rf2 <- varimps_rf2[!varimps_rf2$variable == "id", ]
   varimps_rf2 <- varimps_rf2[!varimps_rf2$variable == "Kg_He", ]
@@ -125,7 +125,7 @@ for (i in 1:4) {
   varimps_rf2$label[grepl("GNDVI", varimps_rf2$variable)] <- 'Remote Sensing'
   varimps_rf2$label[grepl("NDVI", varimps_rf2$variable)] <- 'Remote Sensing'
   
-  varimps_rf2$label[grepl("train.formula", varimps_rf2$label)] <- 'Other'
+  varimps_rf2$label[grepl("train.formula", varimps_rf2$label)] <- 'Ground truth data'
 
   ################################################################################
 
@@ -137,7 +137,7 @@ for (i in 1:4) {
   
   # you can find out how important a variable is based on a dropout loss, 
   # that is how much loss is incurred by removing a variable from the model.
-  varimps_crf2 <- variable_importance(explainer_crf, type='raw')
+  varimps_crf2 <- variable_importance(explainer_crf2, type='raw')
   
   varimps_crf2 <- varimps_crf2[!varimps_crf2$variable == "id", ]
   varimps_crf2 <- varimps_crf2[!varimps_crf2$variable == "Kg_He", ]
@@ -150,7 +150,7 @@ for (i in 1:4) {
   varimps_crf2$label[grepl("GNDVI", varimps_crf2$variable)] <- 'Remote Sensing'
   varimps_crf2$label[grepl("NDVI", varimps_crf2$variable)] <- 'Remote Sensing'
   
-  varimps_crf2$label[grepl("train.formula", varimps_crf2$label)] <- 'Other'
+  varimps_crf2$label[grepl("train.formula", varimps_crf2$label)] <- 'Ground truth data'
   
   ################################################################################
   
@@ -158,9 +158,9 @@ for (i in 1:4) {
   
   varimps_crf2[,5] <- data.frame(Year = as.character(2015 + i))
   
-  df_rf[[i]] <- varimps_rf
+  df_rf[[i]] <- varimps_rf2
   
-  df_crf[[i]] <- varimps_crf
+  df_crf[[i]] <- varimps_crf2
   
   print(paste0("Ready Iteration: ", i))
   
@@ -214,44 +214,3 @@ p_crf2 <- big_data_crf %>%
 plot(p_crf2)
 
 dev.off()
-
-################################################################################
-# 
-# big_data_rf <- read.csv('./Original_data/VarIpm_rf_by_year.csv')
-# big_data_crf <- read.csv('./Original_data/VarIpm_crf_by_year.csv')
-# 
-# # Save boxplot as .png
-# png(file = './Plots/Variable_Importance_boxplot_rforest_by_year_ggplo2.png', units = "px",
-#     width = 1400, height = 800)
-# 
-# p_rf2 <- big_data_rf %>% 
-#   ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
-#   geom_boxplot(aes(x = dropout_loss, y = variable)) +
-#   coord_flip() +
-#   labs(title = "Conditional Random Forest - Variable Importance boxplot by year") +
-#   ylab('Variables') + xlab('Dropout Loss') + 
-#   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
-#   theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
-#   facet_wrap(~Year, scales = "free_y")
-# 
-# plot(p_rf2)
-# 
-# dev.off()
-# 
-# # Save boxplot as .png
-# png(file = './Plots/Variable_Importance_boxplot_crforest_by_year_ggplo2.png', units = "px",
-#     width = 1400, height = 800)
-# 
-# p_crf2 <- big_data_crf %>% 
-#   ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
-#   geom_boxplot(aes(x = dropout_loss, y = variable)) +
-#   coord_flip() +
-#   labs(title = "Conditional Random Forest - Variable Importance boxplot by year") +
-#   ylab('Variables') + xlab('Dropout Loss') + 
-#   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
-#   theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
-#   facet_wrap(~Year, scales = "free_y")
-# 
-# plot(p_crf2)
-# 
-# dev.off()
