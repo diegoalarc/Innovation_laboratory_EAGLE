@@ -8,88 +8,115 @@ library(ggpubr)
 library(caret)
 library(DALEX)
 library(party)
+library(vivo)
 
 # Set the folder location
 #setwd('~/Dropbox/RS Project/RSSTARTUP_repo/Product_Development/Yield_forcasting_R/Innovation_laboratory_EAGLE')
 setwd('/home/diego/GITHUP_REPO/Innovation_laboratory_EAGLE')
 
-# Import dataset
-Field_Carmen <- read.csv('./Original_data/summary.csv')
-
-# Clean column 'Week' in the data frame
-Field_Carmen[,5] <- NULL
-
-# The dummyVars will transform all characters and factors columns
-dmy <- dummyVars(" ~ .",data = Field_Carmen, fullRank=T)
-Field_Carmen <- data.frame(predict(dmy, newdata = Field_Carmen))
-
-# See top 6 rows and 10 columns
-head(Field_Carmen[, 1:10])
+# Import dataset as a list of dataframes
+df_rf <- list()
+df_crf <- list()
 
 # Settings
 number <- 4
 n_repeats <- 100
-train_fraction <- 0.7
+train_fraction <- 0.6
 tunegrid <- expand.grid(.mtry=c(1:20))
 ntree <- 1200
 metric <- "RMSE"
 
-for (i in 123:223) {
+# Define training control
+set.seed(123)
 
-  iteration_n <- i-122
-  print(iteration_n)
-  
-  # Split the data into training and test set
-  set.seed(i)
-    
+train.control <- trainControl(method="repeatedcv", allowParallel = TRUE,
+                              number = number, repeats = n_repeats,
+                              savePredictions = T, search="grid")
+
+################################################################################
+
+# Import dataset
+# The dataset used is summary.csv
+Field_Carmen <- read.csv('./Original_data/summary.csv')
+
+# Clean columns 'id' & 'Week' in the data frame
+Field_Carmen <- Field_Carmen[ , -which(names(Field_Carmen) %in% c("id","Week"))]
+
+# The dummyVars will transform all characters and factors columns
+dmy <- dummyVars(" ~ .",data = Field_Carmen, fullRank = T)
+Field_Carmen <- data.frame(predict(dmy, newdata = Field_Carmen))
+
+# See top 6 rows and 10 columns
+#head(Field_Carmen[, 1:10])
+
+# Split the data into training and test set
+set.seed(123)
+
+train.data <- Field_Carmen[training.samples, ]
+test.data <- Field_Carmen[-training.samples, ]
+
+################################################################################
+
+# Train the model
+set.seed(123)
+
+model_rf <- train(Kg_He ~., data = Field_Carmen, 
+                  method = "rf",
+                  ntree = ntree,
+                  metric=metric,
+                  tuneGrid = tunegrid,
+                  #                  tuneGrid = data.frame(mtry = mtry),
+                  trControl = train.control)
+
+# Summarize the results
+print(model_rf)
+
+# Make predictions and compute the R2, RMSE and MAE
+predictions_rf <- model_rf %>% predict(test.data, na.action = na.omit)
+
+predictions_rf
+################################################################################
+
+# Define training control
+set.seed(123)
+
+# Train the model
+model_crf <- train(Kg_He ~., data = Field_Carmen, 
+                   method = "cforest",
+                   metric=metric,
+                   tuneGrid = tunegrid,
+                   #                   tuneGrid = data.frame(mtry = mtry),
+                   trControl = train.control)
+
+# Summarize the results
+print(model_crf)
+
+# Make predictions and compute the R2, RMSE and MAE
+predictions_crf <- model_crf %>% predict(test.data, na.action = na.omit)
+
+predictions_crf
+
+for (i in 1:4) {
+
+  # Dataframe by year
+  Field_Carmen_by_year <- Field_Carmen %>% filter(Year == 2016+i)
+
   training.samples <- Field_Carmen$Kg_He %>%
     createDataPartition(p = train_fraction, list = FALSE)
   
-  train.data  <- Field_Carmen[training.samples, ]
-  test.data <- Field_Carmen[-training.samples, ]
+  # https://cran.r-project.org/web/packages/vivo/vignettes/vignette_apartments_local.html
+  # use explain from DALEX.
+  explainer_rf <- explain(model_rf, data = Field_Carmen_by_year, 
+                          y = Field_Carmen_by_year$Kg_He)
   
-  ################################################################################
-  # Define training control
-  set.seed(i)
-  
-  # Grid Search
-  train.control <- trainControl(method="repeatedcv", 
-                                number = number, repeats = n_repeats,
-                                savePredictions = T, search="grid")
-  
-  ################################################################################
-  
-  # Train the model
-  model_rf <- train(Kg_He ~., data = Field_Carmen, 
-                    method = "rf",
-                    ntree = ntree,
-                    metric=metric,
-                    tuneGrid = tunegrid,
-                    #               tuneGrid = data.frame(mtry = mtry),
-                    trControl = train.control)
-  
-  # Summarize the results
-  print(model_rf)
-  
-  # Make predictions and compute the R2, RMSE and MAE
-  predictions_rf <- model_rf %>% predict(test.data, na.action=na.omit)
-  
-  predictions_rf
-  
-  postResample(pred = predictions_rf, obs = test.data$Kg_He)
-  
-  # # variable importance
-  # gbmImp_rf <- varImp(model_rf, useModel = T, scale = F)
-  # gbmImp_rf
-  
-  # Calculate Feature Importance Explanations As Loss From Feature Dropout
-  explained_rf <- explain(model_rf, data=test.data, y=test.data$Kg_He)
   
   # you can find out how important a variable is based on a dropout loss, 
   # that is how much loss is incurred by removing a variable from the model.
-  varimps_rf <- variable_importance(explained_rf, type='raw')
+  varimps_rf <- variable_importance(explainer_rf, type='raw')
   
   varimps_rf <- varimps_rf[!varimps_rf$variable == "id", ]
+  varimps_rf <- varimps_rf[!varimps_rf$variable == "Kg_He", ]
+  varimps_rf <- varimps_rf[!varimps_rf$variable == "Year", ]
   varimps_rf <- varimps_rf[!varimps_rf$variable == "_baseline_", ]
   varimps_rf <- varimps_rf[!varimps_rf$variable == "_full_model_", ]
   
@@ -99,44 +126,24 @@ for (i in 123:223) {
   varimps_rf$label[grepl("NDVI", varimps_rf$variable)] <- 'Remote Sensing'
   
   varimps_rf$label[grepl("train.formula", varimps_rf$label)] <- 'Other'
-  
+
   ################################################################################
+
+  # https://cran.r-project.org/web/packages/vivo/vignettes/vignette_apartments_local.html
+  # use explain from DALEX.
+  explainer_crf <- explain(model_crf, data = Field_Carmen_by_year, 
+                          y = Field_Carmen_by_year$Kg_He)
   
-  # Define training control
-  set.seed(i)
-  
-  # Train the model
-  model_crf <- train(Kg_He ~., data = Field_Carmen, 
-                     method = "cforest",
-                     metric=metric,
-                     tuneGrid = tunegrid,
-                     #               tuneGrid = data.frame(mtry = mtry),
-                     trControl = train.control)
-  
-  # Summarize the results
-  print(model_crf)
-  
-  # Make predictions and compute the R2, RMSE and MAE
-  predictions_crf <- model_crf %>% predict(test.data, na.action=na.omit)
-  
-  predictions_crf
-  
-  postResample(pred = predictions_crf, obs = test.data$Kg_He)
-  
-  # # variable importance
-  # gbmImp_crf <- varImp(model_crf, scale = F)
-  # gbmImp_crf
-  
-  # Calculate Feature Importance Explanations As Loss From Feature Dropout
-  explained_crf <- explain(model_crf, data=test.data, y=test.data$Kg_He)
   
   # you can find out how important a variable is based on a dropout loss, 
   # that is how much loss is incurred by removing a variable from the model.
-  varimps_crf <- variable_importance(explained_crf, type='raw')
+  varimps_crf <- variable_importance(explainer_crf, type='raw')
   
-  varimps_crf <- varimps_crf[!varimps_crf$variable == "id", ]
-  varimps_crf <- varimps_crf[!varimps_crf$variable == "_baseline_", ]
-  varimps_crf <- varimps_crf[!varimps_crf$variable == "_full_model_", ]
+  varimps_rf <- varimps_rf[!varimps_rf$variable == "id", ]
+  varimps_rf <- varimps_rf[!varimps_rf$variable == "Kg_He", ]
+  varimps_rf <- varimps_rf[!varimps_rf$variable == "Year", ]
+  varimps_rf <- varimps_rf[!varimps_rf$variable == "_baseline_", ]
+  varimps_rf <- varimps_rf[!varimps_rf$variable == "_full_model_", ]
   
   varimps_crf$label[grepl("_mean", varimps_crf$variable)] <- 'Remote Sensing'
   varimps_crf$label[grepl("EVI", varimps_crf$variable)] <- 'Remote Sensing'
@@ -147,12 +154,16 @@ for (i in 123:223) {
   
   ################################################################################
   
-  df_rf[[iteration_n]] <- varimps_rf
+  varimps_rf[,5] <- data.frame(Year = as.character(2015 + i))
   
-  df_crf[[iteration_n]] <- varimps_crf
+  varimps_crf[,5] <- data.frame(Year = as.character(2015 + i))
   
-  print(paste0("Ready Iteration: ", iteration_n))
-
+  df_rf[[i]] <- varimps_rf
+  
+  df_crf[[i]] <- varimps_crf
+  
+  print(paste0("Ready Iteration: ", i))
+  
 }
 
 # Execute a Function rbind
@@ -160,45 +171,87 @@ big_data_rf <- do.call(rbind, df_rf)
 big_data_crf <- do.call(rbind, df_crf)
 
 # Save dataframe as .CSV
-write.csv(big_data_rf,'./Original_data/VarIpm_rf.csv',row.names = F, quote = F)
-write.csv(big_data_crf,'./Original_data/VarIpm_crf.csv',row.names = F, quote = F)
+write.csv(big_data_rf,'./Original_data/VarIpm_rf_by_year.csv',row.names = F, quote = F)
+write.csv(big_data_crf,'./Original_data/VarIpm_crf_by_year.csv',row.names = F, quote = F)
 
 ################################################################################
 
-# plot RandomForest Variable Importance
-p_rf <- ggplot(data = big_data_rf, aes(x=Year, y=NDVI, fill=Field)) + 
-  geom_boxplot(aes(fill=Field)) + 
-  stat_summary(fun=mean, geom="line", aes(group=Field)) +
-  stat_summary(fun=mean, geom="point", shape=20, size=4, color="red", fill="red") +
-  labs(title = "Time-series NDVI between November and December in the Carmen Rosa Farm for each year", 
-       caption = "All data here is produced under the Copernicus Programme, free of charge, without restriction of use.") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
-  theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
-  facet_wrap(~Field, ncol = 4)
+big_data_rf <- read.csv('./Original_data/VarIpm_rf_by_year.csv')
+big_data_crf <- read.csv('./Original_data/VarIpm_crf_by_year.csv')
 
 # Save boxplot as .png
-png(file = './Plots/VarIpm_rf.png', units = "px",
-    width = 1200, height = 700)
+png(file = './Plots/Variable_Importance_boxplot_rforest_by_year_ggplo2.png', units = "px",
+    width = 1400, height = 800)
 
-# Plot the graph
-plot(p_rf)
-dev.off()
-
-# plot Conditional RandomForest Variable Importance
-p_crf <- ggplot(data = big_data_crf, aes(x=Year, y=NDVI, fill=Field)) + 
-  geom_boxplot(aes(fill=Field)) + 
-  stat_summary(fun=mean, geom="line", aes(group=Field)) +
-  stat_summary(fun=mean, geom="point", shape=20, size=4, color="red", fill="red") +
-  labs(title = "Time-series NDVI between November and December in the Carmen Rosa Farm for each year", 
-       caption = "All data here is produced under the Copernicus Programme, free of charge, without restriction of use.") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
+p_rf2 <- big_data_rf %>% 
+  ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
+  geom_boxplot(aes(x = dropout_loss, y = variable)) +
+  coord_flip() +
+  labs(title = "Conditional Random Forest - Variable Importance boxplot by year") +
+  ylab('Variables') + xlab('Dropout Loss') + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
   theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
-  facet_wrap(~Field, ncol = 4)
+  facet_wrap(~Year, scales = "free_y")
+
+plot(p_rf2)
+
+dev.off()
 
 # Save boxplot as .png
-png(file = './Plots/VarIpm_crf.png', units = "px",
-    width = 1200, height = 700)
+png(file = './Plots/Variable_Importance_boxplot_crforest_by_year_ggplo2.png', units = "px",
+    width = 1400, height = 800)
 
-# Plot the graph
-plot(p_crf)
+p_crf2 <- big_data_crf %>% 
+  ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
+  geom_boxplot(aes(x = dropout_loss, y = variable)) +
+  coord_flip() +
+  labs(title = "Conditional Random Forest - Variable Importance boxplot by year") +
+  ylab('Variables') + xlab('Dropout Loss') + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
+  theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
+  facet_wrap(~Year, scales = "free_y")
+
+plot(p_crf2)
+
 dev.off()
+
+################################################################################
+# 
+# big_data_rf <- read.csv('./Original_data/VarIpm_rf_by_year.csv')
+# big_data_crf <- read.csv('./Original_data/VarIpm_crf_by_year.csv')
+# 
+# # Save boxplot as .png
+# png(file = './Plots/Variable_Importance_boxplot_rforest_by_year_ggplo2.png', units = "px",
+#     width = 1400, height = 800)
+# 
+# p_rf2 <- big_data_rf %>% 
+#   ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
+#   geom_boxplot(aes(x = dropout_loss, y = variable)) +
+#   coord_flip() +
+#   labs(title = "Conditional Random Forest - Variable Importance boxplot by year") +
+#   ylab('Variables') + xlab('Dropout Loss') + 
+#   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
+#   theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
+#   facet_wrap(~Year, scales = "free_y")
+# 
+# plot(p_rf2)
+# 
+# dev.off()
+# 
+# # Save boxplot as .png
+# png(file = './Plots/Variable_Importance_boxplot_crforest_by_year_ggplo2.png', units = "px",
+#     width = 1400, height = 800)
+# 
+# p_crf2 <- big_data_crf %>% 
+#   ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
+#   geom_boxplot(aes(x = dropout_loss, y = variable)) +
+#   coord_flip() +
+#   labs(title = "Conditional Random Forest - Variable Importance boxplot by year") +
+#   ylab('Variables') + xlab('Dropout Loss') + 
+#   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
+#   theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
+#   facet_wrap(~Year, scales = "free_y")
+# 
+# plot(p_crf2)
+# 
+# dev.off()
