@@ -17,29 +17,34 @@ setwd('/home/diego/GITHUP_REPO/Innovation_laboratory_EAGLE')
 df_rf <- list()
 df_crf <- list()
 
+# Settings
+number <- 4
+n_repeats <- 100
+train_fraction <- 0.6
+tunegrid <- expand.grid(.mtry=c(1:20))
+ntree <- 1200
+metric <- "RMSE"
+
+# Define training control
+set.seed(123)
+
+train.control <- trainControl(method="repeatedcv", 
+                              number = number, repeats = n_repeats,
+                              savePredictions = T, search="grid")
+
 for (i in 1:4) {
-  # list of dataframes
-  #Field_Carmen[[i]] <- list(read.csv(paste0('./Original_data/summary_',2016+i,'.csv')))
+  # Dataframe by year
   Field_Carmen <- read.csv(paste0('./Original_data/summary_',2016+i,'.csv'))
 
   # Clean column 'Week' in the data frame
   Field_Carmen[,5] <- NULL
   
   # The dummyVars will transform all characters and factors columns
-  dmy <- dummyVars(" ~ .",data = Field_Carmen, fullRank=T)
+  dmy <- dummyVars(" ~ .",data = Field_Carmen, fullRank = T)
   Field_Carmen <- data.frame(predict(dmy, newdata = Field_Carmen))
   
   # See top 6 rows and 10 columns
-  head(Field_Carmen[, 1:10])
-  
-  # Settings
-  number <- 4
-  n_repeats <- 100
-  train_fraction <- 0.6
-  tunegrid <- expand.grid(.mtry=c(1:20))
-  ntree <- 1200
-  metric <- "RMSE"
-  
+  #head(Field_Carmen[, 1:10])
   
   # Split the data into training and test set
   set.seed(123)
@@ -47,45 +52,32 @@ for (i in 1:4) {
   training.samples <- Field_Carmen$Kg_He %>%
     createDataPartition(p = train_fraction, list = FALSE)
   
-  train.data  <- Field_Carmen[training.samples, ]
+  train.data <- Field_Carmen[training.samples, ]
   test.data <- Field_Carmen[-training.samples, ]
-  
-  ################################################################################
-  # Define training control
+
+  # Train the model
   set.seed(123)
   
-  # Grid Search
-  train.control <- trainControl(method="repeatedcv", 
-                                number = number, repeats = n_repeats,
-                                savePredictions = T, search="grid")
-  
-  ################################################################################
-  
-  # Train the model
   model_rf <- train(Kg_He ~., data = Field_Carmen, 
                     method = "rf",
                     ntree = ntree,
                     metric=metric,
                     tuneGrid = tunegrid,
-                    #               tuneGrid = data.frame(mtry = mtry),
+  #                  tuneGrid = data.frame(mtry = mtry),
                     trControl = train.control)
   
   # Summarize the results
   print(model_rf)
   
   # Make predictions and compute the R2, RMSE and MAE
-  predictions_rf <- model_rf %>% predict(test.data, na.action=na.omit)
+  predictions_rf <- model_rf %>% predict(test.data, na.action = na.omit)
   
   predictions_rf
   
   postResample(pred = predictions_rf, obs = test.data$Kg_He)
   
-  # # variable importance
-  # gbmImp_rf <- varImp(model_rf, useModel = T, scale = F)
-  # gbmImp_rf
-  
   # Calculate Feature Importance Explanations As Loss From Feature Dropout
-  explained_rf <- explain(model_rf, data=test.data, y=test.data$Kg_He)
+  explained_rf <- explain(model_rf, data = test.data, y = test.data$Kg_He)
   
   # you can find out how important a variable is based on a dropout loss, 
   # that is how much loss is incurred by removing a variable from the model.
@@ -112,25 +104,21 @@ for (i in 1:4) {
                      method = "cforest",
                      metric=metric,
                      tuneGrid = tunegrid,
-                     #               tuneGrid = data.frame(mtry = mtry),
+  #                   tuneGrid = data.frame(mtry = mtry),
                      trControl = train.control)
   
   # Summarize the results
   print(model_crf)
   
   # Make predictions and compute the R2, RMSE and MAE
-  predictions_crf <- model_crf %>% predict(test.data, na.action=na.omit)
+  predictions_crf <- model_crf %>% predict(test.data, na.action = na.omit)
   
   predictions_crf
   
   postResample(pred = predictions_crf, obs = test.data$Kg_He)
   
-  # # variable importance
-  # gbmImp_crf <- varImp(model_crf, scale = F)
-  # gbmImp_crf
-  
   # Calculate Feature Importance Explanations As Loss From Feature Dropout
-  explained_crf <- explain(model_crf, data=test.data, y=test.data$Kg_He)
+  explained_crf <- explain(model_crf, data = test.data, y = test.data$Kg_He)
   
   # you can find out how important a variable is based on a dropout loss, 
   # that is how much loss is incurred by removing a variable from the model.
