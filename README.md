@@ -55,7 +55,7 @@ In order to get a general idea of each field, an NDVI analysis was performed for
 The codes are as follows:
 [R Boxplot code](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Boxplot.R)
 
-#### Considerations when reading the graph:
+##### Considerations when reading the graph:
 ```r
 For the fields 'INIAGRAPE ONE 15' and 'SABLE 16', only the years 2018 to 2020 are valid.
 The other data was removed from the data frame to create the machine learning model.
