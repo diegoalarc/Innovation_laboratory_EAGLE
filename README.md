@@ -34,7 +34,7 @@ Image of Carmen Rosa Farm:
 
 ## Google Earth Engine
 To carry out this project, an algorithm was generated through Google Earth Engine to obtain the images between November and December from 2016 to 2019, which represent the most important phenological stage for these grapes in this area of Chile. In the algorithm the images of GNDVI, NDVI and EVI were generated, which give us information about the crops and their health. Within the same algorithm, a mean of all the images for all their bands was obtained, which were downloaded and processed by the algorithms generated in R.
-To obtain the information for the prediction of the year 2021, this algorithm was also used to obtain the desired images and bands.
+To obtain the information for the prediction of the year 2021, this algorithm was also used..
 
 The codes are as follows:
 [Sentinel-2](https://code.earthengine.google.com/10bef8017a4fcacec6ef47296e2b9018)
@@ -56,7 +56,9 @@ The codes are as follows:
 [R Boxplot code](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Boxplot.R)
 
 #### Considerations when reading the graph:
+```r
 For the fields 'INIAGRAPE ONE 15' and 'SABLE 16', since the years 2018 to 2020 are valid. They did not present production in the years 2016 - 2017. This data was eliminated from the dataframe to create the machine learning model.
+```
 
 #### Boxplot:
 ![Example of NDVI for each field from the years 2016 -2020](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/NDVI_2017_to_2021.png?raw=true "Example of NDVI for each field from the years 2016 -2020")
