@@ -1,4 +1,8 @@
-# [Innovation_laboratory_EAGLE](http://eagle-science.org/project/tmt1-innovation-laboratory/)
+!["Uni Wuerzburg"](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/EAGLE_logo.png?raw=true "EAGLE Msc")
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+# [Innovation laboratory EAGLE](http://eagle-science.org/project/tmt1-innovation-laboratory/)
 The innovation laboratory provides the opportunity to conduct a specified research project on a chosen research topic and explore the potential, challenges and limits of Earth Observation and geoanalysis in a practical approach during the 3rd term.
 The Innovation Laboratory allows you to analyze one particular topic in your field of interest in depth. It allows to address own research in the field of the study program and offers the basis of practical attained knowledge. It is similar to an internship but allows to do it at the university (esp. our department).
 
@@ -52,10 +56,10 @@ The codes are as follows:
 [R Boxplot code](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Boxplot.R)
 
 #### Considerations when reading the graph:
-For the fields 'INIAGRAPE ONE 15' and 'SABLE 16', only the years 2018 - 2019 are valid, since they did not present production in the years 2016 - 2017. This data was eliminated from the dataframe to create the machine learning model.
+For the fields 'INIAGRAPE ONE 15' and 'SABLE 16', since the years 2018 to 2020 are valid. They did not present production in the years 2016 - 2017. This data was eliminated from the dataframe to create the machine learning model.
 
 #### Boxplot:
-![Example of NDVI for each field from the years 2016 -2019](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/NDVI_2017_to_2021.png?raw=true "Example of NDVI for each field from the years 2016 -2019")
+![Example of NDVI for each field from the years 2016 -2020](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/NDVI_2017_to_2021.png?raw=true "Example of NDVI for each field from the years 2016 -2020")
 
 ## R Code [Caret Package](https://topepo.github.io/caret/index.html)
 Applying the [Caret](https://topepo.github.io/caret/index.html) de R package, a [Machine Learning](https://en.wikipedia.org/wiki/Machine_learning) model was made to make a prediction of the Yield of Carmen Rosa farm.
@@ -171,7 +175,7 @@ We have also calculate Feature Importance for each Variable vs Dropout Loss.
 - Conditional RandomForest model:
 ![Variable importance boxplot ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_boxplot_crforest_ggplo2.png?raw=true "Variable importance boxplot ML model")
 
-We have also calculate Feature Importance for each Variable vs Dropout Loss by each year used in the model.
+#### We have also calculate Feature Importance by each year used in the model.
 
 - RandomForest model:
 ![Variable importance boxplot ML model by year](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_boxplot_rforest_by_year_ggplo2.png?raw=true "Variable importance boxplot ML model by year")
@@ -242,3 +246,7 @@ Finally the predictions obtained for each model are as follows.
 | INIAGRAPEONE	| INIAGRAPE ONE 15	| 2021	| 3	| 41840.732953901 |
 | SABLE	| SABLE 14	| 2021	| 4.2	| 35848.9520325514 |
 | SABLE	| SABLE 16	| 2021	| 1.9	| 43400.768352273 |
+
+### *GNU General Public License v3.0 - Copyright (C)*
+
+This script was made for testing purposes and may be used and modified in the future by those who see fit.
