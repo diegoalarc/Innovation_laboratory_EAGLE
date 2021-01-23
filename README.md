@@ -57,9 +57,8 @@ The codes are as follows:
 
 #### Considerations when reading the graph:
 ```r
-For the fields 'INIAGRAPE ONE 15' and 'SABLE 16', since the years 2018 to 2020 are valid.
-They did not present production in the years 2016 - 2017. 
-This data was eliminated from the dataframe to create the machine learning model.
+For the fields 'INIAGRAPE ONE 15' and 'SABLE 16', only the years 2018 to 2020 are valid.
+The other data was removed from the data frame to create the machine learning model.
 ```
 
 #### Boxplot:
