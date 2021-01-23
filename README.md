@@ -250,6 +250,8 @@ Finally the predictions obtained for each model are as follows.
 | SABLE	| SABLE 14	| 2021	| 4.2	| 35848.9520325514 |
 | SABLE	| SABLE 16	| 2021	| 1.9	| 43400.768352273 |
 
+---
+
 ### *GNU General Public License v3.0 - Copyright (C)*
 
 This script was made for testing purposes and may be used and modified in the future by those who see fit.
