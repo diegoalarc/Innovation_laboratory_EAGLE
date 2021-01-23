@@ -64,6 +64,8 @@ The other data was removed from the data frame to create the machine learning mo
 #### Boxplot:
 ![Example of NDVI for each field from the years 2016 -2020](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/NDVI_2017_to_2021.png?raw=true "Example of NDVI for each field from the years 2016 -2020")
 
+---
+
 ## R Code [Caret Package](https://topepo.github.io/caret/index.html)
 Applying the [Caret](https://topepo.github.io/caret/index.html) de R package, a [Machine Learning](https://en.wikipedia.org/wiki/Machine_learning) model was made to make a prediction of the Yield of Carmen Rosa farm.
 According to what has been done, the need for more data to make a prediction with better precision is evident. But considering the lack of these, it was decided to make (anyway) an [ML](https://en.wikipedia.org/wiki/Machine_learning) model, considering that it will improve over the years as more information is available.
@@ -212,6 +214,8 @@ To make this comparison, two functions of the Caret package were used:
 
 ![Rsquared's Bloxplot](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RF_vs_cRF_Boxplot_Rsquared.png?raw=true "Rsquared's Bloxplot")
 
+---
+
 ## Results: Prediction Yields
 
 Finally the predictions obtained for each model are as follows.
@@ -252,6 +256,6 @@ Finally the predictions obtained for each model are as follows.
 
 ---
 
-### *GNU General Public License v3.0 - Copyright (C)*
+#### *GNU General Public License v3.0 - Copyright (C)*
 
 This script was made for testing purposes and may be used and modified in the future by those who see fit.
