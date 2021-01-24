@@ -258,13 +258,19 @@ Finally the predictions obtained for each model are as follows.
 
 ### Bibliography
 
--Xia, Rong, "Comparison of Random Forests and Cforest: Variable Importance Measures and Prediction Accuracies" (2009). All Graduate Plan B and other Reports. 1255. https://digitalcommons.usu.edu/gradreports/1255
--Crane-Droesch, Andrew. (2018). Machine learning methods for crop yield prediction and climate change impact assessment in agriculture. Environmental Research Letters. 13. 10.1088/1748-9326/aae159. 
--Braga, Dieinison & Coelho da Silva, Ticiana & Rocha, Atslands & Coutinho do Rêgo, Luís Gustavo & Pires Magalhaes, Regis & Guerra, Paulo. (2020). Time Series Forecasting to Support Irrigation Management. Journal on Data Semantics. 10. 66-80. 
--Zhao, Yan & Potgieter, Andries & Zhang, Miao & Wu, Bingfang & Hammer, G.. (2020). remote sensing Predicting Wheat Yield at the Field Scale by Combining High-Resolution Sentinel-2 Satellite Imagery and Crop Modelling. Remote Sensing. 12. 10.3390/rs12061024. 
--Pantazi, X.E. & Moshou, Dimitrios & Alexandridis, Thomas & Whetton, Rebecca & Mouazen, Abdul. (2016). Wheat yield prediction using machine learning and advanced sensing techniques. Computers and Electronics in Agriculture. 121. 57-65. 10.1016/j.compag.2015.11.018. 
--Al-Gaadi, K.A. & Hassaballa, Abdalhaleem A. & Tola, Elkamil & Kayad, Ahmed & Madugundu, Rangaswamy & Alblewi, Bander & Assiri, Fahad. (2016). Prediction of Potato Crop Yield Using Precision Agriculture Techniques. PloS one. 11. e0162219. 10.1371/journal.pone.0162219. 
--Kuhn, M. (2008). Building Predictive Models in R Using the caret Package. Journal of Statistical Software, 28(5), 1 - 26. doi:http://dx.doi.org/10.18637/jss.v028.i05
+- Xia, Rong, "Comparison of Random Forests and Cforest: Variable Importance Measures and Prediction Accuracies" (2009). All Graduate Plan B and other Reports. 1255. https://digitalcommons.usu.edu/gradreports/1255
+
+- Crane-Droesch, Andrew. (2018). Machine learning methods for crop yield prediction and climate change impact assessment in agriculture. Environmental Research Letters. 13. 10.1088/1748-9326/aae159. 
+
+- Braga, Dieinison & Coelho da Silva, Ticiana & Rocha, Atslands & Coutinho do Rêgo, Luís Gustavo & Pires Magalhaes, Regis & Guerra, Paulo. (2020). Time Series Forecasting to Support Irrigation Management. Journal on Data Semantics. 10. 66-80. 
+
+- Zhao, Yan & Potgieter, Andries & Zhang, Miao & Wu, Bingfang & Hammer, G.. (2020). remote sensing Predicting Wheat Yield at the Field Scale by Combining High-Resolution Sentinel-2 Satellite Imagery and Crop Modelling. Remote Sensing. 12. 10.3390/rs12061024. 
+
+- Pantazi, X.E. & Moshou, Dimitrios & Alexandridis, Thomas & Whetton, Rebecca & Mouazen, Abdul. (2016). Wheat yield prediction using machine learning and advanced sensing techniques. Computers and Electronics in Agriculture. 121. 57-65. 10.1016/j.compag.2015.11.018. 
+
+- Al-Gaadi, K.A. & Hassaballa, Abdalhaleem A. & Tola, Elkamil & Kayad, Ahmed & Madugundu, Rangaswamy & Alblewi, Bander & Assiri, Fahad. (2016). Prediction of Potato Crop Yield Using Precision Agriculture Techniques. PloS one. 11. e0162219. 10.1371/journal.pone.0162219. 
+
+- Kuhn, M. (2008). Building Predictive Models in R Using the caret Package. Journal of Statistical Software, 28(5), 1 - 26. doi:http://dx.doi.org/10.18637/jss.v028.i05
 
 ---
 
