@@ -258,7 +258,7 @@ gbmImp_crf
 png(file = './Plots/Variable_Importance_cforest.png', units = "px",
     width = 1200, height = 700)
 
-plot(gbmImp_crf, top = 28, main = "Conditional Random Forests - Variable Importance plot")
+plot(gbmImp_crf, top = 28, main = "Conditional Inference Forest - Variable Importance plot")
 
 dev.off()
 
@@ -362,7 +362,7 @@ pred_rf_2021 <- model_rf %>% predict(Field_Carmen_pred, na.action=na.omit)
 
 unname(pred_rf_2021)
 
-# Conditional Random Forest
+# Conditional Inference Forest
 # Make predictions and compute the R2, RMSE and MAE
 pred_crf_2021 <- model_crf %>% predict(Field_Carmen_pred, na.action=na.omit)
 
