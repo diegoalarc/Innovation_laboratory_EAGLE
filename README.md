@@ -272,6 +272,8 @@ Finally the predictions obtained for each model are as follows.
 
 - Al-Gaadi, K.A. & Hassaballa, Abdalhaleem A. & Tola, Elkamil & Kayad, Ahmed & Madugundu, Rangaswamy & Alblewi, Bander & Assiri, Fahad. (2016). Prediction of Potato Crop Yield Using Precision Agriculture Techniques. PloS one. 11. e0162219. 10.1371/journal.pone.0162219. 
 
+- Hothorn T, Hornik K, Zeileis A (2006b). Unbiased Recursive Partitioning: A Conditional Inference Framework. Journal of Computational and Graphical Statistics, 15(3), 651–674.
+
 - Kuhn, M. (2008). Building Predictive Models in R Using the caret Package. Journal of Statistical Software, 28(5), 1 - 26. doi:http://dx.doi.org/10.18637/jss.v028.i05
 
 - Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York. ISBN 978-3-319-24277-4, https://ggplot2.tidyverse.org.
