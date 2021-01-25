@@ -74,7 +74,7 @@ According to what has been done, the need for more data to make a prediction wit
 
 ### Evaluation and selection of Hyperparameters
 
-When analyzing the values for tuning in the [Random Forest](https://en.wikipedia.org/wiki/Random_forest#:~:text=Random%20forests%20or%20random%20decision,average%20prediction%20(regression)%20of%20the) model and in the Conditional Random Forest model, the Caret package was used, which provides an analysis of the values and search for the best one for the model evaluation and for a better application. results.
+When analyzing the values for tuning in the [Random Forest](https://en.wikipedia.org/wiki/Random_forest#:~:text=Random%20forests%20or%20random%20decision,average%20prediction%20(regression)%20of%20the) model and in the [Conditional Random Forest model](https://www.tandfonline.com/doi/abs/10.1198/106186006X133933), the Caret package was used, which provides an analysis of the values and search for the best one for the model evaluation and for a better application. results.
 
 Random Forest hyperparameters:
 ```r
