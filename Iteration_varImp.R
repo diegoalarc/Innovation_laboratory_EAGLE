@@ -53,7 +53,7 @@ train.data <- Field_Carmen[training.samples, ]
 test.data <- Field_Carmen[-training.samples, ]
 
 ################################################################################
-
+# Random Forests
 # Train the model
 set.seed(123)
 
@@ -73,7 +73,7 @@ predictions_rf <- model_rf %>% predict(test.data, na.action = na.omit)
 
 predictions_rf
 ################################################################################
-
+# Conditional Random Forests
 # Define training control
 set.seed(123)
 
@@ -203,7 +203,7 @@ p_crf2 <- big_data_crf %>%
   ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
   geom_boxplot(aes(x = dropout_loss, y = variable)) +
   coord_flip() +
-  labs(title = "Conditional Inference Forest - Variable Importance boxplot by year") +
+  labs(title = "Conditional Random Forests - Variable Importance boxplot by year") +
   ylab('Variables') + xlab('Dropout Loss') + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
   theme(axis.text.y = element_text(hjust = 1, colour = "black")) +

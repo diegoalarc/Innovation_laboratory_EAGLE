@@ -121,7 +121,7 @@ Kg_He 31227.15 48233.68 34352.09 37294.73 51572.88 44684.72
 ![RMS vs Ramdom Predictors Random Forest model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RMSE_vs_Ramdom_Predictors_rforest.png?raw=true "RMS vs Ramdom Predictors Random Forest model")
 
 
-Conditional Inference Forest hyperparameters:
+Conditional Random Forests hyperparameters:
 ```r
 44 samples
 41 predictors
@@ -171,7 +171,7 @@ Something important when looking at the generated model, is variable importance,
 - Random Forest model:
 ![Variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_rforest_ggplo2.png?raw=true "Variable importance ML model")
 
-- Conditional Inference Forest model:
+- Conditional Random Forests model:
 ![Variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_cforest_ggplo2.png?raw=true "Variable importance ML model")
 
 #### We have also calculate Feature Importance for each Variable vs Dropout Loss.
@@ -179,7 +179,7 @@ Something important when looking at the generated model, is variable importance,
 - Random Forest model:
 ![Variable importance boxplot ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_boxplot_rforest_ggplo2.png?raw=true "Variable importance boxplot ML model")
 
-- Conditional Inference Forest model:
+- Conditional Random Forests model:
 ![Variable importance boxplot ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_boxplot_crforest_ggplo2.png?raw=true "Variable importance boxplot ML model")
 
 #### We have also calculate Feature Importance by each year used in the model.
@@ -187,7 +187,7 @@ Something important when looking at the generated model, is variable importance,
 - Random Forest model:
 ![Variable importance boxplot ML model by year](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_boxplot_rforest_by_year_ggplo2.png?raw=true "Variable importance boxplot ML model by year")
 
-- Conditional Inference Forest model:
+- Conditional Random Forests model:
 ![Variable importance boxplot ML model by year](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_boxplot_crforest_by_year_ggplo2.png?raw=true "Variable importance boxplot ML model by year")
 
 ### Values of R2, RMSE & MAE
@@ -199,7 +199,7 @@ These are the values with the best performance, after the auto-selection of the 
 | :-------: | :------: | :-----: |
 | 0.9469607 | 3034.6863584 | 2311.3509723 |
 
-- Conditional Inference Forest model:
+- Conditional Random Forests model:
 
 | `R2` | `RMSE Kg` | `MAE Kg` |
 | :-------: | :------: | :-----: |
@@ -239,7 +239,7 @@ Finally the predictions obtained for each model are as follows.
 | SABLE	| SABLE 14	| 2021	| 4.2	| 36598.9735786702 |
 | SABLE	| SABLE 16	| 2021	| 1.9	| 40690.0046396989 |
 
-### Conditional Inference Forest model:
+### Conditional Random Forests model:
 
 | `Variety`	| `Field`	| `Year`	| `Area_He`	| `Kg_He` |
 | :-------: | :---------: | :---: | :---: | :--------------: |

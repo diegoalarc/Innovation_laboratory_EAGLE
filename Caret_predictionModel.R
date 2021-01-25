@@ -196,7 +196,7 @@ plot(p_rf2)
 dev.off()
 
 ################################################################################
-# Conditional Inference Forest
+# Conditional Random Forests
 # set.seed(123)
 # ctrl <- rfeControl(functions = caretFuncs, 
 #                    method = "repeatedcv",
@@ -258,7 +258,7 @@ gbmImp_crf
 png(file = './Plots/Variable_Importance_cforest.png', units = "px",
     width = 1200, height = 700)
 
-plot(gbmImp_crf, top = 28, main = "Conditional Inference Forest - Variable Importance plot")
+plot(gbmImp_crf, top = 28, main = "Conditional Random Forests - Variable Importance plot")
 
 dev.off()
 
@@ -276,7 +276,7 @@ p_crf <- varImp(model_crf)$importance %>%
   ggplot() +
   geom_col(aes(x = rowname, y = Overall)) +
   coord_flip() +
-  labs(title = "Conditional Inference Forest - Variable Importance plot") +
+  labs(title = "Conditional Random Forests - Variable Importance plot") +
   geom_hline(yintercept = 50, color = "blue", size=0.5) +
   ylab('Overall importance percentage') + xlab('Variables') + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
@@ -315,7 +315,7 @@ p_crf2 <- varimps_crf %>%
   ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
   geom_boxplot(aes(x = dropout_loss, y = variable)) +
   coord_flip() +
-  labs(title = "Conditional Inference Forest - Variable Importance boxplot") +
+  labs(title = "Conditional Random Forests - Variable Importance boxplot") +
   ylab('Variables') + xlab('Dropout Loss') + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
   theme(axis.text.y = element_text(hjust = 1, colour = "black"))
@@ -328,7 +328,7 @@ dev.off()
 
 # Resampling train values for each model
 resamps <- resamples(list(model_rf, model_crf), 
-                     c("Random Forest", "Conditional Inference Forest"))
+                     c("Random Forest", "Conditional Random Forests"))
 
 # Save boxplot as .png
 png(file = './Plots/RF_vs_cRF_Boxplot_Rsquared.png', units = "px",
