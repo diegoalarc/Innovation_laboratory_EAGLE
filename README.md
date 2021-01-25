@@ -21,8 +21,10 @@ Project carried out with the help of the company Carmen Rosa, who has provided d
 - Temperature
 - Evapotranspiration
 - Humidity
+- Fields area
+- Grade day
 - Annual production
-- Shapefile with the precise location of the crops
+- KMZ (converted to Shapefile) with the precise location of the crops
 
 Image of Carmen Rosa Farm:
 ![Carmen Rosa farm location](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Carmen_Rosa_Farm.png?raw=true "Carmen Rosa farm location")
