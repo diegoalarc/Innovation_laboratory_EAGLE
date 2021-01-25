@@ -1,5 +1,4 @@
-################################################################################
-
+# Libraries loading
 library(raster)
 library(cluster)
 library(rgdal)

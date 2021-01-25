@@ -121,7 +121,7 @@ Kg_He 31227.15 48233.68 34352.09 37294.73 51572.88 44684.72
 ![RMS vs Ramdom Predictors Random Forest model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RMSE_vs_Ramdom_Predictors_rforest.png?raw=true "RMS vs Ramdom Predictors Random Forest model")
 
 
-Conditional Random Forest hyperparameters:
+Conditional Inference Forest hyperparameters:
 ```r
 44 samples
 41 predictors
@@ -163,43 +163,43 @@ Kg_He 39555.69 45965.34 31059.18 48257.10 47660.85 34870.79
 ID          24       27       31       35       38       39 
 Kg_He 34825.09 43228.54 35510.17 35801.68 48564.00 44670.39
 ```
-![RMS vs Ramdom Predictors Conditional Random Forest model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RMSE_vs_Ramdom_Predictors_cforest.png?raw=true "RMS vs Ramdom Predictors Conditional Random Forest model")
+![RMS vs Ramdom Predictors Conditional Inference Forest model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RMSE_vs_Ramdom_Predictors_cforest.png?raw=true "RMS vs Ramdom Predictors Conditional Inference Forest model")
 
 ### Plot of variable importance
 Something important when looking at the generated model, is variable importance, which is possible thanks to Caret's "varImp" function.
 
-- RandomForest model:
+- Random Forest model:
 ![Variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_rforest_ggplo2.png?raw=true "Variable importance ML model")
 
-- Conditional RandomForest model:
+- Conditional Inference Forest model:
 ![Variable importance ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_cforest_ggplo2.png?raw=true "Variable importance ML model")
 
 #### We have also calculate Feature Importance for each Variable vs Dropout Loss.
 
-- RandomForest model:
+- Random Forest model:
 ![Variable importance boxplot ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_boxplot_rforest_ggplo2.png?raw=true "Variable importance boxplot ML model")
 
-- Conditional RandomForest model:
+- Conditional Inference Forest model:
 ![Variable importance boxplot ML model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_boxplot_crforest_ggplo2.png?raw=true "Variable importance boxplot ML model")
 
 #### We have also calculate Feature Importance by each year used in the model.
 
-- RandomForest model:
+- Random Forest model:
 ![Variable importance boxplot ML model by year](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_boxplot_rforest_by_year_ggplo2.png?raw=true "Variable importance boxplot ML model by year")
 
-- Conditional RandomForest model:
+- Conditional Inference Forest model:
 ![Variable importance boxplot ML model by year](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/Variable_Importance_boxplot_crforest_by_year_ggplo2.png?raw=true "Variable importance boxplot ML model by year")
 
 ### Values of R2, RMSE & MAE
 These are the values with the best performance, after the auto-selection of the tuning through the use of the Caret package.
 
-- RandomForest model:
+- Random Forest model:
 
 | `R2` | `RMSE Kg` | `MAE Kg` |
 | :-------: | :------: | :-----: |
 | 0.9469607 | 3034.6863584 | 2311.3509723 |
 
-- Conditional RandomForest model:
+- Conditional Inference Forest model:
 
 | `R2` | `RMSE Kg` | `MAE Kg` |
 | :-------: | :------: | :-----: |
@@ -222,7 +222,7 @@ To make this comparison, two functions of the Caret package were used:
 
 Finally the predictions obtained for each model are as follows.
 
-### RandomForest model:
+### Random Forest model:
 
 | `Variety`	| `Field`	| `Year`	| `Area_He`	| `Kg_He` |
 | :-------: | :---------: | :---: | :---: | :--------------: |
@@ -239,7 +239,7 @@ Finally the predictions obtained for each model are as follows.
 | SABLE	| SABLE 14	| 2021	| 4.2	| 36598.9735786702 |
 | SABLE	| SABLE 16	| 2021	| 1.9	| 40690.0046396989 |
 
-### Conditional RandomForest model:
+### Conditional Inference Forest model:
 
 | `Variety`	| `Field`	| `Year`	| `Area_He`	| `Kg_He` |
 | :-------: | :---------: | :---: | :---: | :--------------: |

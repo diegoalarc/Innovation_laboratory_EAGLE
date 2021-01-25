@@ -1,10 +1,8 @@
 # Load packages
 # https://www.machinelearningplus.com/machine-learning/caret-package/
 # https://www.youtube.com/watch?v=fSytzGwwBVw
-library(randomForestSRC)
 library(randomForest)
 library(tidyverse)
-library(mlbench)
 library(ggplot2)
 library(ggpubr)
 library(caret)
@@ -198,7 +196,7 @@ plot(p_rf2)
 dev.off()
 
 ################################################################################
-# Conditional Random Forests
+# Conditional Inference Forest
 # set.seed(123)
 # ctrl <- rfeControl(functions = caretFuncs, 
 #                    method = "repeatedcv",
@@ -278,7 +276,7 @@ p_crf <- varImp(model_crf)$importance %>%
   ggplot() +
   geom_col(aes(x = rowname, y = Overall)) +
   coord_flip() +
-  labs(title = "Conditional Random Forests - Variable Importance plot") +
+  labs(title = "Conditional Inference Forest - Variable Importance plot") +
   geom_hline(yintercept = 50, color = "blue", size=0.5) +
   ylab('Overall importance percentage') + xlab('Variables') + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
@@ -317,7 +315,7 @@ p_crf2 <- varimps_crf %>%
   ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
   geom_boxplot(aes(x = dropout_loss, y = variable)) +
   coord_flip() +
-  labs(title = "Conditional Random Forest - Variable Importance boxplot") +
+  labs(title = "Conditional Inference Forest - Variable Importance boxplot") +
   ylab('Variables') + xlab('Dropout Loss') + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
   theme(axis.text.y = element_text(hjust = 1, colour = "black"))
@@ -330,7 +328,7 @@ dev.off()
 
 # Resampling train values for each model
 resamps <- resamples(list(model_rf, model_crf), 
-                     c("Random Forest", "Conditional Random Forest"))
+                     c("Random Forest", "Conditional Inference Forest"))
 
 # Save boxplot as .png
 png(file = './Plots/RF_vs_cRF_Boxplot_Rsquared.png', units = "px",

@@ -1,8 +1,6 @@
 # Load packages
-library(randomForestSRC)
 library(randomForest)
 library(tidyverse)
-library(mlbench)
 library(ggplot2)
 library(ggpubr)
 library(caret)
@@ -187,11 +185,11 @@ p_rf2 <- big_data_rf %>%
   ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
   geom_boxplot(aes(x = dropout_loss, y = variable)) +
   coord_flip() +
-  labs(title = "Conditional Random Forest - Variable Importance boxplot by year") +
+  labs(title = "Conditional Inference Forest - Variable Importance boxplot by year") +
   ylab('Variables') + xlab('Dropout Loss') + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
   theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
-  facet_wrap(~Year, scales = "free_y")
+  facet_wrap(~Year, scales = "fixed")
 
 plot(p_rf2)
 
@@ -209,7 +207,7 @@ p_crf2 <- big_data_crf %>%
   ylab('Variables') + xlab('Dropout Loss') + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
   theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
-  facet_wrap(~Year, scales = "free_y")
+  facet_wrap(~Year, scales = "fixed")
 
 plot(p_crf2)
 
