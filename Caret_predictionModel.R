@@ -179,7 +179,7 @@ varimps_rf$label[grepl("train.formula", varimps_rf$label)] <- 'Field data'
 
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_boxplot_rforest_ggplo2.png', units = "px",
-    width = 1400, height = 800)
+    width = 1700, height = 800)
 
 
 p_rf2 <- varimps_rf %>% 
