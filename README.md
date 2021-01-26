@@ -45,9 +45,13 @@ The indices calculated through GEE were:
 
 $$
   NDVI = \frac{((NIR - RED)}{(NIR + RED))}
- 
+$$
+
+$$
   GNDVI = \frac{(NIR - GREEN}{NIR + GREEN))}
-  
+$$
+
+$$
   EVI = 2.5 * \frac{(NIR - RED)}{(NIR + 6 * RED - 7.5 * BLUE + 10000)}
 $$
 ---
