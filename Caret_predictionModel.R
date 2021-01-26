@@ -175,20 +175,27 @@ varimps_rf$label[grepl("EVI", varimps_rf$variable)] <- 'Remote Sensing'
 varimps_rf$label[grepl("GNDVI", varimps_rf$variable)] <- 'Remote Sensing'
 varimps_rf$label[grepl("NDVI", varimps_rf$variable)] <- 'Remote Sensing'
 
-varimps_rf$label[grepl("train.formula", varimps_rf$label)] <- 'Ground truth data'
+varimps_rf$label[grepl("train.formula", varimps_rf$label)] <- 'Field data'
 
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_boxplot_rforest_ggplo2.png', units = "px",
     width = 1400, height = 800)
 
+
 p_rf2 <- varimps_rf %>% 
   ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
   geom_boxplot(aes(x = dropout_loss, y = variable)) +
   coord_flip() +
-  labs(title = "Random Forest - Variable Importance boxplot") +
-  ylab('Variables') + xlab('Dropout Loss') + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
-  theme(axis.text.y = element_text(hjust = 1, colour = "black"))
+  labs(title = "Random Forests - Variable Importance boxplot") +
+  ylab('Variables') + xlab('Dropout Loss') + xlim(5800, 6800) +
+  theme(legend.title = element_text(size = 18),
+        legend.text = element_text(size = 14)) +
+  theme(axis.title.x = element_text(size = rel(1.8), angle = 0)) +
+  theme(axis.title.y = element_text(size = rel(1.8), angle = 90)) +
+  theme(axis.text.x = element_text(size = 15, angle = 45, hjust = 1, colour = "black")) +
+  theme(axis.text.y = element_text(size = 15, hjust = 1, colour = "black")) +
+  theme(plot.title=element_text(size=30)) + 
+  theme(plot.margin=unit(c(1, 0, 1.5, 2),"cm"))
 #  facet_wrap(~variable, ncol = 4)
 
 plot(p_rf2)
@@ -305,20 +312,26 @@ varimps_crf$label[grepl("EVI", varimps_crf$variable)] <- 'Remote Sensing'
 varimps_crf$label[grepl("GNDVI", varimps_crf$variable)] <- 'Remote Sensing'
 varimps_crf$label[grepl("NDVI", varimps_crf$variable)] <- 'Remote Sensing'
 
-varimps_crf$label[grepl("train.formula", varimps_crf$label)] <- 'Ground truth data'
+varimps_crf$label[grepl("train.formula", varimps_crf$label)] <- 'Field data'
 
 # Save boxplot as .png
 png(file = './Plots/Variable_Importance_boxplot_crforest_ggplo2.png', units = "px",
-    width = 1400, height = 800)
+    width = 1700, height = 800)
 
 p_crf2 <- varimps_crf %>% 
   ggplot(aes(x = dropout_loss, y = variable, fill=label)) +
   geom_boxplot(aes(x = dropout_loss, y = variable)) +
   coord_flip() +
   labs(title = "Conditional Random Forests - Variable Importance boxplot") +
-  ylab('Variables') + xlab('Dropout Loss') + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
-  theme(axis.text.y = element_text(hjust = 1, colour = "black"))
+  ylab('Variables') + xlab('Dropout Loss') + xlim(9800, 10500) +
+  theme(legend.title = element_text(size = 18),
+    legend.text = element_text(size = 14)) +
+  theme(axis.title.x = element_text(size = rel(1.8), angle = 0)) +
+  theme(axis.title.y = element_text(size = rel(1.8), angle = 90)) +
+  theme(axis.text.x = element_text(size = 14, angle = 45, hjust = 1, colour = "black")) +
+  theme(axis.text.y = element_text(size = 25, vjust = -2, hjust = 1, colour = "black")) +
+  theme(plot.title=element_text(size=30)) + 
+  theme(plot.margin=unit(c(1, 0, 1.5, 2),"cm"))
 #  facet_wrap(~variable, ncol = 4)
 
 plot(p_crf2)
