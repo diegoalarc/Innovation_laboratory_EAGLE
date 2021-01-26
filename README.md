@@ -41,6 +41,14 @@ To obtain the information for the prediction of the year 2021, this algorithm wa
 The codes are as follows:
 [Sentinel-2](https://code.earthengine.google.com/10bef8017a4fcacec6ef47296e2b9018)
 
+The indices calculated through GEE were:
+
+  NDVI = \frac{((NIR - RED)}{(NIR + RED))}
+ 
+  GNDVI = \frac{(NIR - GREEN}{NIR + GREEN))}
+  
+  EVI = 2.5 * \frac{(NIR - RED)}{(NIR + 6 * RED - 7.5 * BLUE + 10000)}
+
 ---
 
 ## R Code generated
