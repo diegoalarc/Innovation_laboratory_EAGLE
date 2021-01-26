@@ -205,7 +205,7 @@ p_crf2 <- big_data_crf %>%
   coord_flip() +
   labs(title = "Conditional Random Forests - Variable Importance boxplot by year") +
   ylab('Variables') + xlab('Dropout Loss') + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "black")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, colour = "black")) +
   theme(axis.text.y = element_text(hjust = 1, colour = "black")) +
   facet_wrap(~Year, scales = "fixed")
 
