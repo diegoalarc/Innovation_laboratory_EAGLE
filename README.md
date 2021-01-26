@@ -43,17 +43,13 @@ The codes are as follows:
 
 The indices calculated through GEE were:
 
-$$
-NDVI = \frac{((NIR - RED)}{(NIR + RED))}
-$$
+![NDVI](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/NDVI.svg?raw=true "NDVI")
 
-$$
-GNDVI = \frac{(NIR - GREEN}{NIR + GREEN))}
-$$
+![GNDVI](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/GNDVI.svg?raw=true "GNDVI")
 
-$$
-EVI = 2.5 * \frac{(NIR - RED)}{(NIR + 6 * RED - 7.5 * BLUE + 10000)}
-$$
+
+![EVI](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/EVI.svg?raw=true "EVI")
+
 ---
 
 ## R Code generated
