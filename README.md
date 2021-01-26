@@ -42,14 +42,14 @@ The codes are as follows:
 [Sentinel-2](https://code.earthengine.google.com/10bef8017a4fcacec6ef47296e2b9018)
 
 The indices calculated through GEE were:
-
+```r
 ![NDVI](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/NDVI.svg?raw=true "NDVI")
 
 ![GNDVI](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/GNDVI.svg?raw=true "GNDVI")
 
 
 ![EVI](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/EVI.svg?raw=true "EVI")
-
+```
 ---
 
 ## R Code generated
