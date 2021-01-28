@@ -123,7 +123,7 @@ for (i in 1:4) {
   varimps_rf2$label[grepl("GNDVI", varimps_rf2$variable)] <- 'Remote Sensing'
   varimps_rf2$label[grepl("NDVI", varimps_rf2$variable)] <- 'Remote Sensing'
   
-  varimps_rf2$label[grepl("train.formula", varimps_rf2$label)] <- 'Ground truth data'
+  varimps_rf2$label[grepl("train.formula", varimps_rf2$label)] <- 'Field data'
 
   ################################################################################
 
@@ -148,7 +148,7 @@ for (i in 1:4) {
   varimps_crf2$label[grepl("GNDVI", varimps_crf2$variable)] <- 'Remote Sensing'
   varimps_crf2$label[grepl("NDVI", varimps_crf2$variable)] <- 'Remote Sensing'
   
-  varimps_crf2$label[grepl("train.formula", varimps_crf2$label)] <- 'Ground truth data'
+  varimps_crf2$label[grepl("train.formula", varimps_crf2$label)] <- 'Field data'
   
   ################################################################################
   
