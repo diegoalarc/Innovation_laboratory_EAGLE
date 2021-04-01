@@ -121,11 +121,11 @@ RMSE was used to select the optimal model using the smallest value.
 The final value used for the model was mtry = 2.
 
 predictions_rf
-ID           2        6        7       15       16       17       23 
-Kg_He 37385.09 50909.30 22253.45 48546.61 47664.51 42782.99 32440.54
+ID           2        6        7       15       16       17       23       24
+Kg_He 37385.09 50909.30 22253.45 48546.61 47664.51 42782.99 32440.54 31270.95
 
-ID          24       27       31       32       35       36       37       38       39
-Kg_He 31270.95 48215.34 34216.91 23951.96 37308.29 36987.70 50509.58 51328.06 44155.46
+ID          27       31       32       35       36       37       38       39
+Kg_He 48215.34 34216.91 23951.96 37308.29 36987.70 50509.58 51328.06 44155.46
 ```
 ![RMS vs Ramdom Predictors Random Forest model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RMSE_vs_Ramdom_Predictors_rforest.png?raw=true "RMS vs Ramdom Predictors Random Forest model")
 
@@ -166,11 +166,11 @@ RMSE was used to select the optimal model using the smallest value.
 The final value used for the model was mtry = 9.
 
 predictions_crf
-ID           1        2        3        4        5        6        7
-Kg_He 39859.23 46642.12 31497.72 48518.40 47799.10 40757.52 34521.58
+ID           2        6        7       15       16       17       23       24
+Kg_He 39859.23 46642.12 31497.72 48518.40 47799.10 40757.52 34521.58 34494.90
 
-ID           8        9       10       11       12       13       14       15       16
-Kg_He 34494.90 42669.19 34922.35 33042.21 35879.30 35808.38 48648.83 48876.35 44926.69
+ID          27       31       32       35       36       37       38       39
+Kg_He 42669.19 34922.35 33042.21 35879.30 35808.38 48648.83 48876.35 44926.69
 ```
 ![RMS vs Ramdom Predictors Conditional Inference Forest model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RMSE_vs_Ramdom_Predictors_cforest.png?raw=true "RMS vs Ramdom Predictors Conditional Inference Forest model")
 
