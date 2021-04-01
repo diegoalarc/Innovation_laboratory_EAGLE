@@ -39,7 +39,7 @@ To carry out this project, an algorithm was generated through Google Earth Engin
 To obtain the information for the prediction of the year 2021, this algorithm was also used..
 
 The codes are as follows:
-[Sentinel-2](https://code.earthengine.google.com/10bef8017a4fcacec6ef47296e2b9018)
+[Sentinel-2](https://code.earthengine.google.com/?scriptPath=users%2Fdiegoalarcondiaz%2FThesis_test%3ASentinel_2_GNDVI_NDVI_EVI_BOA)
 
 The indices calculated through GEE were:
 
@@ -88,7 +88,7 @@ When analyzing the values for tuning in the [Random Forest](https://en.wikipedia
 Random Forest hyperparameters:
 ```r
 44 samples
-41 predictors
+40 predictors
 
 No pre-processing
 Resampling: Cross-Validated (4 fold, repeated 100 times) 
@@ -96,36 +96,36 @@ Summary of sample sizes: 36, 32, 32, 32, 32, 34, ...
 Resampling results across tuning parameters:
 
   mtry  RMSE      Rsquared   MAE     
-   1    11696.03  0.2650583  8908.104
-   2    11644.86  0.2573990  8595.478  <----- mtry selected
-   3    11725.92  0.2491017  8578.859
-   4    11801.20  0.2426962  8602.588
-   5    11848.96  0.2400758  8615.154
-   6    11893.66  0.2365719  8630.176
-   7    11928.81  0.2357133  8647.704
-   8    11962.77  0.2330954  8676.169
-   9    11984.86  0.2317039  8684.750
-  10    12009.54  0.2305464  8693.922
-  11    12015.17  0.2310420  8703.591
-  12    12045.41  0.2280370  8713.845
-  13    12050.01  0.2293283  8715.078
-  14    12076.34  0.2270550  8737.591
-  15    12083.33  0.2269244  8741.872
-  16    12087.71  0.2266707  8737.902
-  17    12098.06  0.2262823  8746.408
-  18    12106.52  0.2260254  8755.035
-  19    12109.42  0.2262130  8756.194
-  20    12124.95  0.2252901  8771.455
+   1    11689.06  0.2651247  8908.478
+   2    11655.76  0.2566566  8618.057  <----- mtry selected
+   3    11745.18  0.2469778  8608.479
+   4    11833.94  0.2395274  8642.848
+   5    11867.03  0.2378348  8651.408
+   6    11922.31  0.2341872  8676.339
+   7    11961.21  0.2322326  8696.816
+   8    11985.05  0.2308759  8697.349
+   9    12015.77  0.2289175  8716.417
+  10    12033.04  0.2289433  8722.395
+  11    12056.17  0.2270848  8739.421
+  12    12075.65  0.2257823  8747.684
+  13    12086.47  0.2259476  8748.066
+  14    12091.98  0.2259209  8751.193
+  15    12103.82  0.2260043  8761.587
+  16    12125.92  0.2241327  8770.015
+  17    12125.14  0.2242886  8766.597
+  18    12129.33  0.2247183  8779.543
+  19    12129.76  0.2252407  8778.346
+  20    12144.24  0.2238568  8784.614
 
 RMSE was used to select the optimal model using the smallest value.
 The final value used for the model was mtry = 2.
 
 predictions_rf
-ID           2        6        7       15       16       23 
-Kg_He 37649.06 50594.18 22991.68 48395.64 47672.84 32429.35
+ID           2        6        7       15       16       17       23 
+Kg_He 37385.09 50909.30 22253.45 48546.61 47664.51 42782.99 32440.54
 
-ID          24       27       31       35       38       39 
-Kg_He 31227.15 48233.68 34352.09 37294.73 51572.88 44684.72
+ID          24       27       31       32       35       36       37       38       39
+Kg_He 31270.95 48215.34 34216.91 23951.96 37308.29 36987.70 50509.58 51328.06 44155.46
 ```
 ![RMS vs Ramdom Predictors Random Forest model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RMSE_vs_Ramdom_Predictors_rforest.png?raw=true "RMS vs Ramdom Predictors Random Forest model")
 
@@ -133,7 +133,7 @@ Kg_He 31227.15 48233.68 34352.09 37294.73 51572.88 44684.72
 Conditional Random Forests hyperparameters:
 ```r
 44 samples
-41 predictors
+40 predictors
 
 No pre-processing
 Resampling: Cross-Validated (4 fold, repeated 100 times) 
@@ -141,36 +141,36 @@ Summary of sample sizes: 36, 32, 32, 32, 32, 34, ...
 Resampling results across tuning parameters:
 
   mtry  RMSE      Rsquared   MAE      
-   1    12475.15  0.2352746  10076.645
-   2    12262.31  0.2360650   9875.970
-   3    12149.49  0.2341696   9743.101
-   4    12064.60  0.2347005   9635.064
-   5    12022.64  0.2346035   9573.056
-   6    11995.39  0.2326416   9528.815
-   7    11981.69  0.2305238   9498.562
-   8    11967.76  0.2313585   9472.172
-   9    11966.86  0.2311443   9458.778
-  10    11965.38  0.2307080   9440.515  <----- mtry selected
-  11    11967.84  0.2299629   9435.052
-  12    11971.26  0.2270257   9425.480
-  13    11978.07  0.2240470   9421.372
-  14    11970.50  0.2259004   9402.157
-  15    11986.66  0.2252591   9414.824
-  16    11986.99  0.2239518   9403.290
-  17    11998.19  0.2219648   9410.803
-  18    11995.38  0.2218385   9395.224
-  19    12001.60  0.2215265   9390.147
-  20    11998.97  0.2213567   9374.369
+   1    12465.23  0.2353040  10071.399
+   2    12252.20  0.2375762   9869.903
+   3    12121.59  0.2374923   9722.160
+   4    12051.66  0.2374132   9624.976
+   5    12009.50  0.2364427   9567.536
+   6    11989.49  0.2316047   9530.515
+   7    11960.31  0.2352468   9480.496
+   8    11957.48  0.2336638   9463.725
+   9    11952.72  0.2303900   9447.680  <----- mtry selected
+  10    11956.96  0.2311181   9435.015
+  11    11965.15  0.2287326   9433.157
+  12    11959.92  0.2289213   9414.927
+  13    11965.28  0.2284617   9409.015
+  14    11971.83  0.2267030   9402.886
+  15    11973.15  0.2250927   9397.044
+  16    11977.69  0.2255073   9387.420
+  17    11976.50  0.2250848   9381.885
+  18    11986.95  0.2235273   9385.585
+  19    12003.37  0.2197853   9392.697
+  20    11995.87  0.2226220   9376.090
 
 RMSE was used to select the optimal model using the smallest value.
-The final value used for the model was mtry = 10.
+The final value used for the model was mtry = 9.
 
 predictions_crf
-ID           2        6        7       15       16       23
-Kg_He 39555.69 45965.34 31059.18 48257.10 47660.85 34870.79
+ID           1        2        3        4        5        6        7
+Kg_He 39859.23 46642.12 31497.72 48518.40 47799.10 40757.52 34521.58
 
-ID          24       27       31       35       38       39 
-Kg_He 34825.09 43228.54 35510.17 35801.68 48564.00 44670.39
+ID           8        9       10       11       12       13       14       15       16
+Kg_He 34494.90 42669.19 34922.35 33042.21 35879.30 35808.38 48648.83 48876.35 44926.69
 ```
 ![RMS vs Ramdom Predictors Conditional Inference Forest model](https://github.com/diegoalarc/Innovation_laboratory_EAGLE/blob/main/Plots/RMSE_vs_Ramdom_Predictors_cforest.png?raw=true "RMS vs Ramdom Predictors Conditional Inference Forest model")
 
@@ -206,13 +206,13 @@ These are the values with the best performance, after the auto-selection of the 
 
 | `R2` | `RMSE Kg` | `MAE Kg` |
 | :-------: | :------: | :-----: |
-| 0.9469607 | 3034.6863584 | 2311.3509723 |
+| 0.9240436 | 4668.0454024 | 2968.0485040 |
 
 - Conditional Random Forests model:
 
 | `R2` | `RMSE Kg` | `MAE Kg` |
 | :-------: | :------: | :-----: |
-| 0.8286274 | 5916.6067670 | 4609.4892570 |
+| 0.7507679 | 8077.7103351 | 5462.6394075 |
 
 ### Model comparison
 
@@ -235,39 +235,40 @@ Finally the predictions obtained for each model are as follows.
 
 | `Variety`	| `Field`	| `Year`	| `Area_He`	| `Kg_He` |
 | :-------: | :---------: | :---: | :---: | :--------------: |
-| THOMPSON	| THOMPSON 00	| 2021	| 9.6	| 41357.7977096304 |
-| THOMPSON	| THOMPSON 07	| 2021	| 3.4	| 36689.4504366268 |
-| THOMPSON	| THOMPSON 08	| 2021	| 3.4	| 35831.9454180071 |
-| THOMPSON	| THOMPSON 96	| 2021	| 9.5	| 35798.0735234639 |
-| CRIMSON	| CRIMSON  99-00	| 2021	| 12.2	| 45890.9988594843 |
-| CRIMSON	| CRIMSON 04	| 2021	| 2.4	| 47082.2595503199 |
-| ARRA	| ARRA 15 CR	| 2021	| 2.9	| 44344.6312243955 |
-| TIMCO	| TIMCO 14 CR	| 2021	| 4.1	| 43648.8121403448 |
-| INIAGRAPEONE	| INIAGRAPE ONE 14	| 2021	| 1.1	| 42528.3456174134 |
-| INIAGRAPEONE	| INIAGRAPE ONE 15	| 2021	| 3	| 42693.726853647 |
-| SABLE	| SABLE 14	| 2021	| 4.2	| 36598.9735786702 |
-| SABLE	| SABLE 16	| 2021	| 1.9	| 40690.0046396989 |
+| THOMPSON	| THOMPSON 00	| 2021	| 9.6	| 41357.80 |
+| THOMPSON	| THOMPSON 07	| 2021	| 3.4	| 36689.45 |
+| THOMPSON	| THOMPSON 08	| 2021	| 3.4	| 35831.95 |
+| THOMPSON	| THOMPSON 96	| 2021	| 9.5	| 35798.07 |
+| CRIMSON	| CRIMSON  99-00	| 2021	| 12.2	| 45891.00 |
+| CRIMSON	| CRIMSON 04	| 2021	| 2.4	| 47082.26 |
+| ARRA	| ARRA 15 CR	| 2021	| 2.9	| 44344.63 |
+| TIMCO	| TIMCO 14 CR	| 2021	| 4.1	| 43648.81 |
+| INIAGRAPEONE	| INIAGRAPE ONE 14	| 2021	| 1.1	| 42528.35 |
+| INIAGRAPEONE	| INIAGRAPE ONE 15	| 2021	| 3	| 42693.73 |
+| SABLE	| SABLE 14	| 2021	| 4.2	| 36598.97 |
+| SABLE	| SABLE 16	| 2021	| 1.9	| 40690.00 |
 
 ### Conditional Random Forests model:
 
 | `Variety`	| `Field`	| `Year`	| `Area_He`	| `Kg_He` |
 | :-------: | :---------: | :---: | :---: | :--------------: |
-| THOMPSON	| THOMPSON 00	| 2021	| 9.6	| 40630.3478980829 |
-| THOMPSON	| THOMPSON 07	| 2021	| 3.4	| 35272.6115914895 |
-| THOMPSON	| THOMPSON 08	| 2021	| 3.4	| 35009.3554826691 |
-| THOMPSON	| THOMPSON 96	| 2021	| 9.5	| 34895.3375997666 |
-| CRIMSON	| CRIMSON  99-00	| 2021	| 12.2	| 44551.796429587 |
-| CRIMSON	| CRIMSON 04	| 2021	| 2.4	| 45011.1310551689 |
-| ARRA	| ARRA 15 CR	| 2021	| 2.9	| 42912.3193929731 |
-| TIMCO	| TIMCO 14 CR	| 2021	| 4.1	| 42191.3154600087 |
-| INIAGRAPEONE	| INIAGRAPE ONE 14	| 2021	| 1.1	| 41554.7408015287 |
-| INIAGRAPEONE	| INIAGRAPE ONE 15	| 2021	| 3	| 41840.732953901 |
-| SABLE	| SABLE 14	| 2021	| 4.2	| 35848.9520325514 |
-| SABLE	| SABLE 16	| 2021	| 1.9	| 43400.768352273 |
+| THOMPSON	| THOMPSON 00	| 2021	| 9.6	| 40630.35 |
+| THOMPSON	| THOMPSON 07	| 2021	| 3.4	| 35272.61 |
+| THOMPSON	| THOMPSON 08	| 2021	| 3.4	| 35009.36 |
+| THOMPSON	| THOMPSON 96	| 2021	| 9.5	| 34895.34 |
+| CRIMSON	| CRIMSON  99-00	| 2021	| 12.2	| 44551.80 |
+| CRIMSON	| CRIMSON 04	| 2021	| 2.4	| 45011.13 |
+| ARRA	| ARRA 15 CR	| 2021	| 2.9	| 42912.32 |
+| TIMCO	| TIMCO 14 CR	| 2021	| 4.1	| 42191.32 |
+| INIAGRAPEONE	| INIAGRAPE ONE 14	| 2021	| 1.1	| 41554.74 |
+| INIAGRAPEONE	| INIAGRAPE ONE 15	| 2021	| 3	| 41840.73 |
+| SABLE	| SABLE 14	| 2021	| 4.2	| 35848.95 |
+| SABLE	| SABLE 16	| 2021	| 1.9	| 43400.77 |
 
 ---
 
 ### Bibliography
+- Gitelson, A.A.; Kaufman, Y.J.; Merzlyak, M.N. Use of a green channel in remote sensing of global vegetation from EOS-MODIS. Remote Sens. Environ. 1996, 58, 289–298.
 
 - Xia, Rong, "Comparison of Random Forests and Cforest: Variable Importance Measures and Prediction Accuracies" (2009). All Graduate Plan B and other Reports. 1255. https://digitalcommons.usu.edu/gradreports/1255
 
