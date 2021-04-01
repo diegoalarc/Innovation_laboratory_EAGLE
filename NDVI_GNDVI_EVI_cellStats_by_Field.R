@@ -90,7 +90,7 @@ for (x in 1:length(roi)){
   # Create a stack of Raster Files with all the *.tiff cropped
   roi_1_crop <- stack(crop_list)
   
-  names_file <- c('B1_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
+  names_file <- c('QA60_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
                   'B7_mean', 'B8_mean', 'B8A_mean', 'B9_mean', 'B10_mean', 'B11_mean',
                   'B12_mean', paste0('EVI_Carmen_Rosa_Field_',year), 
                   paste0('GNDVI_Carmen_Rosa_Field_',year),
@@ -115,7 +115,7 @@ for (x in 1:length(roi)){
   # Create the vector with the name file
   names_file2 <- vector(mode='character')
   
-  names_file2 <- c('B1_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
+  names_file2 <- c('QA60_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
                    'B7_mean', 'B8_mean', 'B8A_mean', 'B9_mean', 'B10_mean', 'B11_mean',
                    'B12_mean', paste0('EVI_Carmen_Rosa_Field_',year2), 
                    paste0('GNDVI_Carmen_Rosa_Field_',year2),
@@ -140,7 +140,7 @@ for (x in 1:length(roi)){
   # Create the vector with the name file
   names_file3 <- vector(mode='character')
   
-  names_file3 <- c('B1_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
+  names_file3 <- c('QA60_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
                    'B7_mean', 'B8_mean', 'B8A_mean', 'B9_mean', 'B10_mean', 'B11_mean',
                    'B12_mean', paste0('EVI_Carmen_Rosa_Field_',year3), 
                    paste0('GNDVI_Carmen_Rosa_Field_',year3),
@@ -165,7 +165,7 @@ for (x in 1:length(roi)){
   # Create the vector with the name file
   names_file4 <- vector(mode='character')
   
-  names_file4 <- c('B1_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
+  names_file4 <- c('QA60_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
                    'B7_mean', 'B8_mean', 'B8A_mean', 'B9_mean', 'B10_mean', 'B11_mean',
                    'B12_mean', paste0('EVI_Carmen_Rosa_Field_',year4), 
                    paste0('GNDVI_Carmen_Rosa_Field_',year4),
@@ -190,7 +190,7 @@ for (x in 1:length(roi)){
   # Create the vector with the name file
   names_file5 <- vector(mode='character')
   
-  names_file5 <- c('B1_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
+  names_file5 <- c('QA60_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
                    'B7_mean', 'B8_mean', 'B8A_mean', 'B9_mean', 'B10_mean', 'B11_mean',
                    'B12_mean', paste0('EVI_Carmen_Rosa_Field_',year5), 
                    paste0('GNDVI_Carmen_Rosa_Field_',year5),
@@ -242,7 +242,7 @@ for (x in 1:length(roi)){
   my_df_or <- my_df_or[-1,]
   my_df_or[,17] <- c(year,year2,year3,year4,year5)
   my_df_or[,18] <- c(roi_1$Name,roi_1$Name,roi_1$Name,roi_1$Name,roi_1$Name)
-  names(my_df_or) <- c('B1_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
+  names(my_df_or) <- c('QA60_mean', 'B2_mean', 'B3_mean', 'B4_mean', 'B5_mean', 'B6_mean',
                        'B7_mean', 'B8_mean', 'B8A_mean', 'B9_mean', 'B10_mean', 'B11_mean',
                        'B12_mean', 'EVI', 'GNDVI', 'NDVI', 'Year', 'Field´')
   
