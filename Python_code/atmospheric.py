@@ -7,7 +7,6 @@ O3 = Atmospheric.ozone(geom,date)
 AOT = Atmospheric.aerosol(geom,date)
 """
 
-
 import ee
 
 class Atmospheric():
