@@ -288,7 +288,7 @@ class atmCorr():
 
         return ref
     
-class ConvS2Collection():
+class S2_L1C():
             
     # Main function
     # Reference idea from Cristian Iranzo https://github.com/samsammurphy/gee-atmcorr-S2/issues/7
