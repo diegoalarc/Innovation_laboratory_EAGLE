@@ -5,9 +5,17 @@ Usage
 H2O = Atmospheric.water(geom,date)
 O3 = Atmospheric.ozone(geom,date)
 AOT = Atmospheric.aerosol(geom,date)
+
+class Conversion(), By Cristian Iranzo & Diego Alarcón
+Iterative process
+Usage
+Conversion.conversion(geom, ImageCollection, GEE path to save corrected ImageCollection)
 """
 
 import ee
+import geemap
+from Py6S import *
+import os, sys, time, math, datetime
 
 class Atmospheric():
 
@@ -202,3 +210,180 @@ class Atmospheric():
     # i.e. check reduce region worked (else force fill value)
     
     return AOT
+
+class Conversion():
+            
+    # Main function
+    # Reference idea from Cristian Iranzo https://github.com/samsammurphy/gee-atmcorr-S2/issues/7
+    def conversion(geom, imgCol, gpath):
+        
+        region = geom.buffer(1000).bounds().getInfo()['coordinates']
+        
+        # Spectral Response functions
+        def spectralResponseFunction(bandname):
+            """
+            Extract spectral response function for given band name
+            """
+            bandSelect = {
+                'B1':PredefinedWavelengths.S2A_MSI_01,
+                'B2':PredefinedWavelengths.S2A_MSI_02,
+                'B3':PredefinedWavelengths.S2A_MSI_03,
+                'B4':PredefinedWavelengths.S2A_MSI_04,
+                'B5':PredefinedWavelengths.S2A_MSI_05,
+                'B6':PredefinedWavelengths.S2A_MSI_06,
+                'B7':PredefinedWavelengths.S2A_MSI_07,
+                'B8':PredefinedWavelengths.S2A_MSI_08,
+                'B8A':PredefinedWavelengths.S2A_MSI_8A,
+                'B9':PredefinedWavelengths.S2A_MSI_09,
+                'B10':PredefinedWavelengths.S2A_MSI_10,
+                'B11':PredefinedWavelengths.S2A_MSI_11,
+                'B12':PredefinedWavelengths.S2A_MSI_12,
+                }
+
+            return Wavelength(bandSelect[bandname])
+
+        # TOA Reflectance to Radiance
+        def toa_to_rad(bandname):
+            """
+            Converts top of atmosphere reflectance to at-sensor radiance
+            """
+
+            # solar exoatmospheric spectral irradiance
+            ESUN = info['SOLAR_IRRADIANCE_'+bandname]
+            solar_angle_correction = math.cos(math.radians(solar_z))
+
+            # Earth-Sun distance (from day of year)
+            doy = scene_date.timetuple().tm_yday
+            d = 1 - 0.01672 * math.cos(0.9856 * (doy-4))
+            # http://physics.stackexchange.com/
+            # questions/177949/earth-sun-distance-on-a-given-day-of-the-year
+
+            # conversion factor
+            multiplier = ESUN*solar_angle_correction/(math.pi*d**2)
+
+            # at-sensor radiance
+            rad = toa.select(bandname).multiply(multiplier)
+
+            return rad
+
+        # Radiance to Surface Reflectance
+
+        def surface_reflectance(bandname):
+            """
+            Calculate surface reflectance from at-sensor radiance given waveband name
+            """
+
+            # run 6S for this waveband
+            s.wavelength = spectralResponseFunction(bandname)
+            s.run()
+
+            # extract 6S outputs
+            Edir = s.outputs.direct_solar_irradiance             #direct solar irradiance
+            Edif = s.outputs.diffuse_solar_irradiance            #diffuse solar irradiance
+            Lp   = s.outputs.atmospheric_intrinsic_radiance      #path radiance
+            absorb  = s.outputs.trans['global_gas'].upward       #absorption transmissivity
+            scatter = s.outputs.trans['total_scattering'].upward #scattering transmissivity
+            tau2 = absorb*scatter                                #total transmissivity
+
+            # radiance to surface reflectance
+            rad = toa_to_rad(bandname)
+            ref = rad.subtract(Lp).multiply(math.pi).divide(tau2*(Edir+Edif))
+
+            return ref
+        
+        # List with images to filter
+        features = imgCol.getInfo()['features']
+
+        for i in features:
+            # Filter by ID in the list by image
+            id = i['id']
+            print("Bands: ")
+            # Selection of the image
+            img  = ee.Image(id)
+
+            # write image date
+            date = img.date()
+
+            # Defining global variables:
+            global toa
+            global info
+            global scene_date
+            global solar_z
+            global s
+
+            # top of atmosphere reflectance
+            toa = img.divide(10000)
+
+            # METADATA
+            info = img.getInfo()['properties']
+            scene_date = datetime.datetime\
+                .utcfromtimestamp(info['system:time_start']/1000)
+            solar_z = info['MEAN_SOLAR_ZENITH_ANGLE']
+
+            # ATMOSPHERIC CONSTITUENTS
+            h2o = Atmospheric.water(geom,date).getInfo()
+            o3 = Atmospheric.ozone(geom,date).getInfo()
+            # Atmospheric Optical Thickness
+            aot = Atmospheric.aerosol(geom,date).getInfo()
+
+            # TARGET ALTITUDE (km)
+            SRTM = ee.Image('CGIAR/SRTM90_V4')
+            alt = SRTM.reduceRegion(reducer = ee.Reducer.mean(),
+                geometry = geom.centroid()).get('elevation').getInfo()
+            km = alt/1000 # i.e. Py6S uses units of kilometers
+
+            # 6S OBJECT
+            # Instantiate
+            s = SixS()
+
+            # Atmospheric constituents
+            s.atmos_profile = AtmosProfile.UserWaterAndOzone(h2o,o3)
+            s.aero_profile = AeroProfile.Continental
+            s.aot550 = aot
+
+            # Earth-Sun-satellite geometry
+            s.geometry = Geometry.User()
+            s.geometry.view_z = 0               # calculation assuming vision in NADIR
+            s.geometry.solar_z = solar_z        # solar zenith angle
+            s.geometry.month = scene_date.month # month used in distance Earth-Sun
+            s.geometry.day = scene_date.day     # day used in the distance Earth-Sun
+            s.altitudes\
+                .set_sensor_satellite_level()   # Sensor altitude
+            s.altitudes\
+                .set_target_custom_altitude(km) # Altitude of the surface
+
+            # ATMOSPHERIC CORRECTION (by waveband)
+            output = img.select('QA60')
+            for band in ['B1','B2','B3','B4','B5','B6','B7','B8','B8A','B9','B10','B11','B12']:
+                     print(band, end=' ')
+                     output = output.addBands(surface_reflectance(band))
+
+            # set some properties for export
+            dateString = scene_date.strftime("%Y-%m-%d")
+            ref = output.set({'satellite':'Sentinel 2',
+                           'fileID':info['system:index'],
+                           'date':dateString,
+                           'aerosol_optical_thickness':aot,
+                           'water_vapour':h2o,
+                           'ozone':o3})
+
+            # define YOUR assetID or folder
+            assetID = gpath + dateString
+
+            # export
+            export = ee.batch.Export.image.toAsset(\
+                 image = ref,
+                 description = 'sentinel2_atmcorr_export',
+                 assetId = assetID,
+                 region = region,
+                 crs = 'EPSG:4326',
+                 scale = 10)
+
+
+            export.start()
+            # print a message for each exported image
+            print("image "+ assetID +" exported")
+            print('\n')
+            time.sleep(1)
+
+        return print("Conversion ready")
