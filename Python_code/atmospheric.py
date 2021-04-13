@@ -9,6 +9,10 @@ AOT = Atmospheric.aerosol(geom,date)
 class Conversion(), By Cristian Iranzo & Diego Alarcón
 Iterative process
 Usage
+Atmospheric correction per band
+atmCorr.surface_reflectance(bandname)
+
+Atmospheric correction for Sentinel-2 MSI ImageCollection, Level-1C
 Conversion.conversion(geom, ImageCollection, GEE path to save corrected ImageCollection)
 """
 
@@ -211,7 +215,80 @@ class Atmospheric():
     
     return AOT
 
-class Conversion():
+class atmCorr():
+    
+    # Radiance to Surface Reflectance
+    def surface_reflectance(bandname):
+        """
+        Calculate surface reflectance from at-sensor radiance given waveband name
+        """
+        
+        # TOA Reflectance to Radiance
+        def toa_to_rad(bandname):
+            """
+            Converts top of atmosphere reflectance to at-sensor radiance
+            """
+
+            # solar exoatmospheric spectral irradiance
+            ESUN = info['SOLAR_IRRADIANCE_'+bandname]
+            solar_angle_correction = math.cos(math.radians(solar_z))
+
+            # Earth-Sun distance (from day of year)
+            doy = scene_date.timetuple().tm_yday
+            d = 1 - 0.01672 * math.cos(0.9856 * (doy-4))
+            # http://physics.stackexchange.com/
+            # questions/177949/earth-sun-distance-on-a-given-day-of-the-year
+
+            # conversion factor
+            multiplier = ESUN*solar_angle_correction/(math.pi*d**2)
+
+            # at-sensor radiance
+            rad = toa.select(bandname).multiply(multiplier)
+
+            return rad
+        
+        # Spectral Response functions
+        def spectralResponseFunction(bandname):
+            """
+            Extract spectral response function for given band name
+            """
+            bandSelect = {
+                'B1':PredefinedWavelengths.S2A_MSI_01,
+                'B2':PredefinedWavelengths.S2A_MSI_02,
+                'B3':PredefinedWavelengths.S2A_MSI_03,
+                'B4':PredefinedWavelengths.S2A_MSI_04,
+                'B5':PredefinedWavelengths.S2A_MSI_05,
+                'B6':PredefinedWavelengths.S2A_MSI_06,
+                'B7':PredefinedWavelengths.S2A_MSI_07,
+                'B8':PredefinedWavelengths.S2A_MSI_08,
+                'B8A':PredefinedWavelengths.S2A_MSI_8A,
+                'B9':PredefinedWavelengths.S2A_MSI_09,
+                'B10':PredefinedWavelengths.S2A_MSI_10,
+                'B11':PredefinedWavelengths.S2A_MSI_11,
+                'B12':PredefinedWavelengths.S2A_MSI_12,
+                }
+
+            return Wavelength(bandSelect[bandname])
+        
+        # run 6S for this waveband
+        s.wavelength = spectralResponseFunction(bandname)
+        s.run()
+
+        # extract 6S outputs
+        Edir = s.outputs.direct_solar_irradiance             #direct solar irradiance
+        Edif = s.outputs.diffuse_solar_irradiance            #diffuse solar irradiance
+        Lp   = s.outputs.atmospheric_intrinsic_radiance      #path radiance
+        absorb  = s.outputs.trans['global_gas'].upward       #absorption transmissivity
+        scatter = s.outputs.trans['total_scattering'].upward #scattering transmissivity
+        tau2 = absorb*scatter                                #total transmissivity
+
+        # radiance to surface reflectance
+        rad = toa_to_rad(bandname)
+        ref = rad.subtract(Lp).multiply(math.pi).divide(tau2*(Edir+Edif))
+
+        return ref
+    
+class ConvS2Collection():
             
     # Main function
     # Reference idea from Cristian Iranzo https://github.com/samsammurphy/gee-atmcorr-S2/issues/7
